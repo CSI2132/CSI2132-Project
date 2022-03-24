@@ -86,7 +86,7 @@ CREATE TABLE Appointment (
     start_time TIME NOT NULL, -- TODO: Time stamp with or without timezone? Depends on frontend logic?]
     end_time TIME NOT NULL,
     appointment_type procedure_type_name_enum NOT NULL,
-    appointment_status TEXT NOT NULL CHECK (appointment_status IN ('COMPLETE', 'ONGOING', 'UPCOMING', 'CANCELLED')),
+    appointment_status TEXT NOT NULL CHECK (appointment_status IN ('ACTIVE', 'CANCELLED')),
     assigned_room TEXT NOT NULL
 );
 
@@ -210,6 +210,7 @@ CREATE TABLE PhoneNumber (
     phone_number TEXT CONSTRAINT valid_phone_number CHECK (phone_number ~ '^(\d{3}-\d{3}-\d{4})$'),
     PRIMARY KEY(user_id, phone_number)
 );
+
 CREATE TABLE Languages (
     user_id SERIAL REFERENCES Receptionist(user_id),
     languages TEXT,

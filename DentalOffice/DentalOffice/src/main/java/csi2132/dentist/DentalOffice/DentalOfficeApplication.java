@@ -10,19 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
-public class DentalOfficeApplication implements CommandLineRunner {
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-
+public class DentalOfficeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DentalOfficeApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-
-		List<Map<String, Object>> test = jdbcTemplate.queryForList("SELECT * FROM ARTIST;");
-		System.out.println(test.toString());
 	}
 }
