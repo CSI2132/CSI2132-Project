@@ -19,11 +19,10 @@ public class PatientRepository {
      * @return success
      */
     public int addPatient(Patient patient) {
-        String query = "INSERT INTO Patient(user_id, username, patient_password, patient_address, first_name, last_name, gender, insurance, SSN, email_address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
+        String query = "INSERT INTO Patient(username, patient_password, patient_address, first_name, last_name, gender, insurance, SSN, email_address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
         Object[] parameters = new Object[] {
-                    patient.getUser_id(), 
                     patient.getUsername(), 
-                    bCryptPasswordEncoder.encode(patient.getPatient_password()),
+                    "test", // bCryptPasswordEncoder.encode(patient.getPatient_password()), 
                     patient.getPatient_address(), 
                     patient.getFirst_name(), 
                     patient.getLast_name(), 
