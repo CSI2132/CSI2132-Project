@@ -4,13 +4,13 @@ import java.sql.Date;
 import java.util.Currency;
 
 public class AppointmentProcedure {
-    public Integer appointment_id;
-    public Integer procedure_id;
-    public Date appointment_procedure_date;
-    public String appointment_procedure_description;
-    public String tooth_involved;
-    public Currency procedure_amount;
-    public Currency patient_charge;
-    public Currency insurance_charge; 
-    public Currency total_charge; 
+    private Integer appointment_id;
+    private Integer procedure_id;
+    private Date appointment_procedure_date;
+    private String appointment_procedure_description;
+    private String tooth_involved;
+    private Currency procedure_amount;
+    private Currency patient_charge;
+    private Currency insurance_charge; 
+    private Currency total_charge; 
 }

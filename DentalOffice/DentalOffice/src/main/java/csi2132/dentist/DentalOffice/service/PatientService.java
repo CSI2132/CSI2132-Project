@@ -10,7 +10,7 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public void addPatient(Patient patient) {
-        patientRepository.addPatient(patient);
+    public int addPatient(Patient patient) {
+        return patientRepository.addPatient(patient);
     }
 }

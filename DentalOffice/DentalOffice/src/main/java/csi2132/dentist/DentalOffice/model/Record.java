@@ -1,7 +1,7 @@
 package csi2132.dentist.DentalOffice.model;
 
 public class Record {
-    public String progress_notes;
-    public Integer patient_user_id;
-    public Integer treatment_id;
+    private String progress_notes;
+    private Integer patient_user_id;
+    private Integer treatment_id;
 }

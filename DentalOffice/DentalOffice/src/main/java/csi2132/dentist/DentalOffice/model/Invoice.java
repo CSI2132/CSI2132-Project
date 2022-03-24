@@ -5,19 +5,19 @@ import java.sql.Date;
 import java.util.Currency;
 
 public class Invoice {
-    public Integer invoice_id;
-    public Date date_of_issue;
-    public String contact_email_address;
-    public Currency patient_charge;
-    public Currency insurance_charge;
-    public Currency total_fee_charge;
-    public BigDecimal discount;
-    public boolean penalty_absent; 
-    public Currency patient_amount;
-    public Currency insurance_amount;
-    public Currency total_amount;
-    public String payment_type;
-    public String patient_user_id;
-    public String receptionist_user_id;
-    public Integer appointment_id;
+    private Integer invoice_id;
+    private Date date_of_issue;
+    private String contact_email_address;
+    private Currency patient_charge;
+    private Currency insurance_charge;
+    private Currency total_fee_charge;
+    private BigDecimal discount;
+    private boolean penalty_absent; 
+    private Currency patient_amount;
+    private Currency insurance_amount;
+    private Currency total_amount;
+    private String payment_type;
+    private String patient_user_id;
+    private String receptionist_user_id;
+    private Integer appointment_id;
 }

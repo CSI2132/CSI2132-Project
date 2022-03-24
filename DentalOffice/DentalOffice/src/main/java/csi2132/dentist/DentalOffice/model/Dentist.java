@@ -1,15 +1,15 @@
 package csi2132.dentist.DentalOffice.model;
 
 public class Dentist {
-    public String user_id;
-    public String username;
-    public String dentist_password;
-    public String first_name;
-    public String last_name;
-    public String dentist_address;
-    public String dentist_role;
-    public String SSN;
-    public Integer salary;
-    public Integer branch_id;
-    public String speciality;
+    private String user_id;
+    private String username;
+    private String dentist_password;
+    private String first_name;
+    private String last_name;
+    private String dentist_address;
+    private String dentist_role;
+    private String SSN;
+    private Integer salary;
+    private Integer branch_id;
+    private String speciality;
 }

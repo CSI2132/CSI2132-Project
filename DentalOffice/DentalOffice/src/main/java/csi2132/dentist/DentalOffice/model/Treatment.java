@@ -4,19 +4,19 @@ import java.sql.Date;
 import java.util.Currency;
 
 public class Treatment {
-    public Integer treatment_id;
-    public String appointment_type;
-    public String treatment_type;
-    public String medication;
-    public String symptoms;
-    public String tooth;
-    public String comments;
-    public Integer appointment_id;
-    public Date treatment_date;
-    public String treatment_description;
-    public String tooth_involved;
-    public Currency procedure_amount;
-    public Currency patient_charge; 
-    public Currency insurance_charge; 
-    public Currency total_charge; 
+    private Integer treatment_id;
+    private String appointment_type;
+    private String treatment_type;
+    private String medication;
+    private String symptoms;
+    private String tooth;
+    private String comments;
+    private Integer appointment_id;
+    private Date treatment_date;
+    private String treatment_description;
+    private String tooth_involved;
+    private Currency procedure_amount;
+    private Currency patient_charge; 
+    private Currency insurance_charge; 
+    private Currency total_charge; 
 }
