@@ -22,7 +22,7 @@ public class PatientRepository {
         String query = "INSERT INTO Patient(username, patient_password, patient_address, first_name, last_name, gender, insurance, SSN, email_address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
         Object[] parameters = new Object[] {
                     patient.getUsername(), 
-                    "test", // bCryptPasswordEncoder.encode(patient.getPatient_password()), 
+                    bCryptPasswordEncoder.encode(patient.getPatient_password()),
                     patient.getPatient_address(), 
                     patient.getFirst_name(), 
                     patient.getLast_name(), 
