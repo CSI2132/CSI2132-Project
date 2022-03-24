@@ -83,10 +83,10 @@ CREATE TABLE Appointment (
     dentist_user_id INTEGER NOT NULL,
     hygienist_user_id INTEGER NOT NULL,
     appointment_date DATE NOT NULL,
-    start_time TIME NOT NULL, -- todo: Time stamp with or without timezone? Depends on frontend logic?]
+    start_time TIME NOT NULL, -- TODO: Time stamp with or without timezone? Depends on frontend logic?]
     end_time TIME NOT NULL,
     appointment_type procedure_type_name_enum NOT NULL,
-    appointment_status TEXT NOT NULL CHECK (appointment_status IN ('COMPLETE', 'ONGOING', 'CANCELLED')),
+    appointment_status TEXT NOT NULL CHECK (appointment_status IN ('COMPLETE', 'ONGOING', 'UPCOMING', 'CANCELLED')),
     assigned_room TEXT NOT NULL
 );
 
@@ -127,7 +127,7 @@ CREATE TABLE Treatment (
     total_charge NUMERIC(16, 2) NOT NULL CONSTRAINT valid_total_charge CHECK (total_charge >= 0.0)
 );
 
--- todo: double check foreign keys and primary keys
+-- TODO: double check foreign keys and primary keys
 CREATE TABLE Record (
     progress_notes TEXT,
     patient_user_id SERIAL NOT NULL REFERENCES Patient(user_id),
@@ -198,7 +198,7 @@ CREATE TABLE ReceptionistBooks (
     appointment_id SERIAL NOT NULL REFERENCES Appointment(appointment_id)
 );
 
-CREATE TABLE EmployeeAccesses (
+CREATE TABLE EmployeeAccesses ( 
     user_id SERIAL PRIMARY KEY REFERENCES Receptionist(user_id),
     progress_notes TEXT NOT NULL,
     patient_user_id SERIAL NOT NULL,
