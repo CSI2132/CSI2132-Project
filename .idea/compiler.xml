@@ -7,14 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DentalOffice" />
+        <module name="CSI2132-Project" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="CSI2132-Project" target="16" />
       <module name="DentalOffice" target="16" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CSI2132-Project" options="-parameters" />
       <module name="DentalOffice" options="-parameters" />
     </option>
   </component>
