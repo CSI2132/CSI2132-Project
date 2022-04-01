@@ -9,18 +9,35 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/patient")
-public class PatientController {
+public class PatientController extends EmployeeController {
 
     @Autowired
     private PatientService patientService;
 
-    @PostMapping(value = "/add", produces = "application/json")
+    /*
+    - [POST] Adding a new patient
+    */
+    @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
         if (patientService.addPatient(patient) > 0) {
             System.out.println("Successfully added patient");
             return new ResponseEntity<>("", HttpStatus.OK);
         } else {
             System.out.println("Error adding patient");
+            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+    - [PUT] Edit patient info
+    */
+    @PutMapping(value = "/", produces = "application/json")
+    public ResponseEntity<?> updatePatient(@RequestBody Patient patient) {
+        if (patientService.updatePatient(patient) > 0) {
+            System.out.println("Successfully updated patient");
+            return new ResponseEntity<>("", HttpStatus.OK);
+        } else {
+            System.out.println("Error updated patient");
             return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
