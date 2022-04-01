@@ -46,6 +46,7 @@ public class PatientRepository {
             parameters.add(patient.getUsername());
         }
 
+        System.out.println(patient.getPatient_password());
         if (patient.getPatient_password() != null) {
             query += " patient_password = ?,";
             parameters.add(bCryptPasswordEncoder.encode(patient.getPatient_password()));

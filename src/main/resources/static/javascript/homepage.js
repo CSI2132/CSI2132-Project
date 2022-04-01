@@ -12,7 +12,7 @@ window.addEventListener( "load", function () {
         }
     })
 
-    }
+j    }
   
     // Access the form element...
     const form = document.getElementById( "myForm" );
