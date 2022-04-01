@@ -1,7 +1,7 @@
 package csi2132.dentist.DentalOffice.model;
 
 public class BranchManager {
-    private String user_id;
+    private Integer user_id;
     private String username;
     private String branch_manager_password;
     private String first_name;

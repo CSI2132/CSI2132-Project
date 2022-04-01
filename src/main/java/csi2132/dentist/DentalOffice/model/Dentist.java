@@ -1,7 +1,7 @@
 package csi2132.dentist.DentalOffice.model;
 
 public class Dentist {
-    private String user_id;
+    private Integer user_id;
     private String username;
     private String dentist_password;
     private String first_name;

@@ -9,7 +9,6 @@ LEFT JOIN Branch
 INSERT INTO Patient(username, patient_password, patient_address, first_name, last_name, gender, insurance, SSN, email_address, date_of_birth) 
 VALUES ('JohnDoe', 'doeJohnPswd', '123 Example Street', 'John', 'Doe', 'MALE', 'Allstate Insurance Inc.',12456789, john.doe@hotmail.com, '1999-01-31');
 
-
 -- Check upcoming appointment with the dentist
 SELECT a.appointment_date, a.start_time, a.end_time, a.assigned_room, a.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name
 FROM Appointment AS a

@@ -13,4 +13,5 @@ public class AppointmentProcedure {
     private Currency patient_charge;
     private Currency insurance_charge; 
     private Currency total_charge; 
+    
 }
