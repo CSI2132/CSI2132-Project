@@ -36,4 +36,9 @@ public class AppointmentService {
     public List<Map<String, Object>> getAppointmentByDentistId(int user_id) {
         return appointmentRepository.getAppointmentByDentistId(user_id);
     }
+
+    // Medical history of patient records through patient_id
+    public List<Map<String, Object>> getPatientRecord(int patient_user_id) {
+        return appointmentRepository.getPatientRecord(patient_user_id);
+    }
 }

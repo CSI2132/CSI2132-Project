@@ -60,4 +60,10 @@ public class AppointmentController {
         return appointmentService.getAppointmentByDentistId(user_id);
     }
 
+    // - Medical history of patient records through patient_id
+    @GetMapping(value = "/getPatientRecord/{patient_user_id}", produces = "application/json")
+    public List<Map<String, Object>> getPatientRecord(int patient_user_id) {
+        return appointmentService.getPatientRecord(patient_user_id);
+    }
+
 }

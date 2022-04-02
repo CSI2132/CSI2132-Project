@@ -54,4 +54,10 @@ public class AppointmentRepository {
                 "WHERE appointment_status = 'ACTIVE' AND a.start_time > CURRENT_TIME WHERE dentist.user_id = ?";
         return jdbcTemplate.queryForList(sql, user_id);
     }
+
+    // Medical history of patient records through patient_id
+    public List<Map<String, Object>> getPatientRecord(int patient_user_id) {
+        String sql = "SELECT * FROM patient_record WHERE patient_user_id = ?";
+        return jdbcTemplate.queryForList(sql, patient_user_id);
+    }
 }

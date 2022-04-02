@@ -2,7 +2,7 @@ GET:
 - All dentists at a branch {branchID} - DONE
 - Upcoming appointment with dentist {dentistID} - DONE
 - Upcoming appointments for patient {patientID} - DONE
-- Medical history of patient {patientID} authenticated receptionist, or same patient
+- Medical history of patient {patientID} authenticated receptionist, or same patient - DONE
 
 [x] - Check the types of procedures available -> Shoved it into AppointmentController - DONE
 
