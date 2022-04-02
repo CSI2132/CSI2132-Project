@@ -1,9 +1,6 @@
 package csi2132.dentist.DentalOffice.model;
 
-public class Receptionist {
-    private Integer user_id;
-    private String username;
-    private String receptionist_password;
+public class Receptionist extends User {
     private String first_name;
     private String last_name;
     private String receptionist_address;

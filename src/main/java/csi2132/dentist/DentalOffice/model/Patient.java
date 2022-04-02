@@ -7,12 +7,9 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Patient {
+public class Patient extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
-    private String username;
-    private String patient_password;
     private String patient_address;
     private String first_name;
     private String last_name;
@@ -21,30 +18,6 @@ public class Patient {
     private String SSN;
     private String email_address;
     private Date date_of_birth;
-
-    public Integer getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPatient_password() {
-        return patient_password;
-    }
-
-    public void setPatient_password(String patient_password) {
-        this.patient_password = patient_password;
-    }
 
     public String getPatient_address() {
         return patient_address;

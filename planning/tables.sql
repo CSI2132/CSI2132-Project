@@ -1,10 +1,22 @@
 -- Enums --
 CREATE TYPE seniority_enum AS ENUM ('INTERN', 'ENTRY-LEVEL', 'MID-LEVEL', 'SENIOR', 'LEAD');
 CREATE TYPE procedure_type_name_enum AS ENUM ('SCALING', 'FLUORIDE', 'REMOVAL', 'FILLINGS', 'ROOT_CANAL', 'WHITENING', 'ENDODONTIC', 'ORTHODONTIC', 'PERIODONTIC', 'ENDODONTIC_AND_PERIODONTIC', 'OTHER');
+CREATE TYPE employee_role_enum AS ENUM ('DENTIST', 'HYGIENIST', 'RECEPTIONIST', 'BRANCHMANAGER');
 
 -- Tables --
-CREATE TABLE Patient (
+CREATE TABLE "User" (
     user_id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+
+CREATE TABLE Employee (
+    user_id SERIAL PRIMARY KEY REFERENCES "User"(user_id),
+    employee_role employee_role_enum NOT NULL 
+);
+
+CREATE TABLE Patient (
+    user_id INTEGER PRIMARY KEY REFERENCES "User"(user_id),
     username TEXT NOT NULL,
     patient_password TEXT NOT NULL,
     patient_address TEXT NOT NULL,
@@ -24,7 +36,7 @@ CREATE TABLE Branch (
 );
 
 CREATE TABLE BranchManager (
-    user_id SERIAL PRIMARY KEY,
+    user_id INTEGER PRIMARY KEY REFERENCES Employee(user_id),
     username TEXT NOT NULL,
     branch_manager_password TEXT NOT NULL,
     first_name TEXT NOT NULL,
@@ -37,20 +49,19 @@ CREATE TABLE BranchManager (
 );
 
 CREATE TABLE Receptionist (
-    user_id SERIAL PRIMARY KEY,
+    user_id INTEGER PRIMARY KEY REFERENCES Employee(user_id),
     username TEXT NOT NULL,
     receptionist_password TEXT NOT NULL,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     receptionist_address TEXT NOT NULL,
-    receptionist_role TEXT NOT NULL, -- [TODO: Remove? What is its purpose? Seen in other Employee Types as well]
     SSN TEXT UNIQUE NOT NULL CONSTRAINT valid_SSN CHECK (SSN ~ '^(\d{9})$'),
     salary NUMERIC(16, 2) NOT NULL CONSTRAINT valid_salary CHECK (salary >= 0),
     branch_id SERIAL NOT NULL REFERENCES Branch(branch_id)
 );
 
 CREATE TABLE Dentist (
-    user_id SERIAL PRIMARY KEY,
+    user_id INTEGER PRIMARY KEY REFERENCES Employee(user_id),
     username TEXT NOT NULL,
     dentist_password TEXT NOT NULL,
     first_name TEXT NOT NULL,
@@ -64,7 +75,7 @@ CREATE TABLE Dentist (
 );
 
 CREATE TABLE Hygienist (
-    user_id SERIAL PRIMARY KEY,
+    user_id INTEGER PRIMARY KEY REFERENCES Employee(user_id),
     username TEXT NOT NULL,
     hygienist_password TEXT NOT NULL,
     first_name TEXT NOT NULL,
@@ -105,7 +116,7 @@ CREATE TABLE Invoice (
     payment_type TEXT NOT NULL CHECK (payment_type IN ('CASH', 'VISA', 'MASTERCARD', 'PAYPAL', 'OTHER')),
     patient_user_id SERIAL NOT NULL REFERENCES Patient(user_id),
     receptionist_user_id SERIAL NOT NULL REFERENCES Receptionist(user_id),
-    -- paying_employee_user_id SERIAL NOT NULL REFERENCES Employee(user_id), -- [TODO: References ALL employee types. Possible solution: Created NEW relation table for it]
+    paying_employee_user_id SERIAL NOT NULL REFERENCES Employee(user_id),
     appointment_id SERIAL NOT NULL REFERENCES Appointment(appointment_id)
 );
 

@@ -42,7 +42,7 @@ public class AppointmentController {
         return procedureList;
     }
     /*
-    - [SET] Add a new procedure type
+    - [POST] Add a new procedure type
     */
      @PostMapping(value = "/addProcedure", produces = "application/json")
     public ResponseEntity<?> addProcedures(@RequestBody ProcedureType procedureType){

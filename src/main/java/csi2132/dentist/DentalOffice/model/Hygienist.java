@@ -1,9 +1,6 @@
 package csi2132.dentist.DentalOffice.model;
 
-public class Hygienist {
-    private Integer user_id;
-    private String username;
-    private String hygienist_password;
+public class Hygienist extends User {
     private String first_name;
     private String last_name;
     private String hygienist_address;

@@ -25,7 +25,7 @@ public class PatientRepository {
         String query = "INSERT INTO Patient(username, patient_password, patient_address, first_name, last_name, gender, insurance, SSN, email_address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
         Object[] parameters = new Object[] {
                     patient.getUsername(), 
-                    bCryptPasswordEncoder.encode(patient.getPatient_password()),
+                    bCryptPasswordEncoder.encode(patient.getPassword()),
                     patient.getPatient_address(), 
                     patient.getFirst_name(), 
                     patient.getLast_name(), 
@@ -46,9 +46,10 @@ public class PatientRepository {
             parameters.add(patient.getUsername());
         }
 
-        if (patient.getPatient_password() != null) {
+        System.out.println(patient.getPassword());
+        if (patient.getPassword() != null) {
             query += " patient_password = ?,";
-            parameters.add(bCryptPasswordEncoder.encode(patient.getPatient_password()));
+            parameters.add(bCryptPasswordEncoder.encode(patient.getPassword()));
         }
 
         if (patient.getPatient_address() != null) {
@@ -101,7 +102,7 @@ public class PatientRepository {
         }
 
         query += " WHERE user_id = ?;";
-        parameters.add(patient.getUser_id());
+        parameters.add(patient.getUserId());
 
         return jdbcTemplate.update(query, parameters.toArray());
     }
