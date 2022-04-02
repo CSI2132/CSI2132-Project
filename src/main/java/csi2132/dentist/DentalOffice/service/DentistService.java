@@ -17,4 +17,8 @@ public class DentistService {
     public List<Map<String, Object>> getAllDentists() {
         return dentistRepository.getAllDentists();
     }
+
+    public List<Map<String, Object>> getDentistsById(int branch_id) {
+        return dentistRepository.getDentistsById(branch_id);
+    }
 }
