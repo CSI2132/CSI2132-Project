@@ -27,4 +27,6 @@ public class AppointmentService {
     public Integer createProcedureType(ProcedureType procedureType){
         return appointmentRepository.createProcedureType(procedureType);
     }
+
+
 }

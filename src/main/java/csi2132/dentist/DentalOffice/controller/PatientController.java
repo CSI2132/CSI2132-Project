@@ -1,10 +1,12 @@
 package csi2132.dentist.DentalOffice.controller;
 
 import csi2132.dentist.DentalOffice.model.Patient;
+import csi2132.dentist.DentalOffice.service.AppointmentService;
 import csi2132.dentist.DentalOffice.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +15,9 @@ public class PatientController extends EmployeeController {
 
     @Autowired
     private PatientService patientService;
+
+    // @Autowired
+    // private AppointmentService appointmentService;
 
     /*
     - [POST] Adding a new patient
@@ -40,5 +45,11 @@ public class PatientController extends EmployeeController {
             System.out.println("Error updated patient");
             return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/ui")
+    public String patientUI(Model model) {
+        // model.addAttribute("appointments", appointmentService.getUpcomingAppointment());
+        return "patient";
     }
 }

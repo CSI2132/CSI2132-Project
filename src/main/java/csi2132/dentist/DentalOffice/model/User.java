@@ -11,6 +11,16 @@ public class User implements UserDetails {
     protected String username;
     protected String password;
 
+	public User() {
+		super();
+	}
+
+	public User(Integer user_id, String username, String password) {
+		this.user_id = user_id;
+		this.username = username;
+		this.password = password;
+	}
+
     public void setUserId(Integer user_id) {
         this.user_id = user_id;
     }

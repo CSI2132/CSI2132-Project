@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+
 
 @RestController
 @RequestMapping("/dentist")
@@ -18,5 +20,11 @@ public class DentistController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Map<String, Object>> getAllDentists() {
         return dentistService.getAllDentists();
+    }
+
+    @GetMapping("/ui")
+    public String dentistUI(Model model) {
+        // model.addAttribute("appointments", appointmentService.getUpcomingAppointment());
+        return "dentist";
     }
 }
