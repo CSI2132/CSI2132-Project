@@ -36,7 +36,7 @@ INSERT INTO Appointment(
 -- Add a new employee
 -- todo: create employee table
 INSERT INTO Employee(username, employee_password, first_name, last_name, employee_address, employee_role, SSN, salary, branch_id)
-VALUES ('bobdole123', '123456789', 'Bob', 'Dole', '456 Street Example', '?', '123456789', 100000, 01);
+VALUES ('bobdole123', '123456789', 'Bob', 'Dole', '456 Street Example', 'DENTIST', '123456789', 100000, 01);
 
 -- Check the types of procedures available
 SELECT procedure_type_name, procedure_type_description 

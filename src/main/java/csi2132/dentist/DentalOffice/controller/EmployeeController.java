@@ -41,6 +41,8 @@ public class EmployeeController {
     // @PostMapping(value = "/", produces = "application/json")
     // public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {
     //     if (employeeService.addEmployee(employee) > 0) {
+    //         String test = "ABC";
+    //         String tester = test.toLowerCase();
     //         System.out.println("Successfully added employee");
     //         return new ResponseEntity<>("", HttpStatus.OK);
     //     } else {

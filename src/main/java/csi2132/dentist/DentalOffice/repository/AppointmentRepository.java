@@ -28,7 +28,7 @@ public class AppointmentRepository {
         return jdbcTemplate.queryForList(sql);
     }
     public Integer createProcedureType(ProcedureType procedureType){
-        String sql = "INSERT INTO proceduretype (procedure_id, procedure_type_name, procedure_type_description) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO proceduretype (procedure_id, procedure_type_name, procedure_type_description) VALUES (?, ?::procedure_type_name_enum, ?)";
         return jdbcTemplate.update(sql, procedureType.getProcedure_id(), procedureType.getProcedure_type_name(), procedureType.getProcedure_type_description());
     }
 }

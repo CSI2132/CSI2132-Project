@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import csi2132.dentist.DentalOffice.service.MainUserDetailsService;
 
 /*
 csrf token = security function
@@ -24,5 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    // @Bean
+    // public MainUserDetailsService mainUserDetailsService() {
+    //     return new MainUserDetailsService();
+    // }
 
 }
