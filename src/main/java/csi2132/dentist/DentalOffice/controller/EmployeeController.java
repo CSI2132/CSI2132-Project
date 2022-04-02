@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -47,6 +50,24 @@ public class EmployeeController {
     //         return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
     //     }
     // }*/
+
+    /*
+    - [GET] Get employee table contents (Entire list)
+     */
+    @GetMapping(value = "/getEmployee", produces = "application/json")
+    public List<Map<String, Object>> getAllEmployee() {
+        List<Map<String, Object>> employee = employeeService.getAllEmployee();
+        return employee;
+    }
+
+    /*
+    - [GET] Get specific employee with ID and employee type
+     */
+    @GetMapping(value = "/getEmployee", produces = "application/json")
+    public List<Map<String, Object>> getEmployee(Integer user_id, String employeeType) {
+        List<Map<String, Object>> employeeFetch = employeeService.getEmployee(user_id, employeeType);
+        return employeeFetch;
+    }
 
     /*
     - [POST] Add new employee
