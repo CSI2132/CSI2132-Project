@@ -37,27 +37,29 @@ public class AppointmentRepository {
                 procedureType.getProcedure_type_description());
     }
 
-    public List<Map<String, Object>> getAppointmentByPatientId(int user_id) {
-        String sql = "SELECT a.appointment_date, a.start_time, a.end_time, a.assigned_room, a.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name"
+    public List<Map<String, Object>> getAppointmentByPatientId(Integer user_id) {
+        String sql = "SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name "
                 +
-                "FROM Appointment AS a LEFT JOIN Dentist ON a.user_id = Dentist.user_id LEFT JOIN Hygienist ON a.hygienist_user_id = Hygienist.user_id"
-                +
-                "WHERE appointment_status = 'ACTIVE' AND a.start_time > CURRENT_TIME WHERE patient.user_id = ?";
+                "FROM Appointment AS aa " +
+                "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
+                "LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id " +
+                "WHERE aa.appointment_status = 'ACTIVE' AND aa.start_time > CURRENT_TIME AND aa.patient_user_id = ?";
         return jdbcTemplate.queryForList(sql, user_id);
     }
 
-    public List<Map<String, Object>> getAppointmentByDentistId(int user_id) {
-        String sql = "SELECT a.appointment_date, a.start_time, a.end_time, a.assigned_room, a.appointment_type, patient.first_name, patient.last_name, hygienist.first_name, hygienist.last_name"
+    public List<Map<String, Object>> getAppointmentByDentistId(Integer user_id) {
+        String sql = "SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name "
                 +
-                "FROM Appointment AS a LEFT JOIN Patient ON a.user_id = Patient.user_id LEFT JOIN Hygienist ON a.hygienist_user_id = Hygienist.user_id"
-                +
-                "WHERE appointment_status = 'ACTIVE' AND a.start_time > CURRENT_TIME WHERE dentist.user_id = ?";
+                "FROM Appointment AS aa " +
+                "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
+                "LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id " +
+                "WHERE aa.appointment_status = 'ACTIVE' AND aa.start_time > CURRENT_TIME AND aa.dentist_user_id = ?";
         return jdbcTemplate.queryForList(sql, user_id);
     }
 
     // Medical history of patient records through patient_id
-    public List<Map<String, Object>> getPatientRecord(int patient_user_id) {
-        String sql = "SELECT * FROM patient_record WHERE patient_user_id = ?";
+    public List<Map<String, Object>> getPatientRecord(Integer patient_user_id) {
+        String sql = "SELECT * FROM record WHERE patient_user_id = ?";
         return jdbcTemplate.queryForList(sql, patient_user_id);
     }
 }

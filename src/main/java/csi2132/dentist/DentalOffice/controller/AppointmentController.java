@@ -48,19 +48,19 @@ public class AppointmentController {
 
     // - Upcoming appointments for patient {patientID}, dentist
     @GetMapping(value = "/getAppointmentByPatientId/{user_id}", produces = "application/json")
-    public List<Map<String, Object>> getAppointmentByPatientId(int user_id) {
+    public List<Map<String, Object>> getAppointmentByPatientId(Integer user_id) {
         return appointmentService.getAppointmentByPatientId(user_id);
     }
 
     // - Upcoming appointments for dentist {dentistID}
     @GetMapping(value = "/getAppointmentByDentistId/{user_id}", produces = "application/json")
-    public List<Map<String, Object>> getAppointmentByDentistId(int user_id) {
+    public List<Map<String, Object>> getAppointmentByDentistId(Integer user_id) {
         return appointmentService.getAppointmentByDentistId(user_id);
     }
 
     // - Medical history of patient records through patient_id
     @GetMapping(value = "/getPatientRecord/{patient_user_id}", produces = "application/json")
-    public List<Map<String, Object>> getPatientRecord(int patient_user_id) {
+    public List<Map<String, Object>> getPatientRecord(Integer patient_user_id) {
         return appointmentService.getPatientRecord(patient_user_id);
     }
 }

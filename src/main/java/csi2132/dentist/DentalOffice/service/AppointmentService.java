@@ -29,16 +29,16 @@ public class AppointmentService {
         return appointmentRepository.createProcedureType(procedureType);
     }
 
-    public List<Map<String, Object>> getAppointmentByPatientId(int user_id) {
+    public List<Map<String, Object>> getAppointmentByPatientId(Integer user_id) {
         return appointmentRepository.getAppointmentByPatientId(user_id);
     }
 
-    public List<Map<String, Object>> getAppointmentByDentistId(int user_id) {
+    public List<Map<String, Object>> getAppointmentByDentistId(Integer user_id) {
         return appointmentRepository.getAppointmentByDentistId(user_id);
     }
 
     // Medical history of patient records through patient_id
-    public List<Map<String, Object>> getPatientRecord(int patient_user_id) {
+    public List<Map<String, Object>> getPatientRecord(Integer patient_user_id) {
         return appointmentRepository.getPatientRecord(patient_user_id);
     }
 }
