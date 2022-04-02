@@ -19,5 +19,4 @@ public class DentistController {
     public List<Map<String, Object>> getAllDentists() {
         return dentistService.getAllDentists();
     }
-
 }

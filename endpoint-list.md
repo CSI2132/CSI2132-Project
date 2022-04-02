@@ -6,6 +6,8 @@ GET:
 
 [x] - Check the types of procedures available -> Shoved it into AppointmentController
 
+
+
 POST:
 [X] - Add new patient {} 
 [X] - Add new procedureType {}
@@ -13,8 +15,12 @@ POST:
 - Create appointment for patient{dentistID, patientID}
 - Authentication
 
+
+
 PUT:
 [X] - Edit patient info
+
+
 
 DELETE:
 -
