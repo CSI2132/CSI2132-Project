@@ -12,7 +12,7 @@ import csi2132.dentist.DentalOffice.repository.AppointmentRepository;
 
 @Component
 public class AppointmentService {
-    
+
     @Autowired
     private AppointmentRepository appointmentRepository;
 
@@ -24,7 +24,16 @@ public class AppointmentService {
     public List<Map<String, Object>> getProcedureType() {
         return appointmentRepository.getProcedureType();
     }
-    public Integer createProcedureType(ProcedureType procedureType){
+
+    public Integer createProcedureType(ProcedureType procedureType) {
         return appointmentRepository.createProcedureType(procedureType);
+    }
+
+    public List<Map<String, Object>> getAppointmentByPatientId(int user_id) {
+        return appointmentRepository.getAppointmentByPatientId(user_id);
+    }
+
+    public List<Map<String, Object>> getAppointmentByDentistId(int user_id) {
+        return appointmentRepository.getAppointmentByDentistId(user_id);
     }
 }
