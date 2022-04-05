@@ -16,30 +16,37 @@ public class PatientRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * @return success
      */
     public int addPatient(Patient patient) {
-        String query = "INSERT INTO Patient(username, patient_password, patient_address, first_name, last_name, gender, insurance, SSN, email_address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
+
+        int user_id = userRepository.addUserAndReturnUserId(patient);
+
+        String query = "INSERT INTO Patient(user_id, username, patient_password, patient_address, first_name, last_name, gender, insurance, SSN, email_address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? );";
         Object[] parameters = new Object[] {
-                    patient.getUsername(), 
-                    bCryptPasswordEncoder.encode(patient.getPassword()),
-                    patient.getPatient_address(), 
-                    patient.getFirst_name(), 
-                    patient.getLast_name(), 
-                    patient.getGender(), 
-                    patient.getInsurance(), 
-                    patient.getSSN(), 
-                    patient.getEmail_address(), 
-                    patient.getDate_of_birth()};
-                
+                user_id,
+                patient.getUsername(),
+                bCryptPasswordEncoder.encode(patient.getPassword()),
+                patient.getPatient_address(),
+                patient.getFirst_name(),
+                patient.getLast_name(),
+                patient.getGender(),
+                patient.getInsurance(),
+                patient.getSSN(),
+                patient.getEmail_address(),
+                patient.getDate_of_birth() };
+
         return jdbcTemplate.update(query, parameters);
     }
 
     public int updatePatient(Patient patient) {
-        String query =  "UPDATE Patient SET";
+        String query = "UPDATE Patient SET";
         ArrayList<Object> parameters = new ArrayList<Object>(10);
         if (patient.getUsername() != null) {
             query += " username = ?,";
@@ -66,7 +73,7 @@ public class PatientRepository {
             query += " last_name = ?,";
             parameters.add(patient.getLast_name());
         }
-        
+
         if (patient.getGender() != null) {
             query += " gender = ?,";
             parameters.add(patient.getGender());
@@ -76,7 +83,7 @@ public class PatientRepository {
             query += " insurance = ?,";
             parameters.add(patient.getInsurance());
         }
-        
+
         if (patient.getSSN() != null) {
             query += " SSN = ?,";
             parameters.add(patient.getSSN());
@@ -86,7 +93,7 @@ public class PatientRepository {
             query += " email_address = ?,";
             parameters.add(patient.getEmail_address());
         }
-        
+
         if (patient.getDate_of_birth() != null) {
             query += " date_of_birth = ?,";
             parameters.add(patient.getDate_of_birth());
