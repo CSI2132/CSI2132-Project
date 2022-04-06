@@ -54,5 +54,4 @@ public class DentistRepository {
     }
 =======
     }*/
->>>>>>> 975052e95ebef8083515de14c51eaea22f9e3afd
 }

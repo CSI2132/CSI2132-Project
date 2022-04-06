@@ -51,10 +51,6 @@ public class UserRepository {
         }else{
             return -1;
         }
-/*        rs.getInt("user_id");*/
-
-
-        /*return user_id;*/
     }
 
     public int addEmployeeAndReturnUserId(Employee employee) {
