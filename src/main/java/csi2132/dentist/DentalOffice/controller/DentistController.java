@@ -20,8 +20,8 @@ public class DentistController {
         return dentistService.getAllDentists();
     }
 
-    @RequestMapping(value = "/{branch_id}", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/{branch_id}", method = RequestMethod.GET)
     public List<Map<String, Object>> getDentistsById(@PathVariable int branch_id) {
         return dentistService.getDentistsById(branch_id);
-    }
+    }*/
 }

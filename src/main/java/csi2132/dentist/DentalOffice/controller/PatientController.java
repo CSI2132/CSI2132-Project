@@ -17,7 +17,7 @@ public class PatientController extends EmployeeController {
     /*
     - [POST] Adding a new patient
     */
-    @PostMapping(value = "/", produces = "application/json")
+    @PostMapping(value = "/addPatient", produces = "application/json")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
         if (patientService.addPatient(patient) > 0) {
             System.out.println("Successfully added patient");

@@ -14,7 +14,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="CSI2132-Project" />
+        </datasource-mapping>
         <naming-strategy-map />
       </configuration>
     </facet>

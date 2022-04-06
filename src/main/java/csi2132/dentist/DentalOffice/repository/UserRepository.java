@@ -29,15 +29,17 @@ public class UserRepository {
 
     public int addUserAndReturnUserId(Patient patient) {
         // Add user first
-        String sql = "INSERT INTO \"user\" (username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO Users (username, password) VALUES (?, ?)";
         String username = patient.getUsername();
 
         // get user id based on username
-        String sql2 = "SELECT user_id FROM \"user\" WHERE username = ?";
-        int user_id = jdbcTemplate.queryForRowSet(sql2, username).getInt("user_id");
+        String sql2 = "SELECT user_id FROM Users WHERE username = ?";
 
-        Object[] params = { patient.getUsername(), bCryptPasswordEncoder.encode(patient.getPassword()) };
+/*        Object[] params = { patient.getUsername(), bCryptPasswordEncoder.encode(patient.getPassword()) };*/
+        Object[] params = { patient.getUsername(), patient.getPassword() };
         jdbcTemplate.update(sql, params);
+
+        int user_id = jdbcTemplate.queryForRowSet(sql2, username).getInt("user_id");
 
         return user_id;
     }
