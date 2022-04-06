@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import csi2132.dentist.DentalOffice.model.Employee;
 import csi2132.dentist.DentalOffice.model.Patient;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,5 +41,24 @@ public class UserRepository {
         jdbcTemplate.update(sql, params);
 
         return user_id;
+    }
+
+    public int addEmployeeAndReturnUserId(Employee employee) {
+
+        // Add cases for employee type
+        String employeeRole = employee.getEmployee_role();
+
+        switch (employeeRole){
+            case "DENTIST" :
+                return 0;
+            case "HYGIENIST" :
+                return 0;
+            case "RECEPTIONIST" :
+                return 0;
+            case "BRANCHMANAGER" :
+                return 0;
+            default:
+                return 0;
+        }
     }
 }

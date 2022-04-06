@@ -70,7 +70,7 @@ public class EmployeeController {
     }
 
     /*
-    - [POST] Add new employee
+    - [POST] Add new employee - // This shouldn't be needed anymore 
      */
     @PostMapping(value = "/createEmployee", produces = "application/json")
     public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {

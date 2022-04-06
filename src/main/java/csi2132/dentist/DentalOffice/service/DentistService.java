@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import csi2132.dentist.DentalOffice.model.Dentist;
 import csi2132.dentist.DentalOffice.repository.DentistRepository;
 
 @Component
@@ -21,4 +22,6 @@ public class DentistService {
     public List<Map<String, Object>> getDentistsById(int branch_id) {
         return dentistRepository.getDentistsById(branch_id);
     }
+
+    public Integer addDentist(Dentist dentist){ return dentistRepository.addDentist(dentist); }
 }
