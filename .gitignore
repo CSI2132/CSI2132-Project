@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Built TS
+src/main/resources/static/js

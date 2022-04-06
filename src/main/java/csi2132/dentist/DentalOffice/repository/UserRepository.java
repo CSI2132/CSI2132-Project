@@ -26,9 +26,10 @@ public class UserRepository {
     }
 
     public User getUserByUsername(String username) {
-        String query = "SELECT * FROM User WHERE username = ?";
+        String query = "SELECT * FROM Users WHERE username = ?";
         try {
             SqlRowSet result = jdbcTemplate.queryForRowSet(query, username);
+            
 
             return new User(result.getInt("user_id"), result.getString("username"), result.getString("password"));
         } catch (EmptyResultDataAccessException e) {
@@ -37,7 +38,7 @@ public class UserRepository {
     }
 
     public User getUserByUserId(Integer userId) {
-        String query = "SELECT * FROM User WHERE user_id = ?";
+        String query = "SELECT * FROM Users WHERE user_id = ?";
         try {
             SqlRowSet result = jdbcTemplate.queryForRowSet(query, userId);
 

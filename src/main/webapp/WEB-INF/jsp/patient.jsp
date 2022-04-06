@@ -29,6 +29,7 @@
 
 
       <!-- Table showing Appointment Details -->
+      <!-- <a href="${pageContext.request.contextPath}/personList">Person List</a>   -->
       <table>
          <thead>
             <tr>
@@ -38,15 +39,15 @@
             </tr>
          </thead>
       
-         <tbody>
+         <!-- <tbody>
             <c:forEach items="${appointments}" var="appointment">
                <p>
-                  ${appointment.getTime()}
+                  ${appointment.getAppointment_date()}
                   ${appointment.getDentist().getName()}
                   ${appointment.getPatient().getLastName()}
                </p>
                </cc:forEach>
-         </tbody>
+         </tbody> -->
       </table>
        
    </body>

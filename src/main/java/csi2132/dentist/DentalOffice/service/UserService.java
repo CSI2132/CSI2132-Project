@@ -13,8 +13,10 @@ public class UserService {
 	private static BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public boolean verifyCredentials(UserLogin login, User dbCreds){
-        if(!login.username.equals(dbCreds.getUsername())) return false;
+        if(dbCreds == null || !login.username.equals(dbCreds.getUsername())) return false;
+        System.out.println(dbCreds.getPassword());
         return bCryptPasswordEncoder.matches(login.password, dbCreds.getPassword());
     } 
+
 
 }
