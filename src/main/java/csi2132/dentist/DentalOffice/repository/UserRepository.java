@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import csi2132.dentist.DentalOffice.model.Dentist;
 import csi2132.dentist.DentalOffice.model.Employee;
+import csi2132.dentist.DentalOffice.model.Hygienist;
 import csi2132.dentist.DentalOffice.model.Patient;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -79,6 +80,6 @@ public class UserRepository {
     }
 
     public int addHygienistAndReturnUserId(Hygienist hygienist) {
-        
+
     }
 }

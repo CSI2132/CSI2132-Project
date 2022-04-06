@@ -1,6 +1,6 @@
 package csi2132.dentist.DentalOffice.model;
 
-public class Dentist extends User { //Change this to extends Employee, which will also then get access to user?
+public class Dentist extends Employee { //Change this to extends Employee, which will also then get access to user?
     private String first_name;
     private String last_name;
     private String dentist_address;

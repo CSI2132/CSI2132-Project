@@ -50,15 +50,4 @@ public class DentistRepository {
 
         return jdbcTemplate.update(sql, parameters);
     }
-
-    /*
-     * public List<Map<String, Object>> getDentistsById(int branch_id) {
-     * String sql =
-     * "SELECT dentist.first_name, dentist.last_name, dentist.speciality, branch.branch_id, branch.city, branch.branch_address"
-     * +
-     * " FROM Dentist LEFT JOIN Branch ON Dentist.branch_id = Branch.branch_id WHERE Branch.branch_id = ?;"
-     * ;
-     * return jdbcTemplate.queryForList(sql, branch_id);
-     * }
-     */
 }

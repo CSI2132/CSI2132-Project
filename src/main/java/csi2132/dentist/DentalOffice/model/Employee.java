@@ -1,6 +1,6 @@
 package csi2132.dentist.DentalOffice.model;
 
-public class Employee {
+public class Employee extends User {
     private Integer user_id;
     private String employee_role;
 
