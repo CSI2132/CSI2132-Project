@@ -4,14 +4,14 @@ CREATE TYPE procedure_type_name_enum AS ENUM ('SCALING', 'FLUORIDE', 'REMOVAL', 
 CREATE TYPE employee_role_enum AS ENUM ('DENTIST', 'HYGIENIST', 'RECEPTIONIST', 'BRANCHMANAGER');
 
 -- Tables --
-CREATE TABLE "User" (
+CREATE TABLE "User" ( /*Table needs to be renamed*/
     user_id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
 );
 
 CREATE TABLE Employee (
-    user_id SERIAL PRIMARY KEY REFERENCES "User"(user_id),
+    user_id SERIAL PRIMARY KEY REFERENCES "User"(user_id), /*Serial needs to be removed from this*/
     employee_role employee_role_enum NOT NULL 
 );
 
