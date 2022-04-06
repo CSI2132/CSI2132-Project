@@ -22,13 +22,17 @@ public class DentistController {
         return dentistService.getAllDentists();
     }
 
-    @RequestMapping(value = "/{branch_id}", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/{branch_id}", method = RequestMethod.GET)
     public List<Map<String, Object>> getDentistsById(@PathVariable int branch_id) {
         return dentistService.getDentistsById(branch_id);
+<<<<<<< HEAD
     }
 
     @PostMapping(value = "/addDentist", produces = "application/json")
     public ResponseEntity<?> addDentist(@RequestBody Dentist dentist){
         return ResponseEntity.ok(dentistService.addDentist(dentist));
     }
+=======
+    }*/
+>>>>>>> 975052e95ebef8083515de14c51eaea22f9e3afd
 }
