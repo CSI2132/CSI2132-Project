@@ -1,15 +1,19 @@
 package csi2132.dentist.DentalOffice.repository;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import csi2132.dentist.DentalOffice.model.Patient;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.sql.RowSet;
 
 @Repository
 public class UserRepository {
@@ -28,6 +32,7 @@ public class UserRepository {
     }
 
     public int addUserAndReturnUserId(Patient patient) {
+
         // Add user first
         String sql = "INSERT INTO Users (username, password) VALUES (?, ?)";
         String username = patient.getUsername();
@@ -35,12 +40,19 @@ public class UserRepository {
         // get user id based on username
         String sql2 = "SELECT user_id FROM Users WHERE username = ?";
 
-/*        Object[] params = { patient.getUsername(), bCryptPasswordEncoder.encode(patient.getPassword()) };*/
-        Object[] params = { patient.getUsername(), patient.getPassword() };
+        Object[] params = { patient.getUsername(), bCryptPasswordEncoder.encode(patient.getPassword()) };
+/*        Object[] params = { patient.getUsername(), patient.getPassword() };*/
         jdbcTemplate.update(sql, params);
 
-        int user_id = jdbcTemplate.queryForRowSet(sql2, username).getInt("user_id");
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql2, username);
+        if(rs.next()){
+            return rs.getInt("user_id");
+        }else{
+            return -1;
+        }
+/*        rs.getInt("user_id");*/
 
-        return user_id;
+
+        /*return user_id;*/
     }
 }

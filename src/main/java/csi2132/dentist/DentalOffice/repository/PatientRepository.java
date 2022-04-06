@@ -32,8 +32,7 @@ public class PatientRepository {
         Object[] parameters = new Object[] {
                 user_id,
                 patient.getUsername(),
-                /*bCryptPasswordEncoder.encode(patient.getPassword()),*/
-                "12345678",
+                bCryptPasswordEncoder.encode(patient.getPassword()),
                 patient.getPatient_address(),
                 patient.getFirst_name(),
                 patient.getLast_name(),
