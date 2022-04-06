@@ -14,7 +14,7 @@ public class PatientService {
         return patientRepository.addPatient(patient);
     }
 
-    public int updatePatient(Patient patient) {
-        return patientRepository.updatePatient(patient);
+    public int updatePatient(Patient patient, Integer patientId) {
+        return patientRepository.updatePatient(patient, patientId);
     }
 }

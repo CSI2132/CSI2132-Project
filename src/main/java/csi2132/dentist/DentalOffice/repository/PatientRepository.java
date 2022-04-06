@@ -45,18 +45,21 @@ public class PatientRepository {
         return jdbcTemplate.update(query, parameters);
     }
 
-    public int updatePatient(Patient patient) {
+    public int updatePatient(Patient patient, Integer patientId) {
         String query = "UPDATE Patient SET";
         ArrayList<Object> parameters = new ArrayList<Object>(10);
         if (patient.getUsername() != null) {
             query += " username = ?,";
             parameters.add(patient.getUsername());
+            userRepository.updatePatientInfoInUsersTable(patient, patientId);  //Updates in USERNAME table 
+            // Update user table here as well
         }
 
         System.out.println(patient.getPassword());
         if (patient.getPassword() != null) {
             query += " patient_password = ?,";
             parameters.add(bCryptPasswordEncoder.encode(patient.getPassword()));
+            userRepository.updatePatientInfoInUsersTable(patient, patientId);
         }
 
         if (patient.getPatient_address() != null) {
@@ -109,7 +112,7 @@ public class PatientRepository {
         }
 
         query += " WHERE user_id = ?;";
-        parameters.add(patient.getUserId());
+        parameters.add(patientId); //(patient.getUserId());
 
         return jdbcTemplate.update(query, parameters.toArray());
     }
