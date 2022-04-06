@@ -68,7 +68,7 @@ public class UserRepository {
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql2, username);
 
         // Add dentist to employee table
-        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?)";
+        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?::employee_role_enum)";
 
         int user_id = -1;
 
@@ -95,7 +95,7 @@ public class UserRepository {
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql2, username);
 
         // Add hygienist to employee table
-        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?)";
+        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?::employee_role_enum)";
 
         int user_id = -1;
 
@@ -122,7 +122,7 @@ public class UserRepository {
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql2, username);
 
         // Add receptionist to employee table
-        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?)";
+        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?::employee_role_enum)";
 
         int user_id = -1;
 
@@ -149,7 +149,7 @@ public class UserRepository {
         SqlRowSet rs = jdbcTemplate.queryForRowSet(sql2, username);
 
         // Add branch manager to employee table
-        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?)";
+        String sql3 = "INSERT INTO Employee (user_id, employee_role) VALUES (?, ?::employee_role_enum)";
 
         int user_id = -1;
 
@@ -157,7 +157,7 @@ public class UserRepository {
             user_id = rs.getInt("user_id");
         }
 
-        jdbcTemplate.update(sql3, user_id, "BRANCH_MANAGER");
+        jdbcTemplate.update(sql3, user_id, "BRANCHMANAGER");
 
         return user_id;
     }

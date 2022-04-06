@@ -36,12 +36,7 @@ public class EmployeeRepository {
         return jdbcTemplate.queryForList(sql);
     }
 
-    public int createEmployee(Employee employee) {
-        String sql = "INSERT INTO employee (user_id, employee_role) VALUES (?, ?::employee_role_enum)";
-        return jdbcTemplate.update(sql, employee.getUser_Id(), employee.getEmployee_role());
-    }
-
-    public Integer addDentist(Dentist dentist) {
+      public Integer addDentist(Dentist dentist) {
         int user_id = userRepository.addDentistAndReturnUserId(dentist);
 
         String sql = "INSERT INTO dentist (user_id, username, dentist_password, first_name, last_name, dentist_address, dentist_role, SSN, salary, branch_id, speciality) VALUES (?,?,?,?,?,?,?,?,?,?,?::procedure_type_name_enum)";
@@ -65,7 +60,7 @@ public class EmployeeRepository {
     public Integer addHygienist(Hygienist hygienist) {
         int user_id = userRepository.addHygienistAndReturnUserId(hygienist);
 
-        String sql = "INSERT INTO hygienist (user_id, username, hygienist_password, first_name, last_name, hygienist_address, hygienist_role, SSN, salary, branch_id, seniority) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO hygienist (user_id, username, hygienist_password, first_name, last_name, hygienist_address, hygienist_role, SSN, salary, branch_id, seniority) VALUES (?,?,?,?,?,?,?,?,?,?,?::seniority_enum)";
         Object[] parameters = new Object[] {
                 user_id,
                 hygienist.getUsername(),
@@ -86,7 +81,7 @@ public class EmployeeRepository {
     public Integer addReceptionist(Receptionist receptionist) {
         int user_id = userRepository.addReceptionistAndReturnUserId(receptionist);
 
-        String sql = "INSERT INTO receptionist (user_id, username, receptionist_password, first_name, last_name, receptionist_address, receptionist_role, SSN, salary, branch_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO receptionist (user_id, username, receptionist_password, first_name, last_name, receptionist_address, SSN, salary, branch_id) VALUES (?,?,?,?,?,?,?,?,?)";
         Object[] parameters = new Object[] {
                 user_id,
                 receptionist.getUsername(),
@@ -94,7 +89,6 @@ public class EmployeeRepository {
                 receptionist.getFirst_name(),
                 receptionist.getLast_name(),
                 receptionist.getReceptionist_address(),
-                receptionist.getReceptionist_role(),
                 receptionist.getSSN(),
                 receptionist.getSalary(),
                 receptionist.getBranch_id()
@@ -106,7 +100,7 @@ public class EmployeeRepository {
     public Integer addBranchManager(BranchManager branchManager) {
         int user_id = userRepository.addBranchManagerAndReturnUserId(branchManager);
 
-        String sql = "INSERT INTO branch_manager (user_id, username, branch_manager_password, first_name, last_name, branch_manager_address, branch_manager_role, SSN, salary, branch_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO branchmanager (user_id, username, branch_manager_password, first_name, last_name, branch_manager_address, branch_manager_role, SSN, salary, branch_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
         Object[] parameters = new Object[] {
                 user_id,
                 branchManager.getUsername(),
