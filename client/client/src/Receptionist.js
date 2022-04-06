@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 // import { yupResolver } from '@hookform/resolvers/yup';
 // import * as Yup from 'yup';
 
-//---- NEEED TO REBUILD TO GET/DOWNLOAD NEEDED DEPENDENCIES ----
-
 function Receptionist(){ //({history, match})
     //// const [formData, setFormData] = useState({
     ////     user_id:  null,
@@ -29,10 +27,10 @@ function Receptionist(){ //({history, match})
     ////     }
     //// }
 
-    //-- Determine MODE Receptionist Page is in: ADD or EDIT patient info --
-    // const { id } = match.params; //(ADD when no patientId exists, otherwise EDIT)
+    //-- DETERMINE MODE: ADD when no patientId exists,   EDIT selected patient id,   set patient appt) --
+    // const { id } = match.params; 
     const { id } = 1;
-    const isAddMode = !id;
+    const isAddMode = !id;  //&& id does not exist in database
 
     function onSubmit(data){
         return isAddMode ? addPatientInfo(data) : updatePatientInfo(id, data);
@@ -88,14 +86,37 @@ function Receptionist(){ //({history, match})
     //     }
     // }, []);
 
+
+    async function handleReceptionistOptions(event){
+        const selectedFunction = document.getElementById("receptionistFunctions").value;
+        switch (selectedFunction.value) {
+            case "addPatient":
+                return 'hi';
+                break;
+            case "editPatient":
+                <p>World</p>
+
+                break;
+            case "setPatientAppointment":
+                // window.location.href("/patientAppointment");
+                break;
+        } 
+    }
+
     const receptionistForm = (
         <div className="container-fluid">
-            
-            {/* Title [Edit or Add] */}
             <div> 
                 <p> (Receptionist Selected) </p>
-                <h2 className="text-center"> Patient Information </h2>
-                <h5 className="text-center"> Status: {isAddMode ? '[ADDING]' : '[EDITING]'} </h5>
+                <h2 className="text-center"> {isAddMode ? '[ADD]' : '[EDIT]'} Patient Information </h2>
+                <div>
+                    <div className="mb-auto text-center">  <i> Select Functionality: </i>
+                        <select id="receptionistFunctions" aria-labelledby="dropdownMenuButton" onChange={handleReceptionistOptions}>
+                            <option value="addPatient">Add Patient</option>
+                            <option value="editPatient">Edit Patient</option>
+                            <option value="setPatientAppointment">Set Patient Appointment</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div className="col mt-5">
@@ -104,90 +125,132 @@ function Receptionist(){ //({history, match})
                     id="receptionistForm"
                     // onSubmit={handleReceptionistSubmit(onSubmit)} onReset={reset}
                 >
-
+                    {/* UserId, Username, Password */}
                     <div className="form-row">
                         <div className="form-group col">
-                            <label>UserId</label>
+                            <label>UserId: &nbsp; </label>
                             {/* <input name="userId" type="text" ref={register} className={`form-control ${errors.userId ? 'is-invalid' : ''}`} /> */}
-                            <input name="userId" type="text" readonly />
+                            <input name="userId" type="text" readOnly />
                             {/* <div className="invalid-feedback">{errors.userId?.message}</div> */}
                         </div>
-                        <div className="form-group col-5">
-                            <label>Username</label>
+                        <div className="form-group col">
+                            <label>Username: &nbsp; </label>
                             {/* <input name="Username" type="text" ref={register} className={`form-control ${errors.firstName ? 'is-invalid' : ''}`} /> */}
                             <input name="firstName" type="text" />
                             {/* <div className="invalid-feedback">{errors.firstName?.message}</div> */}
                         </div>
-                        <div className="form-group col-5">
-                            <label>Password</label>
-                            {/* <input name="lastName" type="text" ref={register} className={`form-control ${errors.lastName ? 'is-invalid' : ''}`} /> */}
-                            <input name="lastName" type="text" />
-                            {/* <div className="invalid-feedback">{errors.lastName?.message}</div> */}
+
+                        {/* Password */}  
+                        <div className="form-col">
+                            <div className="form-group col">
+                                <label>
+                                    Password: 
+                                    {!isAddMode &&
+                                        (!showPassword
+                                            ? <span> -- <a onClick={() => setShowPassword(!showPassword)} className="text-primary">Show</a></span>
+                                            : <em> -- {patient.password}</em>
+                                        )
+                                    }
+                                </label>
+                                {/* <input name="password" type="password" ref={register} className={`form-control ${errors.password ? 'is-invalid' : ''}`} /> */}
+                                <input name="password" type="password" />
+                                {/* <div className="invalid-feedback">{errors.password?.message}</div> */}
+                            </div>
+                            {!isAddMode &&
+                                <div className="form-group col">
+                                    <label>Confirm Password: &nbsp; </label>
+                                    {/* <input name="confirmPassword" type="password" ref={register} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} /> */}
+                                    <input name="confirmPassword" type="password"  />
+                                    {/* <div className="invalid-feedback">{errors.confirmPassword?.message}</div> */}
+                                    <p> (Leave blank to keep the same password) </p>
+                                </div>
+                            }
                         </div>
                     </div>
+                    
+                    {/* First Name, Last Name, Gender, Email Address */}
                     <div className="form-row">
                         <div className="form-group col">
-                            <label>UserId</label>
-                            {/* <select name="title" ref={register} className={`form-control ${errors.title ? 'is-invalid' : ''}`}> */}
-                            <select name="userId">
-                                <option value=""></option>
-                                <option value="Mr">Mr</option>
-                                <option value="Mrs">Mrs</option>
-                                <option value="Miss">Miss</option>
-                                <option value="Ms">Ms</option>
-                            </select>
-                            {/* <div className="invalid-feedback">{errors.title?.message}</div> */}
+                            <label>First Name: &nbsp; </label>
+                            <div>
+                                {/* <input name="firstName" type="text" ref={register} className={`form-control ${errors.firstName ? 'is-invalid' : ''}`} /> */}
+                                <input name="firstName" type="text" />
+                                {/* <div className="invalid-feedback">{errors.firstName?.message}</div> */}
+                            </div>
                         </div>
-                        <div className="form-group col-7">
-                            <label>Email</label>
+                        <div className="form-group col">
+                            <label>Last Name: &nbsp; </label>
+                            <div>
+                                {/* <input name="lastName" type="text" ref={register} className={`form-control ${errors.lastName ? 'is-invalid' : ''}`} /> */}
+                                <input name="lastName" type="text" />
+                                {/* <div className="invalid-feedback">{errors.lastName?.message}</div> */}
+                            </div>
+                        </div>
+                        <div className="form-group col">
+                            <label>Email: &nbsp; </label>
+                            <div>
                             {/* <input name="email" type="text" ref={register} className={`form-control ${errors.email ? 'is-invalid' : ''}`} /> */}
-                            <input name="email" type="text" />
-                            {/* <div className="invalid-feedback">{errors.email?.message}</div> */}
+                                <input name="email" type="text" />
+                                {/* <div className="invalid-feedback">{errors.email?.message}</div> */}
+                            </div>
                         </div>
                         <div className="form-group col">
-                            <label>Role</label>
-                            {/* <select name="role" ref={register} className={`form-control ${errors.role ? 'is-invalid' : ''}`}> */}
-                            <select name="role">
-                                <option value=""></option>
-                                <option value="User">User</option>
-                                <option value="Admin">Admin</option>
-                            </select>
-                            {/* <div className="invalid-feedback">{errors.role?.message}</div> */}
+                            <label>Gender: &nbsp; {"\n"} </label>
+                            {/* <select name="gender" ref={register} className={`form-control ${errors.gender ? 'is-invalid' : ''}`}> */}
+                            <div>
+                                <select name="gender">
+                                    <option value=""></option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                {/* <div className="invalid-feedback">{errors.gender?.message}</div> */}
+                            </div>
                         </div>
                     </div>
-                    {!isAddMode &&
-                        <div>
-                            <h3 className="pt-3">Change Password</h3>
-                            <p>Leave blank to keep the same password</p>
-                        </div>
-                    }
+
+                    {/* Date Of Birth, SSN, Insurance, Address */}
                     <div className="form-row">
                         <div className="form-group col">
-                            <label>
-                                Password
-                                {!isAddMode &&
-                                    (!showPassword
-                                        ? <span> - <a onClick={() => setShowPassword(!showPassword)} className="text-primary">Show</a></span>
-                                        : <em> - {patient.password}</em>
-                                    )
-                                }
-                            </label>
-                            {/* <input name="password" type="password" ref={register} className={`form-control ${errors.password ? 'is-invalid' : ''}`} /> */}
-                            <input name="password" type="password" />
-                            {/* <div className="invalid-feedback">{errors.password?.message}</div> */}
+                            <label>Address: &nbsp; </label>
+                            <div>
+                            {/* <input name="address" type="text" ref={register} className={`form-control ${errors.address ? 'is-invalid' : ''}`} /> */}
+                                <input name="address" type="text" />
+                                {/* <div className="invalid-feedback">{errors.address?.message}</div> */}
+                            </div>
                         </div>
                         <div className="form-group col">
-                            <label>Confirm Password</label>
-                            {/* <input name="confirmPassword" type="password" ref={register} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} /> */}
-                            <input name="confirmPassword" type="password"  />
-                            {/* <div className="invalid-feedback">{errors.confirmPassword?.message}</div> */}
+                            <label>Date Of Birth: &nbsp; </label>
+                            <div>
+                                {/* <input name="dob" type="text" ref={register} className={`form-control ${errors.dob ? 'is-invalid' : ''}`} /> */}
+                                <input name="dob" type="date" />
+                                {/* <div className="invalid-feedback">{errors.dob?.message}</div> */}
+                            </div>
+                        </div>
+                        <div className="form-group col">
+                            <label>SSN: &nbsp; </label>
+                            <div>
+                                {/* <input name="ssn" type="text" ref={register} className={`form-control ${errors.ssn ? 'is-invalid' : ''}`} /> */}
+                                <input name="ssn" type="number" />
+                                {/* <div className="invalid-feedback">{errors.ssn?.message}</div> */}
+                            </div>
+                        </div>
+                        <div className="form-group col">
+                            <label>Insurance: &nbsp; </label>
+                            <div>
+                            {/* <input name="insurance" type="text" ref={register} className={`form-control ${errors.insurance ? 'is-invalid' : ''}`} /> */}
+                                <input name="insurance" type="text" />
+                                {/* <div className="invalid-feedback">{errors.insurance?.message}</div> */}
+                            </div>
                         </div>
                     </div>
+
+
                     <div className="form-group">
                         {/* <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary"> */}
                         <button type="submit" className="btn btn-primary">
                             {/* {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>} */}
-                            Save
+                            {isAddMode ? 'Add' : 'Save'}
                         </button>
                         <Link to={isAddMode ? '.' : '..'} className="btn btn-link">Cancel</Link>
                     </div>                    
