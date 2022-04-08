@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { useForm } from "react-hook-form";
-// import { yupResolver } from '@hookform/resolvers/yup';
-// // import * as Yup from 'yup';
+// https://jasonwatmore.com/post/2020/10/14/react-hook-form-combined-add-edit-create-update-form-example ???
 
-function Receptionist(){ //({history, match})
+function Receptionist(){ 
+
+    //-- Set Form FIELDS --
     const [formData, setFormData] = useState({
-        userId:  null,
+        userId:  "",
         username: "",
         patientPassword: "",
         patient_address: "",
@@ -18,8 +18,9 @@ function Receptionist(){ //({history, match})
         email: "",
         dob: "",
     });
+    const [showPassword, setShowPassword] = useState(false); //-- Show password function --
 
-    //-- Gets entire form data payload --
+    //-- Gets entire FORM DATA as payload --
     function handleFormChange(event)
      {
          setFormData({
@@ -28,52 +29,8 @@ function Receptionist(){ //({history, match})
          })
      }
 
-     
-    //// function handleReceptionistSubmit(formObject){
-    ////     if(formData.id === null){
-    ////       // if "id" is null its mean its a new record
-    ////       //... create the unique ID here
-    ////     }else{
-    ////      //  edit the existing record and update
-    ////     }
-    //// }
-
-    //-- DETERMINE MODE: ADD when no patientId exists,   EDIT selected patient id,   set patient appt) --
-    // const { id } = match.params; 
-    const { id } = 1;
-    const isAddMode = id;  //&& id does not exist in database
-
-    // function onSubmit(data){
-    //     return isAddMode ? addPatientInfo(data) : updatePatientInfo(id, data);
-    // }
-
-    // //-- Add to database --
-    // function addPatientInfo(data){ 
-    //     // return userService.create(data).then( () => 
-    //     // {
-    //     //     alertService.success('New Patient Added', { keepAfterRouteChange: true });
-    //     //     history.push('.');
-    //     // })
-    //     // .catch(alertService.error); 
-
-    //     return "addPatientInfo Function"
-    // }
-    
-    // //-- Modify in database --     
-    // function updatePatientInfo(id, data){
-    //     // return userService.update(id, data)
-    //     //     .then(() => {
-    //     //         alertService.success('Patient Details Updated', { keepAfterRouteChange: true });
-    //     //         history.push('..');
-    //     //     })
-    //     //     .catch(alertService.error);
-
-    //     return "updatePatientInfo Function"
-    // }
-
     //-- Attributes within Form --
-    const [patient, setPatient] = useState({});
-    const [showPassword, setShowPassword] = useState(false);
+    // const [patient, setPatient] = useState({});
     // useEffect(() => {
     //     if (!isAddMode) {
     //         //-- Get Patient Details and Set form attribute field values --
@@ -98,16 +55,19 @@ function Receptionist(){ //({history, match})
     // }, []);
 
 
-
-    //-- DETERMINING DROPDOWN SELECTED --
+    //-- DETERMINING DROPDOWN SELECTED: ADD when no patientId exists,   EDIT selected patient id,   set patient appt --
     const [receptionistOption, setReceptionistOption] = useState("");  
     console.log(receptionistOption); //DEBUGING PURPOSES
+    //-- Helper vars --
+    // const isAddPatient = receptionistOption === "addPatient"; 
+    const isEditPatient = receptionistOption === "editPatient"; 
+    const isSetPatientAppt = receptionistOption === "setPatientAppointment"; 
 
     //See which option selected to submit (ON SUBMIT)
-    const formRef = React.useRef(null);
     async function onSubmitHandleFormSelected (event){
+        console.log(formData); //DEBUGING PURPOSES
         console.log(receptionistOption); //DEBUGING PURPOSES
-        console.log(formData);
+
         switch (receptionistOption) {
             case "addPatient":
                 <p>HELLOW</p>
@@ -124,16 +84,29 @@ function Receptionist(){ //({history, match})
                 break;
         } 
     }
+    //// function handleReceptionistSubmit(formObject){
+    ////     if(formData.id === null){
+    ////       // if "id" is null its mean its a new record
+    ////       //... create the unique ID here
+    ////     }else{
+    ////      //  edit the existing record and update
+    ////     }
+    //// }
+
+    // // const { id } = match.params; 
+    // const { id } = 1;
+    // const isAddMode = id;  //&& id does not exist in database
+
 
     //-- FRONTEND UI --
     const receptionistForm = (
         <div className="container-fluid">
             <div> 
                 <p> (Receptionist Selected) </p>
-                <h2 className="text-center"> {isAddMode ? '[ADD]' : '[EDIT]'} Patient Information </h2>
+                <h2 className="text-center"> {isEditPatient ? '[EDIT]' : (isSetPatientAppt ? '[SET]' : '[ADD]') } Patient {isSetPatientAppt ? 'Appointment' : 'Information' } </h2>
                 <div>
                     <div className="mb-auto text-center">  <i> Select Functionality: </i>
-                        <select id="receptionistFunctions" aria-labelledby="dropdownMenuButton" onChange={(event)=> {setReceptionistOption(event.target.value)}}>
+                        <select id="receptionistFunctions" aria-labelledby="dropdownMenuButton"  onChange={(event)=> {setReceptionistOption(event.target.value)}}>
                             <option value="addPatient">Add Patient</option>
                             <option value="editPatient">Edit Patient</option>
                             <option value="setPatientAppointment">Set Patient Appointment</option>
@@ -146,16 +119,16 @@ function Receptionist(){ //({history, match})
                 <form
                     className="col-8 m-auto"
                     id="receptionistForm"
-                    ref={formRef}
                     onSubmit={onSubmitHandleFormSelected} 
-                    // onSubmit={handleReceptionistSubmit(onSubmit)} onReset={reset}
                 >
                     {/* UserId, Username, Password */}
                     <div className="form-row">
                         <div className="form-group col">
                             <label>UserId: &nbsp; </label>
                             {/* <input name="userId" type="text" readOnly ref={register} className={`form-control ${errors.userId ? 'is-invalid' : ''}`} /> */}
+                           {isEditPatient &&
                             <input name="userId" type="text" onChange={handleFormChange} />
+                           }
                             {/* <div className="invalid-feedback">{errors.userId?.message}</div> */}
                         </div>
                         <div className="form-group col">
@@ -169,19 +142,19 @@ function Receptionist(){ //({history, match})
                         <div className="form-col">
                             <div className="form-group col">
                                 <label>
-                                    Password: 
-                                    {!isAddMode &&
-                                        (!showPassword
-                                            ? <span> -- <a onClick={() => setShowPassword(!showPassword)} className="text-primary">Show</a></span>
-                                            : <em> -- {patient.password}</em>
-                                        )
-                                    }
+                                    Password: &nbsp; 
                                 </label>
                                 {/* <input name="password" type="password" ref={register} className={`form-control ${errors.password ? 'is-invalid' : ''}`} /> */}
                                 <input name="password" type="password" onChange={handleFormChange} />
                                 {/* <div className="invalid-feedback">{errors.password?.message}</div> */}
+                                {isEditPatient &&
+                                    (!showPassword
+                                        ? <span> -- <a onClick={() => setShowPassword(!showPassword)} className="text-primary"> Show </a></span>
+                                        : <em> {formData.password} </em>
+                                    )
+                                }
                             </div>
-                            {!isAddMode &&
+                            {isEditPatient &&
                                 <div className="form-group col">
                                     <label>Confirm Password: &nbsp; </label>
                                     {/* <input name="confirmPassword" type="password" ref={register} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} /> */}
@@ -275,9 +248,9 @@ function Receptionist(){ //({history, match})
                         {/* <button type="submit" disabled={formState.isSubmitting} className="btn btn-primary"> */}
                         <button type="submit" className="btn btn-primary" > 
                             {/* {formState.isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>} */}
-                            {isAddMode ? 'Add' : 'Save'}
+                            {isEditPatient ? 'Save' : (isSetPatientAppt ? 'Set' : 'Add')} Details
                         </button>
-                        <Link to={isAddMode ? '.' : '..'} className="btn btn-link">Cancel</Link>
+                        <Link to={isEditPatient ? '.' : (isSetPatientAppt ? '..' : '...')} className="btn btn-link">Cancel</Link>
                     </div>                    
                     
 
@@ -285,14 +258,8 @@ function Receptionist(){ //({history, match})
             </div>
         </div>
     );
-      
-    // // functions to build form returned by useForm() hook
-    // const { register, handleReceptionistSubmit, reset, setValue, getValues, errors, formState } = useForm({
-    //     resolver: yupResolver(validationSchema)
-    // });
-
+    
     return receptionistForm;
-
 }
 
 export default Receptionist;
