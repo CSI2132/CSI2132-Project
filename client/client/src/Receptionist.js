@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 // https://jasonwatmore.com/post/2020/10/14/react-hook-form-combined-add-edit-create-update-form-example ???
 
@@ -39,7 +39,7 @@ function Receptionist() {
         last_name: "",
         gender: "",
         insurance: "",
-        SSN: "",
+        ssn: "",
         email_address: "",
         date_of_birth: "",
     });
@@ -50,7 +50,6 @@ function Receptionist() {
             [event.target.name]: event.target.value
         })
     }
-
 
     //-- Form data payload for [SET] patient appt --
     const [formDataSet, setFormDataSet] = useState({
@@ -86,23 +85,30 @@ function Receptionist() {
 
         switch (receptionistOption) {
             case "addPatient":
+                console.log("Im in AddPAtient"); //DEBUGING PURPOSES
+
+                // //-- TEST --
+                // useEffect(async () => {
+                //     const result = await fetch("/appointment/getProcedure"); //"localhost:3000/appointment/getProcedure"
+                //     if (result.ok) {
+                //       return (await result.json());
+                //     }
+                // }, []);
+                
 
                 // if(formDataAddEdit.userId){  //TODO: Doesnt exist in database
 
                 // }
+                // const responseAdd = await fetch("/patient/addPatient", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify(formDataAddEdit),
+                // });
 
-                console.log("Im in AddPAtient"); //DEBUGING PURPOSES
-
-                const responseAdd = await fetch("/patient/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formDataAddEdit),
-                });
-
-                console.log(responseAdd)
-                return await responseAdd.json();
+                // console.log(responseAdd)
+                // return await responseAdd.json();
 
                 break;
             case "editPatient":
@@ -288,7 +294,7 @@ function Receptionist() {
                                 <label>SSN: &nbsp; </label>
                                 <div>
                                     {/* <input name="ssn" type="text" ref={register} className={`form-control ${errors.ssn ? 'is-invalid' : ''}`} /> */}
-                                    <input name="SSN" type="number" onChange={handleFormChangeAddEdit} />
+                                    <input name="ssn" type="number" onChange={handleFormChangeAddEdit} />
                                     {/* <div className="invalid-feedback">{errors.ssn?.message}</div> */}
                                 </div>
                             </div>
