@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// https://jasonwatmore.com/post/2020/10/14/react-hook-form-combined-add-edit-create-update-form-example ???
 
 function Receptionist() {
 
@@ -77,6 +76,7 @@ function Receptionist() {
     //-- Helper vars --
     const isEditPatient = receptionistOption === "editPatient";
     const isSetPatientAppt = receptionistOption === "setPatientAppointment";
+      
 
     //See which option selected to submit (ON SUBMIT)
     async function onSubmitHandleFormSelected(event) {
@@ -86,7 +86,7 @@ function Receptionist() {
         switch (receptionistOption) {
             case "addPatient":
                 console.log("Im in AddPAtient"); //DEBUGING PURPOSES
-
+                
                 // //-- TEST --
                 // useEffect(async () => {
                 //     const result = await fetch("/appointment/getProcedure"); //"localhost:3000/appointment/getProcedure"
@@ -94,24 +94,25 @@ function Receptionist() {
                 //       return (await result.json());
                 //     }
                 // }, []);
+                              
 
-                const responseAdd = await fetch("localhost:3000/appointment/getProcedure");
-                if (responseAdd.ok){  // => false
-                    console.log("Please work  " + responseAdd.ok);
-                }  
-                else if (!responseAdd.ok) {
-                    console.log("NOOONONONN  work!  ");
-                    const message = `An error has occured: ${responseAdd.status}`;
-                    throw new Error(message);
-                }
-                console.log(responseAdd)
-                const results = await responseAdd.json();
-                return results;
+                // const responseAdd = await fetch("localhost:3000/appointment/getProcedure");
+                // if (responseAdd.ok){  // => false
+                //     console.log("Please work  " + responseAdd.ok);
+                // }  
+                // else if (!responseAdd.ok) {
+                //     console.log("NOOONONONN  work!  ");
+                //     const message = `An error has occured: ${responseAdd.status}`;
+                //     throw new Error(message);
+                // }
+                // console.log(responseAdd)
+                // const results = await responseAdd.json();
+                // return results;
                 
 
                 // if(formDataAddEdit.userId){  //TODO: Doesnt exist in database
-
                 // }
+
                 // const responseAdd = await fetch("/patient/addPatient", {
                 //     method: "POST",
                 //     headers: {
@@ -120,9 +121,9 @@ function Receptionist() {
                 //     body: JSON.stringify(formDataAddEdit),
                 // });
 
+
                 // console.log(responseAdd)
                 // return await responseAdd.json();
-
                 break;
             case "editPatient":
 
@@ -159,6 +160,7 @@ function Receptionist() {
                 break;
         }
     }
+
     //// function handleReceptionistSubmit(formObject){
     ////     if(formData.id === null){
     ////       // if "id" is null its mean its a new record
@@ -167,10 +169,6 @@ function Receptionist() {
     ////      //  edit the existing record and update
     ////     }
     //// }
-
-    // // const { id } = match.params; 
-    // const { id } = 1;
-    // const isAddMode = id;  //&& id does not exist in database
 
 
     //-- FRONTEND UI --
@@ -228,7 +226,7 @@ function Receptionist() {
                                     {isEditPatient &&
                                         (!showPassword
                                             ? <span> -- <a onClick={() => setShowPassword(!showPassword)} className="text-primary"> Show </a></span>
-                                            : <em> {formDataAddEdit.password} </em>
+                                            : <em> [ {formDataAddEdit.patient_password} ] </em>
                                         )
                                     }
                                 </div>
