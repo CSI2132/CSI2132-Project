@@ -29,9 +29,5 @@ public class DentistController {
     public List<Map<String, Object>> getDentistsById(@PathVariable int branch_id) {
         return dentistService.getDentistsById(branch_id);
     }*/
-    @GetMapping("/ui")
-    public String dentistUI(Model model) {
-        // model.addAttribute("appointments", appointmentService.getUpcomingAppointment());
-        return "dentist";
-    }
+    
 }

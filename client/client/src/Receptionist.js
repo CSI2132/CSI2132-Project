@@ -94,6 +94,19 @@ function Receptionist() {
                 //       return (await result.json());
                 //     }
                 // }, []);
+
+                const responseAdd = await fetch("localhost:3000/appointment/getProcedure");
+                if (responseAdd.ok){  // => false
+                    console.log("Please work  " + responseAdd.ok);
+                }  
+                else if (!responseAdd.ok) {
+                    console.log("NOOONONONN  work!  ");
+                    const message = `An error has occured: ${responseAdd.status}`;
+                    throw new Error(message);
+                }
+                console.log(responseAdd)
+                const results = await responseAdd.json();
+                return results;
                 
 
                 // if(formDataAddEdit.userId){  //TODO: Doesnt exist in database
@@ -115,7 +128,7 @@ function Receptionist() {
 
                 // console.log("Im in EditPatient"); //DEBUGING PURPOSES
 
-                // const responseEdit = await fetch("/patient/", {
+                // const responseEdit = await fetch("/patient/editPatient", {
                 //     method: "PUT",
                 //     headers: {
                 //       "Content-Type": "application/json",
@@ -164,7 +177,7 @@ function Receptionist() {
     const receptionistForm = (
         <div className="container-fluid" >
             <div>
-                <p> (Receptionist Selected) </p>
+                <p> (Receptionist PAGE) </p>
                 <h2 className="text-center"> {isEditPatient ? '[EDIT]' : (isSetPatientAppt ? '[SET]' : '[ADD]')} Patient {isSetPatientAppt ? 'Appointment' : 'Information'} </h2>
                 <div>
                     <div className="mb-auto text-center">  <i> Select Functionality: </i>

@@ -52,13 +52,7 @@ public class PatientController extends EmployeeController {
     @GetMapping("/ui")
     public String patientUI(Model model) {
         // model.addAttribute("appointments", appointmentService.getUpcomingAppointment());
-        model.addAttribute("appointments", appointmentService.getProcedureType());  //Using (getProcedureType) just to TEST
         return "patient";
     }
 
-    // @GetMapping("/ui")
-    // public ModelAndView patientUI(Model model) {
-    //     ModelAndView modelAndView = new ModelAndView("patient");
-    //     return modelAndView;
-    // }
 }
