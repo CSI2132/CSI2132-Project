@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import csi2132.dentist.DentalOffice.model.Appointment;
 import csi2132.dentist.DentalOffice.model.ProcedureType;
-import csi2132.dentist.DentalOffice.repository.AppointmentRepository;
 import csi2132.dentist.DentalOffice.service.AppointmentService;
 
 @RestController
@@ -31,24 +29,38 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.createAppointment(appointment));
     }
 
-   
-
     /*
-    - [GET] Check the types of procedures available
-    */
+     * - [GET] Check the types of procedures available
+     */
     @GetMapping(value = "/getProcedure", produces = "application/json")
-    public List<Map<String, Object>> getProcedureList (){
+    public List<Map<String, Object>> getProcedureList() {
         List<Map<String, Object>> procedureList = appointmentService.getProcedureType();
         return procedureList;
     }
+
     /*
-    - [POST] Add a new procedure type
-    */
-     @PostMapping(value = "/addProcedure", produces = "application/json")
-    public ResponseEntity<?> addProcedures(@RequestBody ProcedureType procedureType){
-    return ResponseEntity.ok(appointmentService.createProcedureType(procedureType));
+     * - [POST] Add a new procedure type
+     */
+    @PostMapping(value = "/addProcedure", produces = "application/json")
+    public ResponseEntity<?> addProcedures(@RequestBody ProcedureType procedureType) {
+        return ResponseEntity.ok(appointmentService.createProcedureType(procedureType));
     }
 
-    //- Upcoming appointments for patient {patientID}, dentist
+    // - Upcoming appointments for patient {patientID}, dentist
+    @GetMapping(value = "/getAppointmentByPatientId/{user_id}", produces = "application/json")
+    public List<Map<String, Object>> getAppointmentByPatientId(Integer user_id) {
+        return appointmentService.getAppointmentByPatientId(user_id);
+    }
 
+    // - Upcoming appointments for dentist {dentistID}
+    @GetMapping(value = "/getAppointmentByDentistId/{user_id}", produces = "application/json")
+    public List<Map<String, Object>> getAppointmentByDentistId(Integer user_id) {
+        return appointmentService.getAppointmentByDentistId(user_id);
+    }
+
+    // - Medical history of patient records through patient_id
+    @GetMapping(value = "/getPatientRecord/{patient_user_id}", produces = "application/json")
+    public List<Map<String, Object>> getPatientRecord(Integer patient_user_id) {
+        return appointmentService.getPatientRecord(patient_user_id);
+    }
 }

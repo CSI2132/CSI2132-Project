@@ -17,7 +17,7 @@ public class PatientController extends EmployeeController {
     /*
     - [POST] Adding a new patient
     */
-    @PostMapping(value = "/", produces = "application/json")
+    @PostMapping(value = "/addPatient", produces = "application/json")
     public ResponseEntity<?> addPatient(@RequestBody Patient patient) {
         if (patientService.addPatient(patient) > 0) {
             System.out.println("Successfully added patient");
@@ -31,9 +31,9 @@ public class PatientController extends EmployeeController {
     /*
     - [PUT] Edit patient info
     */
-    @PutMapping(value = "/", produces = "application/json")
-    public ResponseEntity<?> updatePatient(@RequestBody Patient patient) {
-        if (patientService.updatePatient(patient) > 0) {
+    @PutMapping(value = "/editPatient/{patientId}", produces = "application/json")  //{patientId}
+    public ResponseEntity<?> updatePatient(@PathVariable("patientId") Integer patientId, @RequestBody Patient patient ) { //@PathVariable("patientId") String patientId,
+        if (patientService.updatePatient(patient, patientId) > 0) {
             System.out.println("Successfully updated patient");
             return new ResponseEntity<>("", HttpStatus.OK);
         } else {

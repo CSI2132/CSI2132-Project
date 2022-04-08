@@ -10,11 +10,11 @@ INSERT INTO Patient(username, patient_password, patient_address, first_name, las
 VALUES ('JohnDoe', 'doeJohnPswd', '123 Example Street', 'John', 'Doe', 'MALE', 'Allstate Insurance Inc.',12456789, john.doe@hotmail.com, '1999-01-31');
 
 -- Check upcoming appointment with the dentist
-SELECT a.appointment_date, a.start_time, a.end_time, a.assigned_room, a.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name
-FROM Appointment AS a
-    LEFT JOIN Dentist ON a.dentist_user_id = Dentist.dentist_user_id
-    LEFT JOIN Hygienist ON a.hygienist_user_id = Hygienist.hygienist_user_id
-WHERE appointment_status = 'ACTIVE' AND a.start_time > CURRENT_TIME;
+SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name
+FROM Appointment AS aa
+    LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id
+    LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id
+WHERE appointment_status = 'ACTIVE' AND aa.start_time > CURRENT_TIME;
 
 -- Set a new appointment
 INSERT INTO Appointment(
