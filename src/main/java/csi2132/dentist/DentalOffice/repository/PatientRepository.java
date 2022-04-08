@@ -3,6 +3,8 @@ package csi2132.dentist.DentalOffice.repository;
 import csi2132.dentist.DentalOffice.model.Patient;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -115,5 +117,10 @@ public class PatientRepository {
         parameters.add(patientId); //(patient.getUserId());
 
         return jdbcTemplate.update(query, parameters.toArray());
+    }
+
+    public List<Map<String, Object>> getAllPatient(){
+        String query = "SELECT * FROM Patient;";
+        return jdbcTemplate.queryForList(query);
     }
 }

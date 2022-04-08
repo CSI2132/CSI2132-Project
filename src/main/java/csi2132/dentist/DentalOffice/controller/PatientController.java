@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/patient")
 public class PatientController extends EmployeeController {
@@ -40,5 +43,21 @@ public class PatientController extends EmployeeController {
             System.out.println("Error updated patient");
             return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /*
+    - [GET] GET patient info
+    */
+    // @GetMapping(value = "/getPatients", produces = "application/json")
+    // public List<Map<String, Object>> getAllPatients() { 
+    //     Lis
+
+    //     return patientService.getAllPatients();
+    // }
+
+    @GetMapping(value = "/getAllPatient", produces = "application/json")
+    public List<Map<String, Object>> getAllPatient(){
+        List<Map<String, Object>> patient = patientService.getAllPatient();
+        return patient;
     }
 }
