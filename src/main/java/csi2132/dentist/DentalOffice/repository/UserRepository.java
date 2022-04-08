@@ -1,10 +1,8 @@
 package csi2132.dentist.DentalOffice.repository;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
@@ -17,8 +15,6 @@ import csi2132.dentist.DentalOffice.model.Receptionist;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
-import csi2132.dentist.DentalOffice.model.User;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 @Repository
 public class UserRepository {
@@ -29,14 +25,12 @@ public class UserRepository {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     /**
      * @return success
      */
     public UserDetails getDentistByBranchId(Integer branchId) {
         return null;
     }
-
 
     public int addUserAndReturnUserId(Patient patient) {
 
@@ -190,28 +184,5 @@ public class UserRepository {
         jdbcTemplate.update(sql3, user_id, "BRANCHMANAGER");
 
         return user_id;
-    }
-
-    public User getUserByUsername(String username) {
-        String query = "SELECT * FROM Users WHERE username = ?";
-        try {
-            SqlRowSet result = jdbcTemplate.queryForRowSet(query, username);
-            
-
-            return new User(result.getInt("user_id"), result.getString("username"), result.getString("password"));
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
-    public User getUserByUserId(Integer userId) {
-        String query = "SELECT * FROM Users WHERE user_id = ?";
-        try {
-            SqlRowSet result = jdbcTemplate.queryForRowSet(query, userId);
-
-            return new User(result.getInt("user_id"), result.getString("username"), result.getString("password"));
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
     }
 }

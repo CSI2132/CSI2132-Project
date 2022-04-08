@@ -4,19 +4,19 @@ CREATE TYPE procedure_type_name_enum AS ENUM ('SCALING', 'FLUORIDE', 'REMOVAL', 
 CREATE TYPE employee_role_enum AS ENUM ('DENTIST', 'HYGIENIST', 'RECEPTIONIST', 'BRANCHMANAGER');
 
 -- Tables --
-CREATE TABLE Users (
+CREATE TABLE "User" ( /*Table needs to be renamed*/
     user_id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
 );
 
 CREATE TABLE Employee (
-    user_id INTEGER PRIMARY KEY REFERENCES Users(user_id),
+    user_id SERIAL PRIMARY KEY REFERENCES "User"(user_id), /*Serial needs to be removed from this*/
     employee_role employee_role_enum NOT NULL 
 );
 
 CREATE TABLE Patient (
-    user_id INTEGER PRIMARY KEY REFERENCES Users(user_id),
+    user_id INTEGER PRIMARY KEY REFERENCES "User"(user_id),
     username TEXT NOT NULL,
     patient_password TEXT NOT NULL,
     patient_address TEXT NOT NULL,
@@ -132,14 +132,13 @@ CREATE TABLE Treatment (
     treatment_date DATE NOT NULL,
     treatment_description TEXT,
     tooth_involved TEXT NOT NULL,
-
-    
     procedure_amount NUMERIC(16, 2) NOT NULL CONSTRAINT valid_procedure_amount CHECK (procedure_amount >= 0),
     patient_charge NUMERIC(16, 2) NOT NULL CONSTRAINT valid_patient_charge CHECK (patient_charge >= 0),
     insurance_charge NUMERIC(16, 2) NOT NULL CONSTRAINT valid_insurance_charge CHECK (insurance_charge >= 0),
     total_charge NUMERIC(16, 2) NOT NULL CONSTRAINT valid_total_charge CHECK (total_charge >= 0.0)
 );
 
+-- TODO: double check foreign keys and primary keys
 CREATE TABLE Record (
     progress_notes TEXT,
     patient_user_id SERIAL NOT NULL REFERENCES Patient(user_id),
