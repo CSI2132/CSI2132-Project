@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 
-async function handleLogin(event) {
-  const fd = new FormData(this.state.value); ///Get form data
-  const obj = {};
-  fd.forEach((value, key) => (obj[key] = value));
+async function handleLogin(event, username, password) {
+  event.preventDefault();
 
   const data = {
-    username: document.getElementById("exampleInputEmail1").value,
-    password: document.getElementById("exampleInputPassword1").value,
+    username,
+    password
   };
 
-  const response = await fetch("localhost:3000/login", {
+  const response = await fetch("/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,12 +17,17 @@ async function handleLogin(event) {
     body: JSON.stringify(data),
   });
   if (response.ok) {
-    const role = document.getElementById("roleSelector").value;
-    switch (role.value) {
-      case "employee":
+    const data = await response.json();
+    if (data && data.userId) {
+      localStorage.setItem("userId", data.userId);
+      // const role = document.getElementById("roleSelector").value;
+      // switch (role.value) {
+      //   case "employee":
+      // }
+      // window.location.href("/home");
     }
-    window.location.href("/home");
   }
+  //todo: show when login fails
 }
 
 
@@ -41,7 +44,7 @@ function Login(props) {
           className="col-8 m-auto "
           id="myForm"
           method="POST"
-          onSubmit={(user,password,userType) => handleLogin(user,password,userType)}
+          onSubmit={(e) => handleLogin(e, user, password)}
         >
           <div className="form-group">
             <label htmlFor="username">Username</label>

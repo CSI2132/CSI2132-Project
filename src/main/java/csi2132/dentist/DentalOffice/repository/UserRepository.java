@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import csi2132.dentist.DentalOffice.dto.UserLogin;
 import csi2132.dentist.DentalOffice.model.BranchManager;
 import csi2132.dentist.DentalOffice.model.Dentist;
 import csi2132.dentist.DentalOffice.model.Hygienist;
@@ -184,5 +185,16 @@ public class UserRepository {
         jdbcTemplate.update(sql3, user_id, "BRANCHMANAGER");
 
         return user_id;
+    }
+
+    public Integer getUserId(UserLogin userLogin) {
+        String sql = "SELECT user_id, password FROM Users WHERE username = ?";
+        String username = userLogin.getUsername();
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, username);
+        if (rs.next() && bCryptPasswordEncoder.matches(userLogin.getPassword(), rs.getString("password"))) {
+            return rs.getInt("user_id");
+        } else {
+            return null;
+        }
     }
 }
