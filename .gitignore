@@ -32,5 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-# Built TS
-src/main/resources/static/js
+src/main/resources/static

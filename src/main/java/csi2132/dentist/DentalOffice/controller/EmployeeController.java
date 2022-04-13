@@ -26,6 +26,12 @@ public class EmployeeController {
         return employee;
     }
 
+    @GetMapping(value = "/getEmployeeType/{employeeId}", produces = "application/json")
+    public Employee getEmployee(@PathVariable("employeeId") Integer employeeId){
+        Employee employeeJSON = employeeService.getEmployee(employeeId);
+        return employeeJSON;
+    }
+
     /*
      * - [GET] Get specific employee with ID and employee type
      */

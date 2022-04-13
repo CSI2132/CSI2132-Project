@@ -1,25 +1,21 @@
 package csi2132.dentist.DentalOffice.controller;
 
 import csi2132.dentist.DentalOffice.model.Patient;
-import csi2132.dentist.DentalOffice.service.AppointmentService;
 import csi2132.dentist.DentalOffice.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+import java.util.List;
+import java.util.Map;
+
+@RestController
 @RequestMapping("/patient")
 public class PatientController extends EmployeeController {
 
     @Autowired
     private PatientService patientService;
-
-    @Autowired
-    private AppointmentService appointmentService;
 
     /*
     - [POST] Adding a new patient
@@ -49,10 +45,25 @@ public class PatientController extends EmployeeController {
         }
     }
 
-    @GetMapping("/ui")
-    public String patientUI(Model model) {
-        // model.addAttribute("appointments", appointmentService.getUpcomingAppointment());
-        return "patient";
+    /*
+    - [GET] GET patient info
+    */
+    // @GetMapping(value = "/getPatients", produces = "application/json")
+    // public List<Map<String, Object>> getAllPatients() { 
+    //     Lis
+
+    //     return patientService.getAllPatients();
+    // }
+
+    @GetMapping(value = "/getAllPatient", produces = "application/json")
+    public List<Map<String, Object>> getAllPatient(){
+        List<Map<String, Object>> patient = patientService.getAllPatient();
+        return patient;
     }
 
+    @GetMapping(value = "/getPatient/{patientId}", produces = "application/json")
+    public Patient getPatient(@PathVariable("patientId") Integer patientId){
+        Patient patientJSON = patientService.getPatient(patientId);
+        return patientJSON;
+    }
 }

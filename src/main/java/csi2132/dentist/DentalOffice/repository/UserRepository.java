@@ -1,14 +1,13 @@
 package csi2132.dentist.DentalOffice.repository;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import csi2132.dentist.DentalOffice.dto.UserLogin;
 import csi2132.dentist.DentalOffice.model.BranchManager;
 import csi2132.dentist.DentalOffice.model.Dentist;
 import csi2132.dentist.DentalOffice.model.Hygienist;
@@ -17,8 +16,6 @@ import csi2132.dentist.DentalOffice.model.Receptionist;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
-import csi2132.dentist.DentalOffice.model.User;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 @Repository
 public class UserRepository {
@@ -29,14 +26,12 @@ public class UserRepository {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     /**
      * @return success
      */
     public UserDetails getDentistByBranchId(Integer branchId) {
         return null;
     }
-
 
     public int addUserAndReturnUserId(Patient patient) {
 
@@ -192,25 +187,37 @@ public class UserRepository {
         return user_id;
     }
 
-    public User getUserByUsername(String username) {
-        String query = "SELECT * FROM Users WHERE username = ?";
-        try {
-            SqlRowSet result = jdbcTemplate.queryForRowSet(query, username);
-            
-
-            return new User(result.getInt("user_id"), result.getString("username"), result.getString("password"));
-        } catch (EmptyResultDataAccessException e) {
-            return null;
+    public Integer getUserId(UserLogin userLogin) {
+        String sql = "";
+        switch(userLogin.role) {
+            case 0:
+                // Patient
+                sql = "SELECT Users.user_id as user_id, password FROM Users JOIN Patient ON Users.user_id = Patient.user_id WHERE Users.username = ?";
+                break;
+            case 1:
+                // Dentist
+                sql = "SELECT Users.user_id as user_id, password FROM Users JOIN Dentist ON Users.user_id = Dentist.user_id WHERE Users.username = ?";
+                break;
+            case 2:
+                // Hygienist
+                sql = "SELECT Users.user_id as user_id, password FROM Users JOIN Hygienist ON Users.user_id = Hygienist.user_id WHERE Users.username = ?";
+                break;
+            case 3:
+                // Receptionist
+                sql = "SELECT Users.user_id as user_id, password FROM Users JOIN Receptionist ON Users.user_id = Receptionist.user_id WHERE Users.username = ?";
+                break;
+            case 4:
+                // Branch Manager
+                sql = "SELECT Users.user_id as user_id, password FROM Users JOIN BranchManager ON Users.user_id = BranchManager.user_id WHERE Users.username = ?";
+                break;
         }
-    }
+        if (sql.length() == 0) return null;
 
-    public User getUserByUserId(Integer userId) {
-        String query = "SELECT * FROM Users WHERE user_id = ?";
-        try {
-            SqlRowSet result = jdbcTemplate.queryForRowSet(query, userId);
-
-            return new User(result.getInt("user_id"), result.getString("username"), result.getString("password"));
-        } catch (EmptyResultDataAccessException e) {
+        String username = userLogin.getUsername();
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql, username);
+        if (rs.next() && bCryptPasswordEncoder.matches(userLogin.getPassword(), rs.getString("password"))) {
+            return rs.getInt("user_id");
+        } else {
             return null;
         }
     }

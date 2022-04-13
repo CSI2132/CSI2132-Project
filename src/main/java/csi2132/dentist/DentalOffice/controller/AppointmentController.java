@@ -24,7 +24,7 @@ public class AppointmentController {
 
     /*
     */
-    @PostMapping(value = "/add", produces = "application/json")
+    @PostMapping(value = "/setAppointment", produces = "application/json")
     public ResponseEntity<?> createAppointment(@RequestBody Appointment appointment) {
         return ResponseEntity.ok(appointmentService.createAppointment(appointment));
     }
