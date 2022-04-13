@@ -54,8 +54,7 @@ public class AppointmentRepository {
                 "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
                 "LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id " +
                 "WHERE aa.appointment_status = 'ACTIVE' AND aa.dentist_user_id = ?";
-        List<Map<String, Object>> test = jdbcTemplate.queryForList(sql, user_id);
-        return test;
+        return jdbcTemplate.queryForList(sql, user_id);
     }
 
     // Medical history of patient records through patient_id
