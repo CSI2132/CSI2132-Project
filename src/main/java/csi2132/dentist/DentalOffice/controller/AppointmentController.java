@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,19 +49,19 @@ public class AppointmentController {
 
     // - Upcoming appointments for patient {patientID}, dentist
     @GetMapping(value = "/getAppointmentByPatientId/{user_id}", produces = "application/json")
-    public List<Map<String, Object>> getAppointmentByPatientId(Integer user_id) {
+    public List<Map<String, Object>> getAppointmentByPatientId(@PathVariable Integer user_id) {
         return appointmentService.getAppointmentByPatientId(user_id);
     }
 
     // - Upcoming appointments for dentist {dentistID}
     @GetMapping(value = "/getAppointmentByDentistId/{user_id}", produces = "application/json")
-    public List<Map<String, Object>> getAppointmentByDentistId(Integer user_id) {
+    public List<Map<String, Object>> getAppointmentByDentistId(@PathVariable Integer user_id) {
         return appointmentService.getAppointmentByDentistId(user_id);
     }
 
     // - Medical history of patient records through patient_id
     @GetMapping(value = "/getPatientRecord/{patient_user_id}", produces = "application/json")
-    public List<Map<String, Object>> getPatientRecord(Integer patient_user_id) {
+    public List<Map<String, Object>> getPatientRecord(@PathVariable Integer patient_user_id) {
         return appointmentService.getPatientRecord(patient_user_id);
     }
 }
