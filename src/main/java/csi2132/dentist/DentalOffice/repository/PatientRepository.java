@@ -1,5 +1,6 @@
 package csi2132.dentist.DentalOffice.repository;
 
+import csi2132.dentist.DentalOffice.RowMappers.PatientRowMapper;
 import csi2132.dentist.DentalOffice.model.Patient;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class PatientRepository {
     public int updatePatient(Patient patient, Integer patientId) {
         String query = "UPDATE Patient SET";
         ArrayList<Object> parameters = new ArrayList<Object>(10);
-        if (patient.getUsername() != null) {
+        if (patient.getUsername() != null && !patient.getUsername().isEmpty()) {
             query += " username = ?,";
             parameters.add(patient.getUsername());
             userRepository.updatePatientInfoInUsersTable(patient, patientId);  //Updates in USERNAME table 
@@ -58,43 +59,43 @@ public class PatientRepository {
         }
 
         System.out.println(patient.getPassword());
-        if (patient.getPassword() != null) {
+        if (patient.getPassword() != null && !patient.getPassword().isEmpty()) {
             query += " patient_password = ?,";
             parameters.add(bCryptPasswordEncoder.encode(patient.getPassword()));
             userRepository.updatePatientInfoInUsersTable(patient, patientId);
         }
 
-        if (patient.getPatient_address() != null) {
+        if (patient.getPatient_address() != null && !patient.getPatient_address().isEmpty()) {
             query += " patient_address = ?,";
             parameters.add(patient.getPatient_address());
         }
 
-        if (patient.getFirst_name() != null) {
+        if (patient.getFirst_name() != null && !patient.getFirst_name().isEmpty()) {
             query += " first_name = ?,";
             parameters.add(patient.getFirst_name());
         }
 
-        if (patient.getLast_name() != null) {
+        if (patient.getLast_name() != null && !patient.getLast_name().isEmpty()) {
             query += " last_name = ?,";
             parameters.add(patient.getLast_name());
         }
 
-        if (patient.getGender() != null) {
+        if (patient.getGender() != null && !patient.getGender().isEmpty()) {
             query += " gender = ?,";
             parameters.add(patient.getGender());
         }
 
-        if (patient.getInsurance() != null) {
+        if (patient.getInsurance() != null && !patient.getInsurance().isEmpty()) {
             query += " insurance = ?,";
             parameters.add(patient.getInsurance());
         }
 
-        if (patient.getSSN() != null) {
+        if (patient.getSSN() != null && !patient.getSSN().isEmpty()) {
             query += " SSN = ?,";
             parameters.add(patient.getSSN());
         }
 
-        if (patient.getEmail_address() != null) {
+        if (patient.getEmail_address() != null && !patient.getEmail_address().isEmpty()) {
             query += " email_address = ?,";
             parameters.add(patient.getEmail_address());
         }
@@ -122,5 +123,11 @@ public class PatientRepository {
     public List<Map<String, Object>> getAllPatient(){
         String query = "SELECT * FROM Patient;";
         return jdbcTemplate.queryForList(query);
+    }
+
+    public Patient getPatient(Integer patientId) {
+        String sql = "SELECT * FROM Patient WHERE user_id = ?;";
+        Object[] param = new Object[] { patientId };
+        return jdbcTemplate.queryForObject(sql, param, new PatientRowMapper());
     }
 }

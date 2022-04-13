@@ -1,5 +1,6 @@
 package csi2132.dentist.DentalOffice.repository;
 
+import csi2132.dentist.DentalOffice.RowMappers.EmployeeRowMapper;
 import csi2132.dentist.DentalOffice.model.BranchManager;
 import csi2132.dentist.DentalOffice.model.Dentist;
 import csi2132.dentist.DentalOffice.model.Employee;
@@ -31,9 +32,10 @@ public class EmployeeRepository {
         return jdbcTemplate.queryForList(sql);
     }
 
-    public List<Map<String, Object>> getEmployee(Integer user_id, String employeeType) {
-        String sql = "SELECT * FROM employee"; // Not sure how to use input parameters in the sql string
-        return jdbcTemplate.queryForList(sql);
+    public Employee getEmployee(Integer employeeId) {
+        String sql = "SELECT * FROM employee WHERE user_id = ?";
+        Object[] parameters = new Object[] { employeeId };
+        return jdbcTemplate.queryForObject(sql, parameters, new EmployeeRowMapper());
     }
 
       public Integer addDentist(Dentist dentist) {

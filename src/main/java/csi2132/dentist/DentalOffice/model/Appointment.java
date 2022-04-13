@@ -2,6 +2,7 @@ package csi2132.dentist.DentalOffice.model;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
 
 public class Appointment {
 
@@ -10,9 +11,9 @@ public class Appointment {
     private Integer dentist_user_id;
     private Integer hygienist_user_id;
     private Date appointment_date;
-    private Time start_time;
-    private Time end_time;
-    private String appointment_type; 
+    private String start_time;
+    private String end_time;
+    private String appointment_type;
     private String appointment_status;
     private String assigned_room;
 
@@ -58,19 +59,19 @@ public class Appointment {
         this.appointment_date = appointment_date;
     }
 
-    public Time getStart_time() {
+    public String getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(Time start_time) {
+    public void setStart_time(String start_time) {
         this.start_time = start_time;
     }
 
-    public Time getEnd_time() {
+    public String getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Time end_time) {
+    public void setEnd_time(String end_time) {
         this.end_time = end_time;
     }
 
@@ -93,7 +94,6 @@ public class Appointment {
     public String getAssigned_room() {
         return assigned_room;
     }
-
 
     public void setAssigned_room(String assigned_room) {
         this.assigned_room = assigned_room;

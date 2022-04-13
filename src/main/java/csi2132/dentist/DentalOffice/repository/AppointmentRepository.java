@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import csi2132.dentist.DentalOffice.model.Appointment;
@@ -18,7 +17,8 @@ public class AppointmentRepository {
     private JdbcTemplate jdbcTemplate;
 
     public int createAppointment(Appointment appointment) {
-        String sql = "INSERT INTO appointment (patient_user_id, dentist_user_id, hygienist_user_id, appointment_date, start_time, end_time, appointment_type, appointment_status, assigned_room) VALUES (?, ?, ?, ?, ?, ?, ?::procedure_type_name_enum, ?, ?)";
+        String sql = "INSERT INTO appointment (patient_user_id, dentist_user_id, hygienist_user_id, appointment_date, start_time, end_time, appointment_type, appointment_status, assigned_room) VALUES (?, ?, ?, ?, ?::Time, ?::Time, ?::procedure_type_name_enum, ?, ?)";
+        System.out.println(appointment.getStart_time());
         return jdbcTemplate.update(sql, appointment.getPatient_user_id(), appointment.getDentist_user_id(),
                 appointment.getHygienist_user_id(), appointment.getAppointment_date(), appointment.getStart_time(),
                 appointment.getEnd_time(), appointment.getAppointment_type(), appointment.getAppointment_status(),

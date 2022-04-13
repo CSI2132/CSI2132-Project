@@ -18,30 +18,18 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     /*
-     * - [GET] All dentists at a branch {branchID}
-     */
-    // @GetMapping(value= "/", produces = "application/json")
-    public ResponseEntity<?> listOfDentistsAtBranch(@RequestBody Branch branchId) {
-        // if (employeeService.listOfDentistsAtBranch(branchId) != null) {
-        // System.out.println("Successfully obtained list of dentists at branch: [" +
-        // branchId + "]");
-        // return new ResponseEntity<>("", HttpStatus.OK);
-        // }
-        // else {
-        // System.out.println("Error obtaining list of dentists at branch");
-        // return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
-        // }
-
-        return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR); // For now
-    }
-
-    /*
      * - [GET] Get employee table contents (Entire list)
      */
     @GetMapping(value = "/getAllEmployee", produces = "application/json")
     public List<Map<String, Object>> getAllEmployee() {
         List<Map<String, Object>> employee = employeeService.getAllEmployee();
         return employee;
+    }
+
+    @GetMapping(value = "/getEmployeeType/{employeeId}", produces = "application/json")
+    public Employee getEmployee(@PathVariable("employeeId") Integer employeeId){
+        Employee employeeJSON = employeeService.getEmployee(employeeId);
+        return employeeJSON;
     }
 
     /*
@@ -56,6 +44,7 @@ public class EmployeeController {
      * return employeeFetch;
      * }
      */
+    
 
     // Add dentist
     @PostMapping(value = "/addDentist", produces = "application/json")

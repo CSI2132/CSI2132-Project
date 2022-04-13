@@ -17,11 +17,11 @@ public class PatientService {
         return patientRepository.addPatient(patient);
     }
 
-    public int updatePatient(Patient patient, Integer patientId) {
-        return patientRepository.updatePatient(patient, patientId);
-    }
+    public int updatePatient(Patient patient, Integer patientId) {return patientRepository.updatePatient(patient, patientId);}
 
     public List<Map<String, Object>> getAllPatient(){
         return patientRepository.getAllPatient();
     }
+
+    public Patient getPatient(Integer patientId){return patientRepository.getPatient(patientId);}
 }
