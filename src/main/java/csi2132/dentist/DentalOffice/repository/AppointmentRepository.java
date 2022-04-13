@@ -72,15 +72,15 @@ public class AppointmentRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class, treatment_type);
     }
 
-    // Get treatment_id from appointment_id
+    // Get treatment_id from appointment_id in treatment table
     public Integer getTreatmentIdFromAppointment(Integer appointment_id) {
-        String sql = "SELECT treatment_id FROM appointment WHERE appointment_id = ?";
+        String sql = "SELECT treatment_id FROM treatment WHERE appointment_id = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, appointment_id);
     }
 
     // Add treatment record from treatment model class
     public int createTreatment(Treatment treatment) {
-        String sql = "INSERT INTO record (appointment_type, treatment_type, medication, symptoms, tooth, " +
+        String sql = "INSERT INTO treatment (appointment_type, treatment_type, medication, symptoms, tooth, " +
                 "comments, appointment_id, treatment_date, treatment_description, tooth_involved, procedure_amount, patient_charge, "
                 +
                 "insurance_charge, total_charge) VALUES (?::procedure_type_name_enum, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

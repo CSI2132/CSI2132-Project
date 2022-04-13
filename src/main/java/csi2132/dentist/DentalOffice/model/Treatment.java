@@ -15,10 +15,10 @@ public class Treatment {
     private Date treatment_date;
     private String treatment_description;
     private String tooth_involved;
-    private Currency procedure_amount;
-    private Currency patient_charge;
-    private Currency insurance_charge;
-    private Currency total_charge;
+    private Double procedure_amount;
+    private Double patient_charge;
+    private Double insurance_charge;
+    private Double total_charge;
 
     // Getters and Setters
     public Integer getTreatment_id() {
@@ -109,35 +109,35 @@ public class Treatment {
         this.tooth_involved = tooth_involved;
     }
 
-    public Currency getProcedure_amount() {
+    public Double getProcedure_amount() {
         return procedure_amount;
     }
 
-    public void setProcedure_amount(Currency procedure_amount) {
+    public void setProcedure_amount(Double procedure_amount) {
         this.procedure_amount = procedure_amount;
     }
 
-    public Currency getPatient_charge() {
+    public Double getPatient_charge() {
         return patient_charge;
     }
 
-    public void setPatient_charge(Currency patient_charge) {
+    public void setPatient_charge(Double patient_charge) {
         this.patient_charge = patient_charge;
     }
 
-    public Currency getInsurance_charge() {
+    public Double getInsurance_charge() {
         return insurance_charge;
     }
 
-    public void setInsurance_charge(Currency insurance_charge) {
+    public void setInsurance_charge(Double insurance_charge) {
         this.insurance_charge = insurance_charge;
     }
 
-    public Currency getTotal_charge() {
+    public Double getTotal_charge() {
         return total_charge;
     }
 
-    public void setTotal_charge(Currency total_charge) {
+    public void setTotal_charge(Double total_charge) {
         this.total_charge = total_charge;
     }
 }
