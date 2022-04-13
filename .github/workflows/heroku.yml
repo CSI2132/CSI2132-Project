@@ -14,8 +14,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: Build
-        run: cd client/client; npm install; CI=false npm run build
       - name: Prepare git
         run: |
           git config --global user.name 'Builder'
@@ -24,6 +22,8 @@ jobs:
           git fetch
           git checkout heroku
           git pull origin main --rebase
+      - name: Build
+        run: cd client/client; npm ci; CI=false npm run build
       - name: Update gitignore
         run: sed -i 's/src\/main\/resources\/static//g' .gitignore
       - name: Commit changes
