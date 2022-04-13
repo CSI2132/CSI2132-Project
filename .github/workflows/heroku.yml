@@ -21,7 +21,7 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git fetch
           git checkout heroku
-          git pull origin main --rebase
+          git reset --hard main
       - name: Build
         run: cd client/client; npm ci; CI=false npm run build
       - name: Update gitignore
@@ -29,5 +29,5 @@ jobs:
       - name: Commit changes
         run: |
           git add .
-          git commit --amend -am "Build React"
+          git commit -am "Build React"
           git push origin heroku -f
