@@ -3,36 +3,11 @@ import { Link } from 'react-router-dom';
 
 function Receptionist() {
 
-    //-- Attributes within Form --
-    // const [patient, setPatient] = useState({});
-    // useEffect(() => {
-    //     if (!isAddMode) {
-    //         //-- Get Patient Details and Set form attribute field values --
-    //         userService.getById(id).then(patient => {
-    //             const fields = [
-    //                 'user_id',                
-    //                 'username',
-    //                 'patient_password',
-    //                 'patient_address',
-    //                 'first_name',
-    //                 'last_name',
-    //                 'gender',
-    //                 'insurance',
-    //                 'SSN',
-    //                 'email_address',
-    //                 'date_of_birth'
-    //             ];
-    //             fields.forEach(field => setValue(field, patient[field]));
-    //             setPatient(patient);
-    //         });
-    //     }
-    // }, []);
-
     //-- Form data payload for [EDIT/ADD] patient info --
     const [formDataAddEdit, setFormDataAddEdit] = useState({ //-- Set Form FIELDS --
         user_id: "",
         username: "",
-        patient_password: "",
+        password: "",
         patient_address: "",
         first_name: "",
         last_name: "",
@@ -42,6 +17,7 @@ function Receptionist() {
         email_address: "",
         date_of_birth: "",
     });
+
     const [showPassword, setShowPassword] = useState(false); //Show password function
     function handleFormChangeAddEdit(event) {  //-- Gets entire FORM DATA as payload --
         setFormDataAddEdit({
@@ -52,7 +28,7 @@ function Receptionist() {
 
     //-- Form data payload for [SET] patient appt --
     const [formDataSet, setFormDataSet] = useState({
-        appointment_id: "",
+        // appointment_id: "",
         patient_user_id: "",
         dentist_user_id: "",
         hygienist_user_id: "",
@@ -76,106 +52,83 @@ function Receptionist() {
     //-- Helper vars --
     const isEditPatient = receptionistOption === "editPatient";
     const isSetPatientAppt = receptionistOption === "setPatientAppointment";
-      
 
-    //See which option selected to submit (ON SUBMIT)
-    async function onSubmitHandleFormSelected(event) {
+    let submitForm = async (e) => {
+        e.preventDefault();
         console.log(formDataAddEdit); //DEBUGING PURPOSES
+        console.log(formDataSet); //DEBUGING PURPOSES
         console.log(receptionistOption); //DEBUGING PURPOSES
 
-        switch (receptionistOption) {
-            case "addPatient":
-                console.log("Im in AddPAtient"); //DEBUGING PURPOSES
-                
-                // //-- TEST --
-                // useEffect(async () => {
-                //     const result = await fetch("/appointment/getProcedure"); //"localhost:3000/appointment/getProcedure"
-                //     if (result.ok) {
-                //       return (await result.json());
-                //     }
-                // }, []);
-                              
+        try {
+            switch (receptionistOption) {
+                case "addPatient":
+                    console.log("Im in AddPatient"); //DEBUGING PURPOSES
 
-                // const responseAdd = await fetch("localhost:3000/appointment/getProcedure");
-                // if (responseAdd.ok){  // => false
-                //     console.log("Please work  " + responseAdd.ok);
-                // }  
-                // else if (!responseAdd.ok) {
-                //     console.log("NOOONONONN  work!  ");
-                //     const message = `An error has occured: ${responseAdd.status}`;
-                //     throw new Error(message);
-                // }
-                // console.log(responseAdd)
-                // const results = await responseAdd.json();
-                // return results;
-                
+                    //-- Hit Backend Enpoint --
+                    // var formDataFormatted = [formDataAddEdit];  //Potentiall fix: [Uncaught SyntaxError: Unexpected end of JSON input] 
+                    let resAdd = await fetch("/patient/addPatient/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formDataAddEdit),
+                    });
+                    // let resAddJson = await resAdd.json();
+                    // if (resAdd.ok) {
+                    //     console.log(resAddJson);
+                    // } else {
+                    //     console.log("error bro");
+                    // }
 
-                // if(formDataAddEdit.userId){  //TODO: Doesnt exist in database
-                // }
+                    break;
 
-                // const responseAdd = await fetch("/patient/addPatient", {
-                //     method: "POST",
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //     },
-                //     body: JSON.stringify(formDataAddEdit),
-                // });
+                case "editPatient":
+                    let patientUserIdInUri = parseInt(formDataAddEdit.user_id.toString());
+                    let resEdit = await fetch(`/patient/editPatient/${patientUserIdInUri}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formDataAddEdit),
+                    });
+                    // let resEditJson = await resEdit.json();
+                    // if (resEdit.ok) {
+                    //     console.log(resEditJson);
+                    // } else {
+                    //     console.log("error bro");
+                    // }
+                    break;
 
+                case "setPatientAppointment":
+                    //-- Hit Backend Enpoint --
+                    let resSet = await fetch("/appointment/add/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formDataSet),
+                    });
+                    // let resSetJson = await resSet.json();
+                    // if (resSet.ok) {
+                    //     console.log(resSetJson);
+                    // } else {
+                    //     console.log("error Setting");
+                    // }
+                    break;
 
-                // console.log(responseAdd)
-                // return await responseAdd.json();
-                break;
-            case "editPatient":
-
-                // console.log("Im in EditPatient"); //DEBUGING PURPOSES
-
-                // const responseEdit = await fetch("/patient/editPatient", {
-                //     method: "PUT",
-                //     headers: {
-                //       "Content-Type": "application/json",
-                //     },
-                //     body: JSON.stringify(formDataAddEdit),
-                //   });
-
-                // console.log(response)
-
-                break;
-            case "setPatientAppointment":
-
-                // console.log("Im in SetPatient"); //DEBUGING PURPOSES
-
-                // const responseSet = await fetch("/appointment/add", {
-                //     method: "POST",
-                //     headers: {
-                //       "Content-Type": "application/json",
-                //     },
-                //     body: JSON.stringify(formDataSet),
-                //   });
-
-                // console.log(response)
-
-                break;
-            default:
-                console.log("Nothing Happened.")
-                break;
+                default:
+                    console.log("Nothing Happened.")
+                    break;
+            }
+        } catch (err) {
+            console.log(err);
         }
-    }
-
-    //// function handleReceptionistSubmit(formObject){
-    ////     if(formData.id === null){
-    ////       // if "id" is null its mean its a new record
-    ////       //... create the unique ID here
-    ////     }else{
-    ////      //  edit the existing record and update
-    ////     }
-    //// }
-
+    };
 
     //-- FRONTEND UI --
     const receptionistForm = (
         <div className="container-fluid" >
             <div>
-                <p> (Receptionist PAGE) </p>
                 <h2 className="text-center"> {isEditPatient ? '[EDIT]' : (isSetPatientAppt ? '[SET]' : '[ADD]')} Patient {isSetPatientAppt ? 'Appointment' : 'Information'} </h2>
                 <div>
                     <div className="mb-auto text-center">  <i> Select Functionality: </i>
@@ -191,8 +144,7 @@ function Receptionist() {
             <form
                 id="receptionistForm"
                 className="col-8 m-auto"
-
-                onSubmit={onSubmitHandleFormSelected}
+                onSubmit={submitForm}
             >
                 {/* ADD or EDIT Patient MODE */}
                 {!isSetPatientAppt &&
@@ -200,13 +152,16 @@ function Receptionist() {
                         {/* UserId, Username, Password (TODO: USERID Dropdown iterating existing db) */}
                         <div className="form-row">
                             <div className="form-group col">
-                                <label>UserId: &nbsp; </label>
-                                {/* <input name="userId" type="text" readOnly ref={register} className={`form-control ${errors.userId ? 'is-invalid' : ''}`} /> */}
                                 {isEditPatient &&
-                                    <input name="user_id" type="text" onChange={handleFormChangeAddEdit} />
+                                    <div>
+                                        <label>UserId: &nbsp; </label>
+                                        {/* <input name="userId" type="text" readOnly ref={register} className={`form-control ${errors.userId ? 'is-invalid' : ''}`} /> */}
+                                        <input name="user_id" type="text" onChange={handleFormChangeAddEdit} />
+                                        {/* <div className="invalid-feedback">{errors.userId?.message}</div> */}
+                                    </div>
                                 }
-                                {/* <div className="invalid-feedback">{errors.userId?.message}</div> */}
                             </div>
+
                             <div className="form-group col">
                                 <label>Username: &nbsp; </label>
                                 {/* <input name="Username" type="text" ref={register} className={`form-control ${errors.firstName ? 'is-invalid' : ''}`} /> */}
@@ -221,12 +176,12 @@ function Receptionist() {
                                         Password: &nbsp;
                                     </label>
                                     {/* <input name="password" type="password" ref={register} className={`form-control ${errors.password ? 'is-invalid' : ''}`} /> */}
-                                    <input name="patient_password" type="password" onChange={handleFormChangeAddEdit} />
+                                    <input name="password" type="password" onChange={handleFormChangeAddEdit} />
                                     {/* <div className="invalid-feedback">{errors.password?.message}</div> */}
                                     {isEditPatient &&
                                         (!showPassword
                                             ? <span> -- <a onClick={() => setShowPassword(!showPassword)} className="text-primary"> Show </a></span>
-                                            : <em> [ {formDataAddEdit.patient_password} ] </em>
+                                            : <em> [ {formDataAddEdit.password} ] </em>
                                         )
                                     }
                                 </div>
@@ -274,9 +229,9 @@ function Receptionist() {
                                 <div>
                                     <select name="gender" onChange={handleFormChangeAddEdit}>
                                         <option value=""></option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                        <option value="OTHER">Other</option>
                                     </select>
                                     {/* <div className="invalid-feedback">{errors.gender?.message}</div> */}
                                 </div>
@@ -327,12 +282,12 @@ function Receptionist() {
                     <div className="col mt-5" style={{ background: "linear-gradient(#3eadcf, #abe9cd)" }}>
 
                         {/* UserIds: Appointment, patient, dentist, hygienist */}
-                        <label style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}> <b> User IDs &nbsp; </b> </label>
+                        <label style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> <b> User IDs &nbsp; </b> </label>
                         <div className="form-group row">
-                            <div className="form-group col">
+                            {/* <div className="form-group col">
                                 <label>Appointment: &nbsp; </label>
-                                <input name="appointment_userId" type="text" onChange={handleFormChangeSet} />
-                            </div>
+                                <input name="appointment_userId" type="text" readOnly />
+                            </div> */}
                             <div className="form-group col">
                                 <label>Patient: &nbsp; </label>
                                 <input name="patient_user_id" type="text" onChange={handleFormChangeSet} />
@@ -348,7 +303,7 @@ function Receptionist() {
                         </div>
 
                         {/* Appointment Details: status, assigned room, date, start time, end time, type */}
-                        <label style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}> <b> Appointment Details &nbsp; </b> </label>
+                        <label style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> <b> Appointment Details &nbsp; </b> </label>
                         <div className="form-group row">
                             <div className="form-group col">
                                 <label>Status: &nbsp; </label>
@@ -363,6 +318,10 @@ function Receptionist() {
                             <div className="form-group col">
                                 <label>Assigned Room: &nbsp; </label>
                                 <input name="assigned_room" type="text" onChange={handleFormChangeSet} />
+                            </div>
+                            <div className="form-group col">
+                                <label>Appointment Date: &nbsp; </label>
+                                <input name="appointment_date" type="date" onChange={handleFormChangeSet} />
                             </div>
                             <div className="form-group col">
                                 <label>Start Time: &nbsp; </label>
@@ -402,7 +361,7 @@ function Receptionist() {
                     <button type="submit" className="btn btn-primary" >
                         {isEditPatient ? 'Save' : (isSetPatientAppt ? 'Set' : 'Add')} Details
                     </button>
-                    <Link to={isEditPatient ? '.' : (isSetPatientAppt ? '..' : '...')} className="btn btn-link">Cancel</Link>
+                    <Link to={isEditPatient ? '.' : (isSetPatientAppt ? '..' : '...')} className="btn btn-link"> {isSetPatientAppt ? 'Back' : 'Cancel'} </Link>
                 </div>
             </form>
         </div>
