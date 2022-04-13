@@ -60,4 +60,10 @@ public class PatientController extends EmployeeController {
         List<Map<String, Object>> patient = patientService.getAllPatient();
         return patient;
     }
+
+    @GetMapping(value = "/getPatient/{patientId}", produces = "application/json")
+    public Patient getPatient(@PathVariable("patientId") Integer patientId){
+        Patient patientJSON = patientService.getPatient(patientId);
+        return patientJSON;
+    }
 }

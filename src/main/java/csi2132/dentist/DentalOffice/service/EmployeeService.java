@@ -1,9 +1,6 @@
 package csi2132.dentist.DentalOffice.service;
 
-import csi2132.dentist.DentalOffice.model.BranchManager;
-import csi2132.dentist.DentalOffice.model.Dentist;
-import csi2132.dentist.DentalOffice.model.Hygienist;
-import csi2132.dentist.DentalOffice.model.Receptionist;
+import csi2132.dentist.DentalOffice.model.*;
 import csi2132.dentist.DentalOffice.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +18,8 @@ public class EmployeeService {
         return employeeRepository.getAllEmployee();
     }
 
-    public List<Map<String, Object>> getEmployee(Integer user_id, String employeeType) {
-        return employeeRepository.getEmployee(user_id, employeeType);
+    public Employee getEmployee(Integer employeeId) {
+        return employeeRepository.getEmployee(employeeId);
     }
 
     // Add dentist
@@ -44,4 +41,5 @@ public class EmployeeService {
     public Integer addBranchManager(BranchManager branchManager) {
         return employeeRepository.addBranchManager(branchManager);
     }
+
 }

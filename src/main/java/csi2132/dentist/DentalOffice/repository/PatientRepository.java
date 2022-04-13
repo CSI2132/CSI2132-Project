@@ -1,5 +1,6 @@
 package csi2132.dentist.DentalOffice.repository;
 
+import csi2132.dentist.DentalOffice.RowMappers.PatientRowMapper;
 import csi2132.dentist.DentalOffice.model.Patient;
 
 import java.util.ArrayList;
@@ -122,5 +123,11 @@ public class PatientRepository {
     public List<Map<String, Object>> getAllPatient(){
         String query = "SELECT * FROM Patient;";
         return jdbcTemplate.queryForList(query);
+    }
+
+    public Patient getPatient(Integer patientId) {
+        String sql = "SELECT * FROM Patient WHERE user_id = ?;";
+        Object[] param = new Object[] { patientId };
+        return jdbcTemplate.queryForObject(sql, param, new PatientRowMapper());
     }
 }
