@@ -38,7 +38,7 @@ function Login(props) {
   const [userType, setUserType] = useState("");
   const loginForm = (
     <div className="container-fluid">
-      <h2 className="text-center">Modal Login Form</h2>
+      <h2 className="text-center">Modal Login Form (Login.js)</h2>
       <div className="row mt-5">
         <Form
           className="col-8 m-auto "
