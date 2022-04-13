@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Receptionist() {
@@ -28,10 +28,10 @@ function Receptionist() {
     }
 
     const [showPassword, setShowPassword] = useState(false); //Show password function
-    const [confirmPassword, setConfirmPassword] = useState(''); //Show password function
+    const [confirmPassword, setConfirmPassword] = useState('');
     function handlePswdValidation(event) {  //-- PASSWORD INPUT VALIDATION --
         setConfirmPassword({
-            ...confirmPassword,
+            ...confirmPassword, //(Recognize input in field)
             [event.target.name]: event.target.value
         })
     }
@@ -82,7 +82,7 @@ function Receptionist() {
         
 
                     //-- Hit Backend Enpoint --
-                    // var formDataFormatted = [formDataAddEdit];  //Potentiall fix: [Uncaught SyntaxError: Unexpected end of JSON input] 
+                    // var formDataFormatted = [formDataAddEdit];  //Potential fix: [Uncaught SyntaxError: Unexpected end of JSON input] 
                     let resAdd = await fetch("/patient/addPatient/", {
                         method: "POST",
                         headers: {
@@ -96,22 +96,20 @@ function Receptionist() {
                     // } else {
                     //     console.log("error bro");
                     // }
-
                     break;
 
                 case "editPatient":
 
-                    //-- INPUT VALIDATION --
-                    let patientUsernameValidation = await fetch("/patient/username/", { //Get all records in db to check username
+                    //-- INPUT VALIDATION --  //TODO: emails
+                    let allPatientsInDb = await fetch("/patient/getAllPatient/", { //Get all records in db to check username
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
                         },
                     });
 
-
-                    if( (formDataAddEdit.password !== confirmPassword.confirm_password) //||    //Password != Confirm Password
-                        // (formDataAddEdit.username !==  patientUsernameValidation) ||   //Username != existing username
+                    if( (formDataAddEdit.password !== confirmPassword.confirm_password) //||    //Password != Confirm Password  //TODO: If both fields empty, leave as is!!
+                        //(formDataAddEdit.username !==  ) ||   //Username != existing username
                         ){ 
                         setErrorMsg(true); //Keep Error message on screen until resubmit
                     }
@@ -135,12 +133,12 @@ function Receptionist() {
                 case "setPatientAppointment":
 
                     //-- INPUT VALIDATION --
-                    // if(){
+                    // if(){ //TODO: Appointment Date, and time need values
             
                     // }
 
                     //-- Hit Backend Enpoint --
-                    let resSet = await fetch("/appointment/add/", {
+                    let resSet = await fetch("/appointment/setAppointment/", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -182,7 +180,7 @@ function Receptionist() {
                 {/* ADD or EDIT Patient MODE */}
                 {!isSetPatientAppt &&
                     <div className="col mt-5" style={{ background: "linear-gradient(#a7acd9, #9e8fb2)" }}>
-                        {/* UserId, Username, Password (TODO: USERID Dropdown iterating existing db) */}
+                        {/* UserId, Username, Password */}
                         <div className="form-row">
                             <div className="form-group col">
                                 {isEditPatient &&
@@ -272,6 +270,7 @@ function Receptionist() {
                                 </div>
                             </div>
                             <div className="form-group col">
+                                {/* TODO: if edit: readonly and clear (So can go thru edit) */}
                                 <label>SSN: &nbsp; </label>
                                 <div>
                                     <input name="ssn" type="number" onChange={handleFormChangeAddEdit} />
@@ -320,7 +319,6 @@ function Receptionist() {
                                 <label>Status: &nbsp; </label>
                                 <div>
                                     <select name="appointment_status" onChange={handleFormChangeSet}>
-                                        <option value=""></option>
                                         <option value="ACTIVE"> ACTIVE </option>
                                         <option value="CANCELLED"> CANCELLED </option>
                                     </select>
@@ -344,7 +342,6 @@ function Receptionist() {
                                 <label>Type: &nbsp; </label>
                                 <div>
                                     <select name="appointment_type" onChange={handleFormChangeSet}>
-                                        <option value=""></option>
                                         <option value="SCALING"> Scaling </option>
                                         <option value="FLUORIDE"> Fluoride </option>
                                         <option value="REMOVAL">Removal</option>
@@ -361,10 +358,8 @@ function Receptionist() {
                             </div>
                         </div>
 
-
                     </div>
                 }
-
 
 
                 {/* SUBMIT form  */}
