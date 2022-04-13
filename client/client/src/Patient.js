@@ -1,7 +1,7 @@
 function Patient(props) {
   const [medicalHistory, setMedicalHistory] = useState([]);
   useEffect(async () => {
-    const result = await fetch("someApi Endpoint");
+    const result = await fetch(`http://localhost:8080/appointment/getPatientRecord/${props.userId}`);
     if (result.ok) {
       setMedicalHistory(await result.json());
     }
@@ -9,7 +9,7 @@ function Patient(props) {
 
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   useEffect(async () => {
-    const result = await fetch("/appointment/getAppointmentByPatientId");
+    const result = await fetch(`http://localhost:8080/appointment/getAppointmentByPatientId${props.userId}`);
     if (result.ok) {
       setUpcomingAppointments(await result.json());
     }
@@ -50,8 +50,24 @@ function getMedicalHistory(records) {
     "progress_notes",
     "treatment_date",
     "treatment_description",
+    "appointment_procedure_description",
     "tooth_involved",
+    "patient_charge"
+  ];
 
+  const names = [
+    "Appointment Type",
+    "Treatment Type",
+    "Medication",
+    "Symptoms",
+    "Tooth",
+    "Comments",
+    "Progress Notes",
+    "Treatment Date",
+    "Treatment Description",
+    "Appointment Procedure Description",
+    "Tooth Involved",
+    "Patient Charge"
   ];
 
   // use <summary>
@@ -59,8 +75,24 @@ function getMedicalHistory(records) {
   const result = [];
   for (const record of records) {
     result.push(
-      <div>
-      </div>
+      <>
+        <summary>
+          {`Treatment at ${record.treatment_date}`}
+        </summary>
+        <div>
+          {() => {
+            const result = [];
+            for (let i = 0; i < keys.length; i++) {
+              result.push(
+                <div>
+                  <b>{names[i]}</b>: {record[keys[i]]}
+                </div>
+              )
+            }
+            return result;
+          }}
+        </div>
+      </>
     );
   }
 }
