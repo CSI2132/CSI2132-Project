@@ -25,21 +25,11 @@ function Dentist(props) {
       setAppointments(data);
     }
   }}, []);
-//     const response = await fetch(
-//     "/appointment/getAppointmentByDentistId/" +
-//       localStorage.getItem("userId"),
-//     {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//         accept: "application/json",
-//       },
-//     }
-//   );
-//   if (response.ok) {
-//       let data = await response.json();
-//     setAppointments(data);
-//   }
+
+
+  
+
+
   console.log(appointments);
   async function getPatientRecords(patient_id) {
     const responseRecords = await fetch(
