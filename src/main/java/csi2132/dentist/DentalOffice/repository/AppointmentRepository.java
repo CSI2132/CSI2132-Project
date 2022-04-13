@@ -43,7 +43,7 @@ public class AppointmentRepository {
                 "FROM Appointment AS aa " +
                 "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
                 "LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id " +
-                "WHERE aa.appointment_status = 'ACTIVE' AND aa.start_time > CURRENT_TIME AND aa.patient_user_id = ?";
+                "WHERE aa.appointment_status = 'ACTIVE' AND aa.appointment_date > CURRENT_DATE AND aa.patient_user_id = ?";
         return jdbcTemplate.queryForList(sql, user_id);
     }
 
@@ -53,7 +53,7 @@ public class AppointmentRepository {
                 "FROM Appointment AS aa " +
                 "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
                 "LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id " +
-                "WHERE aa.appointment_status = 'ACTIVE' AND aa.start_time > CURRENT_TIME AND aa.dentist_user_id = ?";
+                "WHERE aa.appointment_status = 'ACTIVE' AND aa.dentist_user_id = ?";
         return jdbcTemplate.queryForList(sql, user_id);
     }
 
