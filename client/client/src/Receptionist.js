@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 
 function Receptionist() {
 
+    //-- Input Validation ERROR Message to User --
+    const [errorMsg, setErrorMsg] = useState(false);
+
     //-- Form data payload for [EDIT/ADD] patient info --
     const [formDataAddEdit, setFormDataAddEdit] = useState({ //-- Set Form FIELDS --
         user_id: "",
@@ -17,14 +20,22 @@ function Receptionist() {
         email_address: "",
         date_of_birth: "",
     });
-
-    const [showPassword, setShowPassword] = useState(false); //Show password function
     function handleFormChangeAddEdit(event) {  //-- Gets entire FORM DATA as payload --
         setFormDataAddEdit({
             ...formDataAddEdit, //... = spread operator 
             [event.target.name]: event.target.value
         })
     }
+
+    const [showPassword, setShowPassword] = useState(false); //Show password function
+    const [confirmPassword, setConfirmPassword] = useState(''); //Show password function
+    function handlePswdValidation(event) {  //-- PASSWORD INPUT VALIDATION --
+        setConfirmPassword({
+            ...confirmPassword,
+            [event.target.name]: event.target.value
+        })
+    }
+
 
     //-- Form data payload for [SET] patient appt --
     const [formDataSet, setFormDataSet] = useState({
@@ -64,6 +75,12 @@ function Receptionist() {
                 case "addPatient":
                     console.log("Im in AddPatient"); //DEBUGING PURPOSES
 
+                    //-- INPUT VALIDATION --
+                    // if(){
+            
+                    // }
+        
+
                     //-- Hit Backend Enpoint --
                     // var formDataFormatted = [formDataAddEdit];  //Potentiall fix: [Uncaught SyntaxError: Unexpected end of JSON input] 
                     let resAdd = await fetch("/patient/addPatient/", {
@@ -73,7 +90,7 @@ function Receptionist() {
                         },
                         body: JSON.stringify(formDataAddEdit),
                     });
-                    // let resAddJson = await resAdd.json();
+                    // let resAddJson = await resAdd.json(); //[Uncaught SyntaxError: Unexpected end of JSON input] 
                     // if (resAdd.ok) {
                     //     console.log(resAddJson);
                     // } else {
@@ -83,23 +100,45 @@ function Receptionist() {
                     break;
 
                 case "editPatient":
-                    let patientUserIdInUri = parseInt(formDataAddEdit.user_id.toString());
-                    let resEdit = await fetch(`/patient/editPatient/${patientUserIdInUri}`, {
-                        method: "PUT",
+
+                    //-- INPUT VALIDATION --
+                    let patientUsernameValidation = await fetch("/patient/username/", { //Get all records in db to check username
+                        method: "GET",
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify(formDataAddEdit),
                     });
-                    // let resEditJson = await resEdit.json();
-                    // if (resEdit.ok) {
-                    //     console.log(resEditJson);
-                    // } else {
-                    //     console.log("error bro");
+
+
+                    if( (formDataAddEdit.password !== confirmPassword.confirm_password) //||    //Password != Confirm Password
+                        // (formDataAddEdit.username !==  patientUsernameValidation) ||   //Username != existing username
+                        ){ 
+                        setErrorMsg(true); //Keep Error message on screen until resubmit
+                    }
+                    // else if (){ 
+
                     // }
+                    else{   //-- Hit Backend Enpoint --
+                        setErrorMsg(false); //Remove Error message from screen
+
+                        let patientUserIdInUri = parseInt(formDataAddEdit.user_id.toString());
+                        let resEdit = await fetch(`/patient/editPatient/${patientUserIdInUri}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(formDataAddEdit),
+                        });
+                    }
                     break;
 
                 case "setPatientAppointment":
+
+                    //-- INPUT VALIDATION --
+                    // if(){
+            
+                    // }
+
                     //-- Hit Backend Enpoint --
                     let resSet = await fetch("/appointment/add/", {
                         method: "POST",
@@ -108,12 +147,6 @@ function Receptionist() {
                         },
                         body: JSON.stringify(formDataSet),
                     });
-                    // let resSetJson = await resSet.json();
-                    // if (resSet.ok) {
-                    //     console.log(resSetJson);
-                    // } else {
-                    //     console.log("error Setting");
-                    // }
                     break;
 
                 default:
@@ -155,18 +188,14 @@ function Receptionist() {
                                 {isEditPatient &&
                                     <div>
                                         <label>UserId: &nbsp; </label>
-                                        {/* <input name="userId" type="text" readOnly ref={register} className={`form-control ${errors.userId ? 'is-invalid' : ''}`} /> */}
                                         <input name="user_id" type="text" onChange={handleFormChangeAddEdit} />
-                                        {/* <div className="invalid-feedback">{errors.userId?.message}</div> */}
                                     </div>
                                 }
                             </div>
 
                             <div className="form-group col">
                                 <label>Username: &nbsp; </label>
-                                {/* <input name="Username" type="text" ref={register} className={`form-control ${errors.firstName ? 'is-invalid' : ''}`} /> */}
                                 <input name="username" type="text" onChange={handleFormChangeAddEdit} />
-                                {/* <div className="invalid-feedback">{errors.firstName?.message}</div> */}
                             </div>
 
                             {/* Password */}
@@ -175,9 +204,7 @@ function Receptionist() {
                                     <label>
                                         Password: &nbsp;
                                     </label>
-                                    {/* <input name="password" type="password" ref={register} className={`form-control ${errors.password ? 'is-invalid' : ''}`} /> */}
                                     <input name="password" type="password" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.password?.message}</div> */}
                                     {isEditPatient &&
                                         (!showPassword
                                             ? <span> -- <a onClick={() => setShowPassword(!showPassword)} className="text-primary"> Show </a></span>
@@ -188,10 +215,11 @@ function Receptionist() {
                                 {isEditPatient &&
                                     <div className="form-group col">
                                         <label>Confirm Password: &nbsp; </label>
-                                        {/* <input name="confirmPassword" type="password" ref={register} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} /> */}
-                                        <input name="confirm_password" type="password" onChange={handleFormChangeAddEdit} />
-                                        {/* <div className="invalid-feedback">{errors.confirmPassword?.message}</div> */}
+                                        <input name="confirm_password" type="password" onChange={handlePswdValidation} />
                                         <p> (Leave blank to keep the same password) </p>
+                                        {errorMsg && 
+                                            <p className="error"> INVALID PLEASE CHANGE </p>                             
+                                        }
                                     </div>
                                 }
                             </div>
@@ -202,38 +230,29 @@ function Receptionist() {
                             <div className="form-group col">
                                 <label>First Name: &nbsp; </label>
                                 <div>
-                                    {/* <input name="firstName" type="text" ref={register} className={`form-control ${errors.firstName ? 'is-invalid' : ''}`} /> */}
                                     <input name="first_name" type="text" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.firstName?.message}</div> */}
                                 </div>
                             </div>
                             <div className="form-group col">
                                 <label>Last Name: &nbsp; </label>
                                 <div>
-                                    {/* <input name="lastName" type="text" ref={register} className={`form-control ${errors.lastName ? 'is-invalid' : ''}`} /> */}
                                     <input name="last_name" type="text" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.lastName?.message}</div> */}
                                 </div>
                             </div>
                             <div className="form-group col">
                                 <label>Email: &nbsp; </label>
                                 <div>
-                                    {/* <input name="email" type="text" ref={register} className={`form-control ${errors.email ? 'is-invalid' : ''}`} /> */}
                                     <input name="email_address" type="text" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.email?.message}</div> */}
                                 </div>
                             </div>
                             <div className="form-group col">
                                 <label>Gender: &nbsp; </label>
-                                {/* <select name="gender" ref={register} className={`form-control ${errors.gender ? 'is-invalid' : ''}`}> */}
                                 <div>
                                     <select name="gender" onChange={handleFormChangeAddEdit}>
-                                        <option value=""></option>
+                                        <option value="OTHER">Other</option>
                                         <option value="MALE">Male</option>
                                         <option value="FEMALE">Female</option>
-                                        <option value="OTHER">Other</option>
                                     </select>
-                                    {/* <div className="invalid-feedback">{errors.gender?.message}</div> */}
                                 </div>
                             </div>
                         </div>
@@ -243,33 +262,25 @@ function Receptionist() {
                             <div className="form-group col">
                                 <label>Address: &nbsp; </label>
                                 <div>
-                                    {/* <input name="address" type="text" ref={register} className={`form-control ${errors.address ? 'is-invalid' : ''}`} /> */}
                                     <input name="patient_address" type="text" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.address?.message}</div> */}
                                 </div>
                             </div>
                             <div className="form-group col">
                                 <label>Date Of Birth: &nbsp; </label>
                                 <div>
-                                    {/* <input name="dob" type="text" ref={register} className={`form-control ${errors.dob ? 'is-invalid' : ''}`} /> */}
                                     <input name="date_of_birth" type="date" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.dob?.message}</div> */}
                                 </div>
                             </div>
                             <div className="form-group col">
                                 <label>SSN: &nbsp; </label>
                                 <div>
-                                    {/* <input name="ssn" type="text" ref={register} className={`form-control ${errors.ssn ? 'is-invalid' : ''}`} /> */}
                                     <input name="ssn" type="number" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.ssn?.message}</div> */}
                                 </div>
                             </div>
                             <div className="form-group col">
                                 <label>Insurance: &nbsp; </label>
                                 <div>
-                                    {/* <input name="insurance" type="text" ref={register} className={`form-control ${errors.insurance ? 'is-invalid' : ''}`} /> */}
                                     <input name="insurance" type="text" onChange={handleFormChangeAddEdit} />
-                                    {/* <div className="invalid-feedback">{errors.insurance?.message}</div> */}
                                 </div>
                             </div>
                         </div>
