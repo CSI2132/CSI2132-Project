@@ -1,6 +1,8 @@
 package csi2132.dentist.DentalOffice.repository;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,6 +33,12 @@ public class UserRepository {
      */
     public UserDetails getDentistByBranchId(Integer branchId) {
         return null;
+    }
+
+    public List<Map<String, Object>> getAllPatientId(){
+        String sql = "SELECT Users.user_id FROM Users JOIN Patient ON Users.user_id = Patient.user_id ORDER BY Users.user_id ASC";
+        return jdbcTemplate.queryForList(sql);
+
     }
 
     public int addUserAndReturnUserId(Patient patient) {

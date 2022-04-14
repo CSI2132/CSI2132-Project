@@ -8,6 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class UserService {
 
@@ -26,6 +29,8 @@ public class UserService {
     public Integer getUserId(UserLogin login) {
         return userRepository.getUserId(login);
     }
+
+    public List<Map<String, Object>> getAllPatientId() { return userRepository.getAllPatientId();}
 
 
 }
