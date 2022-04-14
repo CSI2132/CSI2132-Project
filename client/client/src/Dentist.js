@@ -1,4 +1,3 @@
-import { computeStyles } from "@popperjs/core";
 import { useEffect, useState } from "react";
 
 function Dentist(props) {
@@ -6,29 +5,29 @@ function Dentist(props) {
   const [patientRecord, setPatientRecord] = useState({});
 
   useEffect(() => {
-      async function temp() {
-    //Since cookie should be in browser, will automatically be sent, verified in backend, return appointments, patient records
-    const response = await fetch(
-      "/appointment/getAppointmentByDentistId/" +
-        localStorage.getItem("userId"),
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-      }
-    );
-    if (response.ok) {
+    async function temp() {
+      //Since cookie should be in browser, will automatically be sent, verified in backend, return appointments, patient records
+      const response = await fetch(
+        "/appointment/getAppointmentByDentistId/" +
+          localStorage.getItem("userId"),
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        }
+      );
+      console.log(response);
+      if (response.ok) {
         let data = await response.json();
         console.log(data);
-      setAppointments(data);
+        setAppointments(data);
+      }
     }
-  }}, []);
-
-
-  
-
+    
+    temp();
+  }, []);
 
   console.log(appointments);
   async function getPatientRecords(patient_id) {
@@ -55,11 +54,11 @@ function Dentist(props) {
 
   function showPatientRecords(patient_id) {
     if (patientRecord[patient_id]) {
-        return (
-            <div>
-                <p>{patientRecord[patient_id]}</p>
-            </div>
-        )
+      return (
+        <div>
+          <p>{patientRecord[patient_id]}</p>
+        </div>
+      );
     }
   }
 
@@ -70,14 +69,10 @@ function Dentist(props) {
           return (
             <div className="col-3">
               <div>Appointment details here</div>
-              <button
-                onClick={() =>
-                  getPatientRecords(val["patient.user_id"])
-                }
-              >
+              <button onClick={() => getPatientRecords(val["patient.user_id"])}>
                 Show Records
               </button>
-                {  showPatientRecords(val["patient.user_id"])}
+              {showPatientRecords(val["patient.user_id"])}
             </div>
           );
         })}

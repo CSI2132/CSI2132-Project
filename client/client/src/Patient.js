@@ -1,38 +1,43 @@
+import { useEffect, useState } from "react";
+
 function Patient(props) {
   const [medicalHistory, setMedicalHistory] = useState([]);
-  useEffect(async () => {
-    const result = await fetch(`http://localhost:8080/appointment/getPatientRecord/${props.userId}`);
-    if (result.ok) {
-      setMedicalHistory(await result.json());
-    }
+  useEffect(() => {
+    fetch(`http://localhost:8080/appointment/getPatientRecord/${props.userId}`).then(async (result) => {
+      if (result.ok) {
+        setMedicalHistory(await result.json());
+      }
+    });
   });
 
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  useEffect(async () => {
-    const result = await fetch(`http://localhost:8080/appointment/getAppointmentByPatientId${props.userId}`);
-    if (result.ok) {
-      setUpcomingAppointments(await result.json());
-    }
+  useEffect(() => {
+    fetch(`http://localhost:8080/appointment/getAppointmentByPatientId${props.userId}`).then(async (result) => {
+      if (result.ok) {
+        setUpcomingAppointments(await result.json());
+      }
+    });
   });
 
-  return 
-  <div>
+  return (
     <div>
-      <h2>
-        Upcoming Appointments
-      </h2>
+      <div>
+        <h2>
+          Upcoming Appointments
+        </h2>
 
-      {getUpcomingAppointments(upcomingAppointments)}
+        {getUpcomingAppointments(upcomingAppointments)}
+      </div>
+
+      <div>
+        <h2>
+          Medical History
+        </h2>
+
+        {getMedicalHistory(medicalHistory)}
+      </div>
     </div>
-
-    <div>
-      <h2>
-        Medical History
-      </h2>
-
-      {getMedicalHistory(medicalHistory)}
-    </div>
-  </div>
+  )
 }
 
 function getMedicalHistory(records) {
@@ -127,7 +132,7 @@ function getUpcomingAppointments(appointments) {
     );
   }
 
-  return 
+  return (
     <table>
       <thead>
         <tr>
@@ -144,6 +149,7 @@ function getUpcomingAppointments(appointments) {
         {result}
       </tbody>
     </table>
+  );
 }
 
 export default Patient;
