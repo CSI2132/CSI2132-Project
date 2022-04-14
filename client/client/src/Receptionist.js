@@ -95,6 +95,11 @@ function Receptionist() {
         console.log(formDataSet); //DEBUGING PURPOSES
         console.log(receptionistOption); //DEBUGING PURPOSES
 
+        var usernameExists = false;
+        var emailExists = false;
+        var ssnExists = false;
+        var passwordError = false;
+
         try {
             switch (receptionistOption) {
                 case "addPatient":
@@ -107,8 +112,8 @@ function Receptionist() {
                             "Content-Type": "application/json",
                         }
                     });
-                    let doesUsernameExistAdd = await patientUsrnmeAdd.json();
-                    setDoesUsernameExist(doesUsernameExistAdd);
+                    usernameExists = await patientUsrnmeAdd.json();
+                    setDoesUsernameExist(usernameExists);
                 
                     let patientEmailInUriAdd = formDataAddEdit.email_address;
                     let patientEmailAdd = await fetch(`/patient/getByEmail/${patientEmailInUriAdd}`, {
@@ -117,8 +122,8 @@ function Receptionist() {
                             "Content-Type": "application/json",
                         }
                     });
-                    let doesEmailExistAdd = await patientEmailAdd.json();
-                    setDoesEmailExist(doesEmailExistAdd);
+                    emailExists = await patientEmailAdd.json();
+                    setDoesEmailExist(emailExists);
 
                     let patientSSNInUriAdd = formDataAddEdit.ssn;
                     let patientSSNAdd = await fetch(`/patient/getBySSN/${patientSSNInUriAdd}`, { 
@@ -127,12 +132,12 @@ function Receptionist() {
                             "Content-Type": "application/json",
                         }
                     });
-                    let doesSSNExistAdd = await patientSSNAdd.json();
-                    setDoesSSNExist(doesSSNExistAdd);
+                    ssnExists = await patientSSNAdd.json();
+                    setDoesSSNExist(ssnExists);
 
 
                     //-- HIT backend endpoint ONLY if ensure ALL VALIDATION Pass --
-                    if (!doesUsernameExistAdd && !doesEmailExistAdd && !doesSSNExistAdd) {
+                    if (!usernameExists && !emailExists && !ssnExists) {
                         // var formDataFormatted = [formDataAddEdit];  //Potential fix: [Uncaught SyntaxError: Unexpected end of JSON input] 
                         let resAdd = await fetch("/patient/addPatient/", {
                             method: "POST",
@@ -158,53 +163,56 @@ function Receptionist() {
                 case "editPatient":
                     //-- INPUT VALIDATION -- 
                     //username, email, ssn has to be UNIQUE (Doesnt exist in db)
+
                     if (formDataAddEdit.username.length !== 0) {
-                        let patientUsernameInUri = formDataAddEdit.username;
-                        let patientUsrnme = await fetch(`/patient/getByUsername/${patientUsernameInUri}`, {
+                        let patientUsernameInUriEdit = formDataAddEdit.username;
+                        let patientUsrnmeEdit = await fetch(`/patient/getByUsername/${patientUsernameInUriEdit}`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
                             }
                         });
-                        let doesUsernameExist = await patientUsrnme.json();
-                        setDoesUsernameExist(doesUsernameExist);
-                    }
+                        usernameExists = await patientUsrnmeEdit.json();
+                        setDoesUsernameExist(usernameExists);
+                    } else{setDoesUsernameExist(false);}
                     
                     if (formDataAddEdit.email_address.length !== 0) {
-                        let patientEmailInUri = formDataAddEdit.email_address;
-                        let patientEmail = await fetch(`/patient/getByEmail/${patientEmailInUri}`, {
+                        let patientEmailInUriEdit = formDataAddEdit.email_address;
+                        let patientEmailEdit = await fetch(`/patient/getByEmail/${patientEmailInUriEdit}`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
                             }
                         });
-                        let doesEmailExist = await patientEmail.json();
-                        setDoesEmailExist(doesEmailExist);
-                    }
+                        emailExists = await patientEmailEdit.json();
+                        setDoesEmailExist(emailExists);
+                    } else{setDoesEmailExist(false);}
                     
                     if (formDataAddEdit.ssn.length !== 0) {
-                        let patientSSNInUri = formDataAddEdit.ssn;
-                        let patientSSN = await fetch(`/patient/getBySSN/${patientSSNInUri}`, {
+                        let patientSSNInUriEdit = formDataAddEdit.ssn;
+                        let patientSSNEdit = await fetch(`/patient/getBySSN/${patientSSNInUriEdit}`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
                             }
                         });
-                        let doesSSNExist = await patientSSN.json();
-                        setDoesSSNExist(doesSSNExist);
-                    }
+                        ssnExists = await patientSSNEdit.json();
+                        setDoesSSNExist(ssnExists);
+                    } else{setDoesSSNExist(false);}
 
                     //Password matching validation boolean set
                     if (formDataAddEdit.password !== confirmPassword.confirm_password){
                         setErrorMsg(true);
+                        passwordError = true;
                     }
                     else{
                         setErrorMsg(false); //Remove Error message from screen
+                        passwordError = false;
                     }
 
 
                     //-- HIT backend endpoint ONLY if ensure ALL VALIDATION Pass --
-                    if( !doesUsernameExist && !doesEmailExist && !doesSSNExist && !errorMsg){ 
+                    if( !usernameExists && !emailExists && !ssnExists && !passwordError){ 
                         let patientUserIdInUri = parseInt(formDataAddEdit.user_id.toString());
                         let resEdit = await fetch(`/patient/editPatient/${patientUserIdInUri}`, {
                             method: "PUT",
@@ -252,6 +260,7 @@ function Receptionist() {
                     break;
             }
         } catch (err) {
+            alert("ERROR!\n Could not connect to the database.");
             console.log(err);
         }
     };
