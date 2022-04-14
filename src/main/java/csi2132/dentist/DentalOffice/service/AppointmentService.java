@@ -44,23 +44,23 @@ public class AppointmentService {
         return appointmentRepository.getPatientRecord(patient_user_id);
     }
 
-    // Create treatment
-    public Integer createTreatment(Treatment treatment) {
-        return appointmentRepository.createTreatment(treatment);
-    }
+    // // Create treatment
+    // public Integer createTreatment(Treatment treatment) {
+    //     return appointmentRepository.createTreatment(treatment);
+    // }
 
-    // Create patient record
-    public Integer createPatientRecord(Record record) {
-        return appointmentRepository.createPatientRecord(record);
-    }
+    // // Create patient record
+    // public Integer createPatientRecord(Record record) {
+    //     return appointmentRepository.createPatientRecord(record);
+    // }
 
-    // Get treatment_id from treatment_type
-    public Integer getTreatmentId(String treatment_type) {
-        return appointmentRepository.getTreatmentId(treatment_type);
-    }
+    // // Get treatment_id from treatment_type
+    // public Integer getTreatmentId(String treatment_type) {
+    //     return appointmentRepository.getTreatmentId(treatment_type);
+    // }
 
-    // Get treatment_id from appointment_id
-    public Integer getTreatmentIdByAppointmentId(Integer appointment_id) {
-        return appointmentRepository.getTreatmentIdFromAppointment(appointment_id);
-    }
+    // // Get treatment_id from appointment_id
+    // public Integer getTreatmentIdByAppointmentId(Integer appointment_id) {
+    //     return appointmentRepository.getTreatmentIdFromAppointment(appointment_id);
+    // }
 }

@@ -68,45 +68,10 @@ public class AppointmentRepository {
         return jdbcTemplate.queryForList(sql, patient_user_id);
     }
 
-<<<<<<< HEAD
     //TODO: Technically need to have this
     public Integer addAppointmentProcedure(AppointmentProcedure appProc){
         String sql = "SELECT * from ";
         return null;
     }
 
-=======
-    // Get treatment_id from treatment_type
-    public Integer getTreatmentId(String treatment_type) {
-        String sql = "SELECT treatment_id FROM treatment WHERE treatment_type = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, treatment_type);
-    }
-
-    // Get treatment_id from appointment_id in treatment table
-    public Integer getTreatmentIdFromAppointment(Integer appointment_id) {
-        String sql = "SELECT treatment_id FROM treatment WHERE appointment_id = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, appointment_id);
-    }
-
-    // Add treatment record from treatment model class
-    public int createTreatment(Treatment treatment) {
-        String sql = "INSERT INTO treatment (appointment_type, treatment_type, medication, symptoms, tooth, " +
-                "comments, appointment_id, treatment_date, treatment_description, tooth_involved, procedure_amount, patient_charge, "
-                +
-                "insurance_charge, total_charge) VALUES (?::procedure_type_name_enum, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, treatment.getAppointment_type(), treatment.getTreatment_type(),
-                treatment.getMedication(), treatment.getSymptoms(), treatment.getTooth(), treatment.getComments(),
-                treatment.getAppointment_id(), treatment.getTreatment_date(), treatment.getTreatment_description(),
-                treatment.getTooth_involved(), treatment.getProcedure_amount(), treatment.getPatient_charge(),
-                treatment.getInsurance_charge(), treatment.getTotal_charge());
-    }
-
-    // Add patient record for a patient
-    public int createPatientRecord(Record record) {
-        String sql = "INSERT INTO record (progress_notes, patient_user_id, treatment_id)" +
-                "VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, record.getProgress_notes(), record.getPatient_user_id(),
-                record.getTreatment_id());
-    }
->>>>>>> 3476ec1b00aefb5a49b169f4fadc98c1200f3a39
 }

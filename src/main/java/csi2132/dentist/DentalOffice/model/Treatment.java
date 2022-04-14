@@ -56,40 +56,18 @@ public class Treatment {
         return medication;
     }
 
-<<<<<<< HEAD
-=======
-    public void setMedication(String medication) {
-        this.medication = medication;
-    }
-
->>>>>>> 3476ec1b00aefb5a49b169f4fadc98c1200f3a39
     public String getSymptoms() {
         return symptoms;
     }
 
-<<<<<<< HEAD
-=======
-    public void setSymptoms(String symptoms) {
-        this.symptoms = symptoms;
-    }
-
->>>>>>> 3476ec1b00aefb5a49b169f4fadc98c1200f3a39
     public String getTooth() {
         return tooth;
     }
 
-<<<<<<< HEAD
-=======
-    public void setTooth(String tooth) {
-        this.tooth = tooth;
-    }
-
->>>>>>> 3476ec1b00aefb5a49b169f4fadc98c1200f3a39
     public String getComments() {
         return comments;
     }
 
-<<<<<<< HEAD
     public Integer getAppointmentId() {
         return appointment_id;
     }
@@ -121,73 +99,4 @@ public class Treatment {
     public Double getTotalCharge() {
         return total_charge;
     }
-=======
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public Integer getAppointment_id() {
-        return appointment_id;
-    }
-
-    public void setAppointment_id(Integer appointment_id) {
-        this.appointment_id = appointment_id;
-    }
-
-    public Date getTreatment_date() {
-        return treatment_date;
-    }
-
-    public void setTreatment_date(Date treatment_date) {
-        this.treatment_date = treatment_date;
-    }
-
-    public String getTreatment_description() {
-        return treatment_description;
-    }
-
-    public void setTreatment_description(String treatment_description) {
-        this.treatment_description = treatment_description;
-    }
-
-    public String getTooth_involved() {
-        return tooth_involved;
-    }
-
-    public void setTooth_involved(String tooth_involved) {
-        this.tooth_involved = tooth_involved;
-    }
-
-    public Double getProcedure_amount() {
-        return procedure_amount;
-    }
-
-    public void setProcedure_amount(Double procedure_amount) {
-        this.procedure_amount = procedure_amount;
-    }
-
-    public Double getPatient_charge() {
-        return patient_charge;
-    }
-
-    public void setPatient_charge(Double patient_charge) {
-        this.patient_charge = patient_charge;
-    }
-
-    public Double getInsurance_charge() {
-        return insurance_charge;
-    }
-
-    public void setInsurance_charge(Double insurance_charge) {
-        this.insurance_charge = insurance_charge;
-    }
-
-    public Double getTotal_charge() {
-        return total_charge;
-    }
-
-    public void setTotal_charge(Double total_charge) {
-        this.total_charge = total_charge;
-    }
->>>>>>> 3476ec1b00aefb5a49b169f4fadc98c1200f3a39
 }
