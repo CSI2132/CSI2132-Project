@@ -45,25 +45,29 @@ public class PatientController extends EmployeeController {
         }
     }
 
-    /*
-    - [GET] GET patient info
-    */
-    // @GetMapping(value = "/getPatients", produces = "application/json")
-    // public List<Map<String, Object>> getAllPatients() { 
-    //     Lis
-
-    //     return patientService.getAllPatients();
-    // }
-
     @GetMapping(value = "/getAllPatient", produces = "application/json")
     public List<Map<String, Object>> getAllPatient(){
         List<Map<String, Object>> patient = patientService.getAllPatient();
         return patient;
     }
 
-    @GetMapping(value = "/getPatient/{patientId}", produces = "application/json")
-    public Patient getPatient(@PathVariable("patientId") Integer patientId){
-        Patient patientJSON = patientService.getPatient(patientId);
-        return patientJSON;
+    //-- Input Validation --
+    @GetMapping(value = "/getByUsername/{patientUsername}", produces = "application/json")
+    public Boolean getPatientByUsername(@PathVariable("patientUsername") String patientUsername){
+        Boolean patientCheckUsername = patientService.patientByUsername(patientUsername);
+        return patientCheckUsername;
     }
-}
+
+    @GetMapping(value = "/getByEmail/{patientEmail}", produces = "application/json")
+    public Boolean getPatientByEmail(@PathVariable("patientEmail") String patientEmail){
+        Boolean patientCheckEmail = patientService.getPatientByEmail(patientEmail);
+        return patientCheckEmail;
+    }
+
+    @GetMapping(value = "/getBySSN/{patientSSN}", produces = "application/json")
+    public Boolean getPatientBySSN(@PathVariable("patientSSN") String patientSSN){
+        Boolean patientCheckSSN = patientService.getPatientBySSN(patientSSN);
+        return patientCheckSSN;
+    }
+
+} 

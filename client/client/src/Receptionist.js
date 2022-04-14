@@ -3,9 +3,39 @@ import { Link } from 'react-router-dom';
 
 function Receptionist() {
 
-    //-- Input Validation ERROR Message to User --
-    const [errorMsg, setErrorMsg] = useState(false);
+    //TODO: (Reference data in db -- "Procedure Types") FRONTEND needs changed
+    //TODO: EDIT being hit SUCCESSFUL ALERT when it shouldnt be (Password is being changed even though confirm password != password)
+    //TODO: SET being hit SUCCESSFUL ALERT when it shouldnt be (ALWAYS success?)
 
+    // [OPTIONAL]
+    //TODO if we like wasting time: Start time cant be same as end time
+    //TODO if we like wasting time: DAtes cant be > currnet
+    //TODO: CLEAR FORM INPUT FIELDS (so fresh resubmitted)??? LEave for now until above done
+    //TODO: Sometimes form RELOADS page? (Javascript cachce error?)
+
+
+
+    //-- [Extra Features] --
+    const [showPassword, setShowPassword] = useState(false); //Show password function
+
+
+    //-- [Input Validation] --
+    const [errorMsg, setErrorMsg] = useState(false); //Boolean to see if error input (For fields that dont HAVE to be unique)
+    const [confirmPassword, setConfirmPassword] = useState({  //-- PASSWORD INPUT VALIDATION --
+        confirm_password: ""
+    }); 
+    function handlePswdValidation(event) {  
+        setConfirmPassword({
+            ...confirmPassword, //(Recognize input in field)
+            [event.target.name]: event.target.value
+        })
+    }
+    const [doesUsernameExist, setDoesUsernameExist] = useState(false);
+    const [doesEmailExist, setDoesEmailExist] = useState(false);
+    const [doesSSNExist, setDoesSSNExist] = useState(false);
+
+
+    
     //-- Form data payload for [EDIT/ADD] patient info --
     const [formDataAddEdit, setFormDataAddEdit] = useState({ //-- Set Form FIELDS --
         user_id: "",
@@ -14,7 +44,7 @@ function Receptionist() {
         patient_address: "",
         first_name: "",
         last_name: "",
-        gender: "",
+        gender: "OTHER",
         insurance: "",
         ssn: "",
         email_address: "",
@@ -26,15 +56,7 @@ function Receptionist() {
             [event.target.name]: event.target.value
         })
     }
-
-    const [showPassword, setShowPassword] = useState(false); //Show password function
-    const [confirmPassword, setConfirmPassword] = useState('');
-    function handlePswdValidation(event) {  //-- PASSWORD INPUT VALIDATION --
-        setConfirmPassword({
-            ...confirmPassword, //(Recognize input in field)
-            [event.target.name]: event.target.value
-        })
-    }
+  
 
 
     //-- Form data payload for [SET] patient appt --
@@ -46,8 +68,8 @@ function Receptionist() {
         appointment_date: "",
         start_time: "",
         end_time: "",
-        appointment_type: "procedure_type_name_enum",
-        appointment_status: "CHECK (appointment_status IN ('ACTIVE', 'CANCELLED'))",
+        appointment_type: "SCALING", 
+        appointment_status: "ACTIVE", 
         assigned_room: ""
     });
     function handleFormChangeSet(event) {
@@ -58,12 +80,15 @@ function Receptionist() {
     }
 
 
-    //-- DETERMINING DROPDOWN SELECTED: ADD when no patientId exists,   EDIT selected patient id,   set patient appt --
+    //-- [DETERMINE PAGE MODE]: ADD when no patientId exists,   EDIT selected patient id,   SET patient appt --
     const [receptionistOption, setReceptionistOption] = useState("addPatient");
-    //-- Helper vars --
+    //Helper vars 
     const isEditPatient = receptionistOption === "editPatient";
     const isSetPatientAppt = receptionistOption === "setPatientAppointment";
 
+
+
+    //-- [ON SUBMIT] --
     let submitForm = async (e) => {
         e.preventDefault();
         console.log(formDataAddEdit); //DEBUGING PURPOSES
@@ -73,52 +98,113 @@ function Receptionist() {
         try {
             switch (receptionistOption) {
                 case "addPatient":
-                    console.log("Im in AddPatient"); //DEBUGING PURPOSES
-
-                    //-- INPUT VALIDATION --
-                    // if(){
-            
-                    // }
-        
-
-                    //-- Hit Backend Enpoint --
-                    // var formDataFormatted = [formDataAddEdit];  //Potential fix: [Uncaught SyntaxError: Unexpected end of JSON input] 
-                    let resAdd = await fetch("/patient/addPatient/", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(formDataAddEdit),
-                    });
-                    // let resAddJson = await resAdd.json(); //[Uncaught SyntaxError: Unexpected end of JSON input] 
-                    // if (resAdd.ok) {
-                    //     console.log(resAddJson);
-                    // } else {
-                    //     console.log("error bro");
-                    // }
-                    break;
-
-                case "editPatient":
-
-                    //-- INPUT VALIDATION --  //TODO: emails
-                    let allPatientsInDb = await fetch("/patient/getAllPatient/", { //Get all records in db to check username
+                    // -- INPUT VALIDATION --  
+                    //username, email, ssn has to be UNIQUE (Doesnt exist in db)
+                    let patientUsernameInUriAdd = formDataAddEdit.username;
+                    let patientUsrnmeAdd = await fetch(`/patient/getByUsername/${patientUsernameInUriAdd}`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
-                        },
+                        }
                     });
+                    let doesUsernameExistAdd = await patientUsrnmeAdd.json();
+                    setDoesUsernameExist(doesUsernameExistAdd);
+                
+                    let patientEmailInUriAdd = formDataAddEdit.email_address;
+                    let patientEmailAdd = await fetch(`/patient/getByEmail/${patientEmailInUriAdd}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    });
+                    let doesEmailExistAdd = await patientEmailAdd.json();
+                    setDoesEmailExist(doesEmailExistAdd);
 
-                    if( (formDataAddEdit.password !== confirmPassword.confirm_password) //||    //Password != Confirm Password  //TODO: If both fields empty, leave as is!!
-                        //(formDataAddEdit.username !==  ) ||   //Username != existing username
-                        ){ 
-                        setErrorMsg(true); //Keep Error message on screen until resubmit
+                    let patientSSNInUriAdd = formDataAddEdit.ssn;
+                    let patientSSNAdd = await fetch(`/patient/getBySSN/${patientSSNInUriAdd}`, { 
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    });
+                    let doesSSNExistAdd = await patientSSNAdd.json();
+                    setDoesSSNExist(doesSSNExistAdd);
+
+
+                    //-- HIT backend endpoint ONLY if ensure ALL VALIDATION Pass --
+                    if (!doesUsernameExistAdd && !doesEmailExistAdd && !doesSSNExistAdd) {
+                        // var formDataFormatted = [formDataAddEdit];  //Potential fix: [Uncaught SyntaxError: Unexpected end of JSON input] 
+                        let resAdd = await fetch("/patient/addPatient/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(formDataAddEdit),
+                        });
+                        // let resAddJson = await resAdd.json(); //[Uncaught SyntaxError: Unexpected end of JSON input]
+                        // if (resAdd.ok) {
+                        //     console.log(resAddJson);
+                        // } else {
+                        //     console.log("error bro");
+                        // }
+                        alert("Success!\n ADDED a new PATIENT");
                     }
-                    // else if (){ 
+                    else{
+                        alert("ERROR!\n INVALID Input Values");
+                    }
+                    break;
 
-                    // }
-                    else{   //-- Hit Backend Enpoint --
+
+                case "editPatient":
+                    //-- INPUT VALIDATION -- 
+                    //username, email, ssn has to be UNIQUE (Doesnt exist in db)
+                    if (formDataAddEdit.username.length !== 0) {
+                        let patientUsernameInUri = formDataAddEdit.username;
+                        let patientUsrnme = await fetch(`/patient/getByUsername/${patientUsernameInUri}`, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            }
+                        });
+                        let doesUsernameExist = await patientUsrnme.json();
+                        setDoesUsernameExist(doesUsernameExist);
+                    }
+                    
+                    if (formDataAddEdit.email_address.length !== 0) {
+                        let patientEmailInUri = formDataAddEdit.email_address;
+                        let patientEmail = await fetch(`/patient/getByEmail/${patientEmailInUri}`, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            }
+                        });
+                        let doesEmailExist = await patientEmail.json();
+                        setDoesEmailExist(doesEmailExist);
+                    }
+                    
+                    if (formDataAddEdit.ssn.length !== 0) {
+                        let patientSSNInUri = formDataAddEdit.ssn;
+                        let patientSSN = await fetch(`/patient/getBySSN/${patientSSNInUri}`, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            }
+                        });
+                        let doesSSNExist = await patientSSN.json();
+                        setDoesSSNExist(doesSSNExist);
+                    }
+
+                    //Password matching validation boolean set
+                    if (formDataAddEdit.password !== confirmPassword.confirm_password){
+                        setErrorMsg(true);
+                    }
+                    else{
                         setErrorMsg(false); //Remove Error message from screen
+                    }
 
+
+                    //-- HIT backend endpoint ONLY if ensure ALL VALIDATION Pass --
+                    if( !doesUsernameExist && !doesEmailExist && !doesSSNExist && !errorMsg){ 
                         let patientUserIdInUri = parseInt(formDataAddEdit.user_id.toString());
                         let resEdit = await fetch(`/patient/editPatient/${patientUserIdInUri}`, {
                             method: "PUT",
@@ -127,24 +213,38 @@ function Receptionist() {
                             },
                             body: JSON.stringify(formDataAddEdit),
                         });
+                        alert("Success!\n EDITED the PATIENT recorded");
+                    }
+                    else{
+                        alert("ERROR!\n INVALID Input Validation");
                     }
                     break;
 
                 case "setPatientAppointment":
-
                     //-- INPUT VALIDATION --
-                    // if(){ //TODO: Appointment Date, and time need values
-            
-                    // }
+                    //Appointment Date, and time need values
+                    if(formDataSet.appointment_date.length === 0 ||
+                        formDataSet.start_time.length === 0 ||
+                        formDataSet.end_time.length === 0 ) 
+                    { 
+                        setErrorMsg(true); //Keep Error message on screen until resubmit
+                        alert("ERROR!\n INVALID Input Validation");
+                    }      
 
-                    //-- Hit Backend Enpoint --
-                    let resSet = await fetch("/appointment/setAppointment/", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(formDataSet),
-                    });
+
+                    //-- HIT backend endpoint ONLY if ensure ALL VALIDATION Pass --                            
+                    else { 
+                        setErrorMsg(false); //No Error Msg
+
+                        let resSet = await fetch("/appointment/setAppointment/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(formDataSet),
+                        }); 
+                        alert("Success!\n Patient APPOINTMENT SET");
+                    }
                     break;
 
                 default:
@@ -156,11 +256,15 @@ function Receptionist() {
         }
     };
 
+
+
+
     //-- FRONTEND UI --
     const receptionistForm = (
         <div className="container-fluid" >
             <div>
-                <h2 className="text-center"> {isEditPatient ? '[EDIT]' : (isSetPatientAppt ? '[SET]' : '[ADD]')} Patient {isSetPatientAppt ? 'Appointment' : 'Information'} </h2>
+                <Link to= '/' className="btn btn-secondary"> Logout </Link>
+                <h2 className="text-center mt-5"> {isEditPatient ? '[EDIT]' : (isSetPatientAppt ? '[SET]' : '[ADD]')} Patient {isSetPatientAppt ? 'Appointment' : 'Information'} </h2>
                 <div>
                     <div className="mb-auto text-center">  <i> Select Functionality: </i>
                         <select id="receptionistFunctions" aria-labelledby="dropdownMenuButton" onChange={(event) => { setReceptionistOption(event.target.value) }}>
@@ -169,6 +273,11 @@ function Receptionist() {
                             <option value="setPatientAppointment">Set Patient Appointment</option>
                         </select>
                     </div>
+                    {isEditPatient &&
+                        <div>
+                           <p className="mb-auto text-center mt-3"> (NOTE: If field left empty, existing information for that field will be retained.) </p>
+                        </div>
+                    }                    
                 </div>
             </div>
 
@@ -194,6 +303,9 @@ function Receptionist() {
                             <div className="form-group col">
                                 <label>Username: &nbsp; </label>
                                 <input name="username" type="text" onChange={handleFormChangeAddEdit} />
+                                { doesUsernameExist &&
+                                    <p className="error"> //// &nbsp; USERNAME has to be UNIQUE  &nbsp; \\\\ </p>                             
+                                }
                             </div>
 
                             {/* Password */}
@@ -216,7 +328,7 @@ function Receptionist() {
                                         <input name="confirm_password" type="password" onChange={handlePswdValidation} />
                                         <p> (Leave blank to keep the same password) </p>
                                         {errorMsg && 
-                                            <p className="error"> INVALID PLEASE CHANGE </p>                             
+                                            <p className="error"> //// &nbsp; PASSWORDs need to MATCH!  &nbsp; \\\\ </p>                             
                                         }
                                     </div>
                                 }
@@ -241,6 +353,9 @@ function Receptionist() {
                                 <label>Email: &nbsp; </label>
                                 <div>
                                     <input name="email_address" type="text" onChange={handleFormChangeAddEdit} />
+                                    { doesEmailExist &&
+                                    <p className="error"> //// &nbsp; EMAIL has to be UNIQUE  &nbsp; \\\\ </p>                             
+                                    }
                                 </div>
                             </div>
                             <div className="form-group col">
@@ -270,10 +385,12 @@ function Receptionist() {
                                 </div>
                             </div>
                             <div className="form-group col">
-                                {/* TODO: if edit: readonly and clear (So can go thru edit) */}
                                 <label>SSN: &nbsp; </label>
                                 <div>
                                     <input name="ssn" type="number" onChange={handleFormChangeAddEdit} />
+                                    { doesSSNExist &&
+                                    <p className="error"> //// &nbsp; SSN has to be UNIQUE  &nbsp; \\\\ </p>                             
+                                    }
                                 </div>
                             </div>
                             <div className="form-group col">
@@ -314,6 +431,9 @@ function Receptionist() {
 
                         {/* Appointment Details: status, assigned room, date, start time, end time, type */}
                         <label style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> <b> Appointment Details &nbsp; </b> </label>
+                        {errorMsg && 
+                            <p className="error mb-auto text-center"> //// &nbsp; INPUT VALUES CANT BE EMPTY!  &nbsp; \\\\ </p>                             
+                        }
                         <div className="form-group row">
                             <div className="form-group col">
                                 <label>Status: &nbsp; </label>
@@ -340,8 +460,10 @@ function Receptionist() {
                             </div>
                             <div className="form-group col">
                                 <label>Type: &nbsp; </label>
-                                <div>
+                                <div> 
                                     <select name="appointment_type" onChange={handleFormChangeSet}>
+
+                                        {/* TODO: call API to auto populate based on db */}
                                         <option value="SCALING"> Scaling </option>
                                         <option value="FLUORIDE"> Fluoride </option>
                                         <option value="REMOVAL">Removal</option>
@@ -361,13 +483,11 @@ function Receptionist() {
                     </div>
                 }
 
-
                 {/* SUBMIT form  */}
                 <div className="form-group">
                     <button type="submit" className="btn btn-primary" >
                         {isEditPatient ? 'Save' : (isSetPatientAppt ? 'Set' : 'Add')} Details
                     </button>
-                    <Link to={isEditPatient ? '.' : (isSetPatientAppt ? '..' : '...')} className="btn btn-link"> {isSetPatientAppt ? 'Back' : 'Cancel'} </Link>
                 </div>
             </form>
         </div>

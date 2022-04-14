@@ -23,5 +23,7 @@ public class PatientService {
         return patientRepository.getAllPatient();
     }
 
-    public Patient getPatient(Integer patientId){return patientRepository.getPatient(patientId);}
+    public Boolean patientByUsername(String patientUsername){return patientRepository.getPatientByUsername(patientUsername);}
+    public Boolean getPatientByEmail(String patientEmail){return patientRepository.getPatientByEmail(patientEmail);}
+    public Boolean getPatientBySSN(String patientSSN){return patientRepository.getPatientBySSN(patientSSN);}
 }

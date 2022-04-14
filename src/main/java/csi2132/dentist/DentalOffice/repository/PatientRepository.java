@@ -58,7 +58,7 @@ public class PatientRepository {
             // Update user table here as well
         }
 
-        System.out.println(patient.getPassword());
+        // System.out.println(patient.getPassword());
         if (patient.getPassword() != null && !patient.getPassword().isEmpty()) {
             query += " patient_password = ?,";
             parameters.add(bCryptPasswordEncoder.encode(patient.getPassword()));
@@ -125,9 +125,54 @@ public class PatientRepository {
         return jdbcTemplate.queryForList(query);
     }
 
-    public Patient getPatient(Integer patientId) {
-        String sql = "SELECT * FROM Patient WHERE user_id = ?;";
-        Object[] param = new Object[] { patientId };
-        return jdbcTemplate.queryForObject(sql, param, new PatientRowMapper());
+
+    //Note: Split up into 3 different input check methods because of cant send patientPayload into body of API
+    public Boolean getPatientByUsername(String patientUsername) {
+
+        Boolean doesObjectExist = false;
+
+        String sql = "SELECT * FROM Patient WHERE username = ?";
+        Object[] parameters = new Object[] { patientUsername };
+        try{
+            Object objFetch = jdbcTemplate.queryForObject(sql, parameters, new PatientRowMapper());
+            doesObjectExist = true;  //Only enters here if works
+        }
+        catch(Exception ex){
+        }
+
+        return doesObjectExist;
     }
+
+    public Boolean getPatientByEmail(String patientEmail) { 
+
+        Boolean doesObjectExist = false;
+
+        String sql = "SELECT * FROM Patient WHERE email_address = ?";
+        Object[] parameters = new Object[] { patientEmail };
+        try{
+            Object objFetch = jdbcTemplate.queryForObject(sql, parameters, new PatientRowMapper());
+            doesObjectExist = true;  //Only enters here if works
+        }
+        catch(Exception ex){
+        }
+
+        return doesObjectExist;
+    }
+
+    public Boolean getPatientBySSN(String patientSSN) { 
+
+        Boolean doesObjectExist = false;
+
+        String sql = "SELECT * FROM Patient WHERE SSN = ?";
+        Object[] parameters = new Object[] { patientSSN };
+        try{
+            Object objFetch = jdbcTemplate.queryForObject(sql, parameters, new PatientRowMapper());
+            doesObjectExist = true;  //Only enters here if works
+        }
+        catch(Exception ex){
+        }
+
+        return doesObjectExist;
+    }
+
 }
