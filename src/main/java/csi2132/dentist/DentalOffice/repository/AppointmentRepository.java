@@ -68,10 +68,10 @@ public class AppointmentRepository {
         return jdbcTemplate.queryForList(sql, patient_user_id);
     }
 
-    //TODO: Technically need to have this
-    public Integer addAppointmentProcedure(AppointmentProcedure appProc){
-        String sql = "SELECT * from ";
-        return null;
-    }
-
+    // TODO: Technically need to have this
+    // public Integer addAppointmentProcedure(AppointmentProcedure
+    // appointmentProcedure) {
+    // String sql = "INSERT INTO appointment_procedure (appointment_id,
+    // procedure_id) VALUES (?, ?)";
+    // }
 }

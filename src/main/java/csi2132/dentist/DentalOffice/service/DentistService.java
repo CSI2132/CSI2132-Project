@@ -26,7 +26,6 @@ public class DentistService {
      * return dentistRepository.getDentistsById(branch_id);
      * }
      */
-
     public int addTreatmentRecord(TreatmentRecord tr) {
         // if(tr.treatment.getAppointmentType() != null &&
         // tr.treatment.getTreatmentType() != null && tr.treatment.getMedication() !=
