@@ -96,6 +96,13 @@ function Dentist(props) {
         body: JSON.stringify(query),
       }
     );
+
+    if (response.ok) {
+      setRecordForms({...recordForms, [patient_id]: { }});
+      setCreatingRecords({...creatingRecords, [patient_id]: false});
+    } else {
+      alert("Error submitting record");
+    }
   }
 
   function showPatientRecords(patient_id) {
