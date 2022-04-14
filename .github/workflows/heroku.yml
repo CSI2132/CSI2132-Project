@@ -2,13 +2,11 @@ name: build react for heroku
 on:
   push:
     branches:
-      - master
-    paths:
-      - 'client/**'
+      - main
   workflow_dispatch:
 
 jobs:
-  update-oss:
+  heroku:
     runs-on: ubuntu-latest 
     steps:
       - name: Checkout
@@ -16,8 +14,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: Build
-        run: cd client/client; npm install; CI=false npm run build
       - name: Prepare git
         run: |
           git config --global user.name 'Builder'
@@ -25,11 +21,13 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git fetch
           git checkout heroku
-          git pull origin main --rebase
+          git reset --hard main
+      - name: Build
+        run: cd client/client; npm ci; CI=false npm run build
       - name: Update gitignore
         run: sed -i 's/src\/main\/resources\/static//g' .gitignore
       - name: Commit changes
         run: |
           git add .
-          git commit --amend -am "Build React"
+          git commit -am "Build React"
           git push origin heroku -f
