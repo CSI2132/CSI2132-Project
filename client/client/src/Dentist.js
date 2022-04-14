@@ -225,19 +225,9 @@ function Dentist(props) {
 
       for (const item of info) {
         let selector = null;
-        if (item.type === "text") {
+        if (item.type === "text" || item.type === "number" || item.type === "date") {
           selector = <input 
-            type="text" id={`input-${item.key}`} 
-            value={getForm()[item.key]}
-            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.target.value}})} />;
-        } else if (item.type === "number") {
-          selector = <input
-            type="number" id={`input-${item.key}`}
-            value={getForm()[item.key]}
-            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.target.value}})} />;
-        } else if (item.type === "date") {
-          selector = <input
-            type="date" id={`input-${item.key}`}
+            type={item.type} id={`input-${item.key}`} 
             value={getForm()[item.key]}
             onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.target.value}})} />;
         } else if (item.type === "appointment_type") {
