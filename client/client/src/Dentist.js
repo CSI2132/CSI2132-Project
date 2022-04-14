@@ -60,8 +60,42 @@ function Dentist(props) {
     }
   }
 
-  function submitRecord(form) {
-    // todo: call wip api endpoint
+  async function submitRecord(form, patient_id, appointment_id) {
+    const query = {
+      record: {
+        progress_notes: form.progress_notes,
+        patient_user_id: patient_id
+      },
+      treatment: {
+        appointment_type: form.appointment_type,
+        treatment_type: form.treatment_type,
+        medication: form.medication,
+        symptoms: form.symptoms,
+        tooth: form.tooth,
+        comments: form.comments,
+        treatment_date: form.treatment_date,
+        treatment_description: form.treatment_description,
+        appointment_procedure_description: form.appointment_procedure_description,
+        tooth_involved: form.tooth_involved,
+        procedure_amount: form.procedure_amount,
+        patient_charge: form.patient_charge,
+        insurance_charge: form.insurance_charge,
+        total_charge: form.total_charge,
+        appointment_id: appointment_id
+      }
+    };
+
+    const response = await fetch(
+      "/dentist/addTreatmentInfo",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify(query),
+      }
+    );
   }
 
   function showPatientRecords(patient_id) {
@@ -122,9 +156,8 @@ function Dentist(props) {
     }
   }
 
-  function showRecordCreation(patient_id) {
+  function showRecordCreation(patient_id, appointment_id) {
     if (creatingRecords[patient_id]) {
-      const allRecordDivs = [];
       const getForm = () => recordForms[patient_id] || {};
       const result = [];
 
@@ -196,22 +229,22 @@ function Dentist(props) {
           selector = <input 
             type="text" id={`input-${item.key}`} 
             value={getForm()[item.key]}
-            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.target.value}})} />;
         } else if (item.type === "number") {
           selector = <input
             type="number" id={`input-${item.key}`}
             value={getForm()[item.key]}
-            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.target.value}})} />;
         } else if (item.type === "date") {
           selector = <input
             type="date" id={`input-${item.key}`}
             value={getForm()[item.key]}
-            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.target.value}})} />;
         } else if (item.type === "appointment_type") {
           selector = <select
             id={`input-${item.key}`}
             value={getForm()[item.key]}
-            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})}>
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.target.value}})}>
             <option defaultValue value="SCALING">Scaling</option>
             <option value="FLUORIDE">Fluoride</option>
             <option value="REMOVAL">Removal</option>
@@ -236,25 +269,23 @@ function Dentist(props) {
             {selector}
           </div>
         );
-
-        allRecordDivs.push(
-          <div className="card" style={{width: "50%"}}>
-            <div className="card-body">
-              <h5 className="card-title">New Treatment Record</h5>
-
-              {result}
-
-              <button 
-                  onClick={() => submitRecord(getForm())} 
-                  disabled={shouldDisableRecordSubmit(getForm(), info)}>
-                Submit
-              </button>
-            </div>
-          </div>
-        );
       }
 
-      return allRecordDivs;
+      return (
+        <div className="card" style={{width: "50%"}}>
+          <div className="card-body">
+            <h5 className="card-title">New Treatment Record</h5>
+
+            {result}
+
+            <button 
+                onClick={() => submitRecord(getForm(), patient_id, appointment_id)} 
+                disabled={shouldDisableRecordSubmit(getForm(), info)}>
+              Submit
+            </button>
+          </div>
+        </div>
+      );
     }
   }
 
@@ -272,7 +303,7 @@ function Dentist(props) {
                 {patientRecord[val.patient_user_id] ? "Hide Records" : "Show Records"}
               </button>
               {showPatientRecords(val.patient_user_id)}
-              {patientRecord[val.patient_user_id] && (
+              {!patientRecord[val.patient_user_id] && (
                 <>
                   <button
                     value={val["patient_user_id"]}
@@ -280,7 +311,7 @@ function Dentist(props) {
                   >
                     {"Create Treatment Record"}
                   </button>
-                  {showRecordCreation(val.patient_user_id)}
+                  {showRecordCreation(val.patient_user_id, val.appointment_id)}
                 </>
               )}
             </div>
