@@ -1,38 +1,43 @@
+import { useEffect, useState } from "react";
+
 function Patient(props) {
   const [medicalHistory, setMedicalHistory] = useState([]);
-  useEffect(async () => {
-    const result = await fetch("someApi Endpoint");
-    if (result.ok) {
-      setMedicalHistory(await result.json());
-    }
+  useEffect(() => {
+    fetch(`http://localhost:8080/appointment/getPatientRecord/${props.userId}`).then(async (result) => {
+      if (result.ok) {
+        setMedicalHistory(await result.json());
+      }
+    });
   });
 
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  useEffect(async () => {
-    const result = await fetch("/appointment/getAppointmentByPatientId");
-    if (result.ok) {
-      setUpcomingAppointments(await result.json());
-    }
+  useEffect(() => {
+    fetch(`http://localhost:8080/appointment/getAppointmentByPatientId${props.userId}`).then(async (result) => {
+      if (result.ok) {
+        setUpcomingAppointments(await result.json());
+      }
+    });
   });
 
-  return 
-  <div>
+  return (
     <div>
-      <h2>
-        Upcoming Appointments
-      </h2>
+      <div>
+        <h2>
+          Upcoming Appointments
+        </h2>
 
-      {getUpcomingAppointments(upcomingAppointments)}
+        {getUpcomingAppointments(upcomingAppointments)}
+      </div>
+
+      <div>
+        <h2>
+          Medical History
+        </h2>
+
+        {getMedicalHistory(medicalHistory)}
+      </div>
     </div>
-
-    <div>
-      <h2>
-        Medical History
-      </h2>
-
-      {getMedicalHistory(medicalHistory)}
-    </div>
-  </div>
+  )
 }
 
 function getMedicalHistory(records) {
@@ -50,8 +55,24 @@ function getMedicalHistory(records) {
     "progress_notes",
     "treatment_date",
     "treatment_description",
+    "appointment_procedure_description",
     "tooth_involved",
+    "patient_charge"
+  ];
 
+  const names = [
+    "Appointment Type",
+    "Treatment Type",
+    "Medication",
+    "Symptoms",
+    "Tooth",
+    "Comments",
+    "Progress Notes",
+    "Treatment Date",
+    "Treatment Description",
+    "Appointment Procedure Description",
+    "Tooth Involved",
+    "Patient Charge"
   ];
 
   // use <summary>
@@ -59,8 +80,24 @@ function getMedicalHistory(records) {
   const result = [];
   for (const record of records) {
     result.push(
-      <div>
-      </div>
+      <>
+        <summary>
+          {`Treatment at ${record.treatment_date}`}
+        </summary>
+        <div>
+          {() => {
+            const result = [];
+            for (let i = 0; i < keys.length; i++) {
+              result.push(
+                <div>
+                  <b>{names[i]}</b>: {record[keys[i]]}
+                </div>
+              )
+            }
+            return result;
+          }}
+        </div>
+      </>
     );
   }
 }
@@ -95,7 +132,7 @@ function getUpcomingAppointments(appointments) {
     );
   }
 
-  return 
+  return (
     <table>
       <thead>
         <tr>
@@ -112,6 +149,7 @@ function getUpcomingAppointments(appointments) {
         {result}
       </tbody>
     </table>
+  );
 }
 
 export default Patient;
