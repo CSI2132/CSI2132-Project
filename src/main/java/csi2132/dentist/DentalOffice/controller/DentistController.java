@@ -34,8 +34,6 @@ public class DentistController {
     }*/
     @PostMapping(value = "/addTreatmentInfo", consumes = "application/json")
     public ResponseEntity<?> createTreatment(@RequestBody TreatmentRecord treatmentRec){
-        
-      
       return ResponseEntity.ok(dentistService.addTreatmentRecord(treatmentRec)) ;
 
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import csi2132.dentist.DentalOffice.dto.TreatmentRecord;
 import csi2132.dentist.DentalOffice.model.Dentist;
 import csi2132.dentist.DentalOffice.repository.DentistRepository;
+import csi2132.dentist.DentalOffice.model.Record;
 
 @Component
 public class DentistService {
@@ -28,6 +29,6 @@ public class DentistService {
         int val = dentistRepository.addTreatment(tr.treatment);
         int val2 = dentistRepository.addRecord(tr.record);
 
-        return ( val==1 && val2==1 ? 1 : 0);
+        return ( val+val2>0 ? 1 : 0);
     }
 }

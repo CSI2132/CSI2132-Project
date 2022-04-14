@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import csi2132.dentist.DentalOffice.dto.TreatmentRecord;
 import csi2132.dentist.DentalOffice.model.Dentist;
 import csi2132.dentist.DentalOffice.model.Treatment;
+import csi2132.dentist.DentalOffice.model.Record;
 
 @Repository
 public class DentistRepository {
@@ -54,8 +55,13 @@ public class DentistRepository {
 
     public Integer addRecord(Record record){
     
-        String sql = "";
-        Object[] parameters = new Object[]{};
+        String sql = "insert into record VALUES(?,?,?)";
+        Object[] parameters = new Object[]{
+            record.getProgressNotes(),
+            record.getPatientUserId(),
+            record.getTreatmentId()
+
+        };
         return jdbcTemplate.update(sql, parameters);
 
     }
