@@ -45,25 +45,17 @@ public class PatientController extends EmployeeController {
         }
     }
 
-    /*
-    - [GET] GET patient info
-    */
-    // @GetMapping(value = "/getPatients", produces = "application/json")
-    // public List<Map<String, Object>> getAllPatients() { 
-    //     Lis
-
-    //     return patientService.getAllPatients();
-    // }
-
     @GetMapping(value = "/getAllPatient", produces = "application/json")
     public List<Map<String, Object>> getAllPatient(){
         List<Map<String, Object>> patient = patientService.getAllPatient();
         return patient;
     }
 
-    @GetMapping(value = "/getPatient/{patientId}", produces = "application/json")
-    public Patient getPatient(@PathVariable("patientId") Integer patientId){
-        Patient patientJSON = patientService.getPatient(patientId);
-        return patientJSON;
+    //-- Input Validation --
+    @GetMapping(value = "/getPatient", produces = "application/json")
+    public Boolean[] getPatientByUsernameEmailSSN(@RequestBody Patient patientFormPayload){
+        Boolean[] patientCheck = patientService.patientByUsernameEmailSSN(patientFormPayload);
+        return patientCheck;
     }
-}
+
+} 

@@ -3,6 +3,15 @@ import { Link } from 'react-router-dom';
 
 function Receptionist() {
 
+    //TODO: Check boolean[3] of usernam, email, ssn MATCH  [PENDING. Come back when can connect to db]
+    //TODO: Reference enum instead? (Reference data in db -- "Procedure Types") [Come back when can connect to db]
+    //TODO: CLEAR FORM INPUT FIELDS (so fresh resubmitted)??? LEave for now until above done
+
+    // [OPTIONAL]
+    //TODO if we like wasting time: Start time cant be same as end time
+    //TODO if we like wasting time: DAtes cant be > currnet
+
+
     //-- Input Validation ERROR Message to User --
     const [errorMsg, setErrorMsg] = useState(false);
 
@@ -28,8 +37,10 @@ function Receptionist() {
     }
 
     const [showPassword, setShowPassword] = useState(false); //Show password function
-    const [confirmPassword, setConfirmPassword] = useState('');
-    function handlePswdValidation(event) {  //-- PASSWORD INPUT VALIDATION --
+    const [confirmPassword, setConfirmPassword] = useState({  //-- PASSWORD INPUT VALIDATION --
+        confirm_password: ""
+    }); 
+    function handlePswdValidation(event) {  
         setConfirmPassword({
             ...confirmPassword, //(Recognize input in field)
             [event.target.name]: event.target.value
@@ -46,8 +57,8 @@ function Receptionist() {
         appointment_date: "",
         start_time: "",
         end_time: "",
-        appointment_type: "procedure_type_name_enum",
-        appointment_status: "CHECK (appointment_status IN ('ACTIVE', 'CANCELLED'))",
+        appointment_type: "", 
+        appointment_status: "", 
         assigned_room: ""
     });
     function handleFormChangeSet(event) {
@@ -100,23 +111,24 @@ function Receptionist() {
 
                 case "editPatient":
 
-                    //-- INPUT VALIDATION --  //TODO: emails
-                    let allPatientsInDb = await fetch("/patient/getAllPatient/", { //Get all records in db to check username
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
+                    //-- INPUT VALIDATION --  //TODO: username, email, ssn [PENDING]
+                    // let patientUsrnmeEmailSSNValidation = await fetch("/patient/getPatient/", { //Get all records in db to check username
+                    //     method: "GET",
+                    //     headers: {
+                    //         "Content-Type": "application/json",
+                    //     },
+                    //     body: JSON.stringify(formDataAddEdit)
+                    // });
+                    // console.log(patientUsrnmeEmailSSNValidation);
 
-                    if( (formDataAddEdit.password !== confirmPassword.confirm_password) //||    //Password != Confirm Password  //TODO: If both fields empty, leave as is!!
-                        //(formDataAddEdit.username !==  ) ||   //Username != existing username
-                        ){ 
+                    //PASSWORD VALIDATION
+                    if( (formDataAddEdit.password !== confirmPassword.confirm_password) ){ 
                         setErrorMsg(true); //Keep Error message on screen until resubmit
                     }
                     // else if (){ 
 
                     // }
-                    else{   //-- Hit Backend Enpoint --
+                    else{   //-- Hit Backend Enpoint because SUCCESSFUL input validation tests --
                         setErrorMsg(false); //Remove Error message from screen
 
                         let patientUserIdInUri = parseInt(formDataAddEdit.user_id.toString());
@@ -133,18 +145,25 @@ function Receptionist() {
                 case "setPatientAppointment":
 
                     //-- INPUT VALIDATION --
-                    // if(){ //TODO: Appointment Date, and time need values
-            
-                    // }
+                    if(formDataSet.appointment_date.length === 0 || //Appointment Date, and time need values
+                        formDataSet.start_time.length === 0 ||
+                        formDataSet.end_time.length === 0 ) 
+                    { 
+                        setErrorMsg(true); //Keep Error message on screen until resubmit
+                    } 
+                                    
+                    else { //-- Hit Backend Enpoint because SUCCESSFUL input validation tests --
+                        setErrorMsg(false);
 
-                    //-- Hit Backend Enpoint --
-                    let resSet = await fetch("/appointment/setAppointment/", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(formDataSet),
-                    });
+                        //-- Hit Backend Enpoint --
+                        let resSet = await fetch("/appointment/setAppointment/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(formDataSet),
+                        });
+                    }
                     break;
 
                 default:
@@ -160,7 +179,8 @@ function Receptionist() {
     const receptionistForm = (
         <div className="container-fluid" >
             <div>
-                <h2 className="text-center"> {isEditPatient ? '[EDIT]' : (isSetPatientAppt ? '[SET]' : '[ADD]')} Patient {isSetPatientAppt ? 'Appointment' : 'Information'} </h2>
+                <Link to= '/' className="btn btn-secondary"> Logout </Link>
+                <h2 className="text-center mt-5"> {isEditPatient ? '[EDIT]' : (isSetPatientAppt ? '[SET]' : '[ADD]')} Patient {isSetPatientAppt ? 'Appointment' : 'Information'} </h2>
                 <div>
                     <div className="mb-auto text-center">  <i> Select Functionality: </i>
                         <select id="receptionistFunctions" aria-labelledby="dropdownMenuButton" onChange={(event) => { setReceptionistOption(event.target.value) }}>
@@ -169,6 +189,11 @@ function Receptionist() {
                             <option value="setPatientAppointment">Set Patient Appointment</option>
                         </select>
                     </div>
+                    {isEditPatient &&
+                        <div>
+                           <p> (NOTE: If field left empty, existing information for that field will be retained.) </p>
+                        </div>
+                    }                    
                 </div>
             </div>
 
@@ -216,7 +241,7 @@ function Receptionist() {
                                         <input name="confirm_password" type="password" onChange={handlePswdValidation} />
                                         <p> (Leave blank to keep the same password) </p>
                                         {errorMsg && 
-                                            <p className="error"> INVALID PLEASE CHANGE </p>                             
+                                            <p className="error"> //// &nbsp; PLEASE CHANGE  &nbsp; \\\\ </p>                             
                                         }
                                     </div>
                                 }
@@ -270,7 +295,6 @@ function Receptionist() {
                                 </div>
                             </div>
                             <div className="form-group col">
-                                {/* TODO: if edit: readonly and clear (So can go thru edit) */}
                                 <label>SSN: &nbsp; </label>
                                 <div>
                                     <input name="ssn" type="number" onChange={handleFormChangeAddEdit} />
@@ -314,6 +338,9 @@ function Receptionist() {
 
                         {/* Appointment Details: status, assigned room, date, start time, end time, type */}
                         <label style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> <b> Appointment Details &nbsp; </b> </label>
+                        {errorMsg && 
+                            <p className="error"> //// &nbsp; INPUT VALUES CANT BE EMPTY!  &nbsp; \\\\ </p>                             
+                        }
                         <div className="form-group row">
                             <div className="form-group col">
                                 <label>Status: &nbsp; </label>
@@ -367,7 +394,6 @@ function Receptionist() {
                     <button type="submit" className="btn btn-primary" >
                         {isEditPatient ? 'Save' : (isSetPatientAppt ? 'Set' : 'Add')} Details
                     </button>
-                    <Link to={isEditPatient ? '.' : (isSetPatientAppt ? '..' : '...')} className="btn btn-link"> {isSetPatientAppt ? 'Back' : 'Cancel'} </Link>
                 </div>
             </form>
         </div>

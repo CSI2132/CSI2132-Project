@@ -58,7 +58,7 @@ public class PatientRepository {
             // Update user table here as well
         }
 
-        System.out.println(patient.getPassword());
+        // System.out.println(patient.getPassword());
         if (patient.getPassword() != null && !patient.getPassword().isEmpty()) {
             query += " patient_password = ?,";
             parameters.add(bCryptPasswordEncoder.encode(patient.getPassword()));
@@ -125,9 +125,33 @@ public class PatientRepository {
         return jdbcTemplate.queryForList(query);
     }
 
-    public Patient getPatient(Integer patientId) {
-        String sql = "SELECT * FROM Patient WHERE user_id = ?;";
-        Object[] param = new Object[] { patientId };
-        return jdbcTemplate.queryForObject(sql, param, new PatientRowMapper());
+    public Boolean[] getPatientByUsernameEmailSSN(Patient patientInfo) { //String patientUsername, String patientEmail, String patientSSN) {
+        // return jdbcTemplate.queryForObject(sql, param, new PatientRowMapper());
+        Boolean[] returnObject = new Boolean[3];
+
+        if (patientInfo.getUsername() != null && !patientInfo.getUsername().isEmpty()) {
+            String sql01 = "SELECT * FROM Patient WHERE username = ?";
+            Object[] param01 = new Object[] { patientInfo.getUsername() };
+            Patient test01 = jdbcTemplate.queryForObject(sql01, param01, new PatientRowMapper());
+            // return "User id is already taken";
+        }
+        
+
+        if (patientInfo.getEmail_address() != null && !patientInfo.getEmail_address().isEmpty()) {        
+            String sql02 = "SELECT * FROM Patient WHERE email_address = ?";
+            Object[] param02 = new Object[] { patientInfo.getEmail_address() };
+            Patient test02 = jdbcTemplate.queryForObject(sql02, param02, new PatientRowMapper());
+            // return "Email address is already taken";
+        }
+
+        if (patientInfo.getSSN() != null && !patientInfo.getSSN().isEmpty()) {
+            String sql03 = "SELECT * FROM Patient WHERE SSN = ?";
+            Object[] param03 = new Object[] { patientInfo.getSSN() };
+            Patient test03 = jdbcTemplate.queryForObject(sql03, param03, new PatientRowMapper());
+            // return "SSN is already taken";
+        }
+
+        return returnObject;
     }
+
 }
