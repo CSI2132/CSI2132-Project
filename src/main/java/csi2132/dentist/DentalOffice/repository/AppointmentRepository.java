@@ -38,7 +38,7 @@ public class AppointmentRepository {
     }
 
     public List<Map<String, Object>> getAppointmentByPatientId(Integer user_id) {
-        String sql = "SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name , aa.patient_user_id"
+        String sql = "SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name as dentist_first_name, dentist.last_name as dentist_last_name, hygienist.first_name as hygienst_first_name, hygienist.last_name as hygienist_last_name, aa.patient_user_id "
                 +
                 "FROM Appointment AS aa " +
                 "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +

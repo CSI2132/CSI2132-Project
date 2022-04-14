@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 function Patient(props) {
   const [medicalHistory, setMedicalHistory] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  const userId = 47;
+  
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+
     fetch(`http://localhost:8080/appointment/getPatientRecord/${userId}`).then(async (result) => {
       if (result.ok) {
         setMedicalHistory(await result.json());

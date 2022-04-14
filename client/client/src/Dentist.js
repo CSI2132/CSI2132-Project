@@ -49,7 +49,7 @@ function Dentist(props) {
       );
       if (responseRecords.ok) {
         let data = await responseRecords.json();
-  
+        
         setPatientRecord({
           ...patientRecord,
           [patient_id]: data,
@@ -59,11 +59,12 @@ function Dentist(props) {
   }
 
   function showPatientRecords(patient_id) {
-    const result = [];
+    
 
     if (patientRecord[patient_id]) {
       const allRecordDivs = [];
       for (const record of patientRecord[patient_id]) {
+        const result = [];
         const keys = [
           "appointment_type",
           "treatment_type",
