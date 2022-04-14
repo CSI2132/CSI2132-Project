@@ -60,89 +60,49 @@ function Dentist(props) {
     }
   }
 
+  function submitRecord(form) {
+    // todo: call wip api endpoint
+  }
+
   function showPatientRecords(patient_id) {
     if (patientRecord[patient_id]) {
       const allRecordDivs = [];
-      const getForm = () => recordForms[patient_id] || {};
       for (const record of patientRecord[patient_id]) {
         const result = [];
+        const keys = [
+          "appointment_type",
+          "treatment_type",
+          "medication",
+          "symptoms",
+          "tooth",
+          "comments",
+          "progress_notes",
+          "treatment_date",
+          "treatment_description",
+          "appointment_procedure_description",
+          "tooth_involved",
+          "patient_charge",
+        ];
 
-        const info = [{
-          key: "appointment_type",
-          name: "Appointment Type",
-          type: "appointment_type"
-        }, {
-          key: "treatment_type",
-          name: "Treatment Type",
-          type: "text"
-        }, {
-          key: "medication",
-          name: "Medication",
-          type: "text"
-        }, {
-          key: "symptoms",
-          name: "Symptoms",
-          type: "text"
-        }, {
-          key: "tooth",
-          name: "Tooth",
-          type: "text"
-        }, {
-          key: "comments",
-          name: "Comments",
-          type: "text"
-        }, {
-          key: "progress_notes",
-          name: "Progress Notes",
-          type: "text"
-        }, {
-          key: "treatment_date",
-          name: "Treatment Date",
-          type: "date"
-        }, {
-          key: "treatment_description",
-          name: "Treatment Description",
-          type: "text"
-        }, {
-          key: "appointment_procedure_description",
-          name: "Appointment Procedure Description",
-          type: "text"
-        }, {
-          key: "tooth_involved",
-          name: "Tooth Involved",
-          type: "text"
-        }, {
-          key: "procedure_amount",
-          name: "Procedure Amount",
-          type: "number"
-        }, {
-          key: "patient_charge",
-          name: "Patient Charge",
-          type: "number"
-        }, {
-          key: "insurance_charge",
-          name: "Insurance Charge",
-          type: "number"
-        }, {
-          key: "total_charge",
-          name: "Total Charge",
-          type: "number"
-        }];
+        const names = [
+          "Appointment Type",
+          "Treatment Type",
+          "Medication",
+          "Symptoms",
+          "Tooth",
+          "Comments",
+          "Progress Notes",
+          "Treatment Date",
+          "Treatment Description",
+          "Appointment Procedure Description",
+          "Tooth Involved",
+          "Patient Charge",
+        ];
 
-        for (const item of info) {
-          let selector = null;
-          if (item.type === "text") {
-            selector = <input 
-              type="text" id={`input-${item.key}`} 
-              value={getForm()[item.key]}
-              onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
-          }
-          //todo: for other types...
-
+        for (let i = 0; i < keys.length; i++) {
           result.push(
             <div>
-              <label for={`input-${item.key}`}><b>{item.name}</b>:</label>
-              {selector}
+              <b>{names[i]}</b>: {record[keys[i]]}
             </div>
           );
         }
@@ -164,36 +124,137 @@ function Dentist(props) {
 
   function showRecordCreation(patient_id) {
     if (creatingRecords[patient_id]) {
+      const allRecordDivs = [];
+      const getForm = () => recordForms[patient_id] || {};
       const result = [];
-      const keys = [
-        "appointment_type",
-        "treatment_type",
-        "medication",
-        "symptoms",
-        "tooth",
-        "comments",
-        "progress_notes",
-        "treatment_date",
-        "treatment_description",
-        "appointment_procedure_description",
-        "tooth_involved",
-        "patient_charge",
-      ];
 
-      const names = [
-        "Appointment Type", //
-        "Treatment Type",
-        "Medication",
-        "Symptoms",
-        "Tooth",
-        "Comments",
-        "Progress Notes",
-        "Treatment Date",
-        "Treatment Description",
-        "Appointment Procedure Description",
-        "Tooth Involved",
-        "Patient Charge",
-      ];
+      const info = [{
+        key: "appointment_type",
+        name: "Appointment Type",
+        type: "appointment_type"
+      }, {
+        key: "treatment_type",
+        name: "Treatment Type",
+        type: "text"
+      }, {
+        key: "medication",
+        name: "Medication",
+        type: "text"
+      }, {
+        key: "symptoms",
+        name: "Symptoms",
+        type: "text"
+      }, {
+        key: "tooth",
+        name: "Tooth",
+        type: "text"
+      }, {
+        key: "comments",
+        name: "Comments",
+        type: "text"
+      }, {
+        key: "progress_notes",
+        name: "Progress Notes",
+        type: "text"
+      }, {
+        key: "treatment_date",
+        name: "Treatment Date",
+        type: "date"
+      }, {
+        key: "treatment_description",
+        name: "Treatment Description",
+        type: "text"
+      }, {
+        key: "appointment_procedure_description",
+        name: "Appointment Procedure Description",
+        type: "text"
+      }, {
+        key: "tooth_involved",
+        name: "Tooth Involved",
+        type: "text"
+      }, {
+        key: "procedure_amount",
+        name: "Procedure Amount",
+        type: "number"
+      }, {
+        key: "patient_charge",
+        name: "Patient Charge",
+        type: "number"
+      }, {
+        key: "insurance_charge",
+        name: "Insurance Charge",
+        type: "number"
+      }, {
+        key: "total_charge",
+        name: "Total Charge",
+        type: "number"
+      }];
+
+      for (const item of info) {
+        let selector = null;
+        if (item.type === "text") {
+          selector = <input 
+            type="text" id={`input-${item.key}`} 
+            value={getForm()[item.key]}
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
+        } else if (item.type === "number") {
+          selector = <input
+            type="number" id={`input-${item.key}`}
+            value={getForm()[item.key]}
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
+        } else if (item.type === "date") {
+          selector = <input
+            type="date" id={`input-${item.key}`}
+            value={getForm()[item.key]}
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
+        } else if (item.type === "appointment_type") {
+          selector = <select
+            id={`input-${item.key}`}
+            value={getForm()[item.key]}
+            onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})}>
+            <option defaultValue value="SCALING">Scaling</option>
+            <option value="FLUORIDE">Fluoride</option>
+            <option value="REMOVAL">Removal</option>
+            <option value="FILLINGS">Fillings</option>
+            <option value="ROOT_CANAL">Root Canal</option>
+            <option value="WHITENING">Whitening</option>
+            <option value="ENDODONTIC">Endodontic</option>
+            <option value="ORTHODONTIC">Orthodontic</option>
+            <option value="PERIODONTIC">Periodontic</option>
+            <option value="ENDODONTIC_AND_PERIODONTIC">Endodontic and Periodontic</option>
+            <option value="OTHER">Other</option>
+          </select>;
+
+          if (!getForm()[item.key]) {
+            setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: "SCALING"}});
+          }
+        }
+
+        result.push(
+          <div>
+            <label for={`input-${item.key}`}><b>{item.name}</b>:</label>
+            {selector}
+          </div>
+        );
+
+        allRecordDivs.push(
+          <div className="card" style={{width: "50%"}}>
+            <div className="card-body">
+              <h5 className="card-title">New Treatment Record</h5>
+
+              {result}
+
+              <button 
+                  onClick={() => submitRecord(getForm())} 
+                  disabled={shouldDisableRecordSubmit(getForm(), info)}>
+                Submit
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      return allRecordDivs;
     }
   }
 
@@ -228,6 +289,16 @@ function Dentist(props) {
       </div>
     </div>
   );
+}
+
+function shouldDisableRecordSubmit(form, info) {
+  for (const item of info) {
+    if (!form[item.key]) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export default Dentist;
