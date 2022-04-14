@@ -39,8 +39,6 @@ public class DentistService {
         // }
         Integer val2 = dentistRepository.addRecord(tr.record, treatment_id);
 
-        // todo: add appointment record, add method to appointment repository
-
         return treatment_id;
     }
 }

@@ -41,11 +41,14 @@ public class AppointmentController {
 
     /*
      * - [POST] Add a new procedure type
-     * - This endpoint has been commented out as POST should not be available to users
+     * - This endpoint has been commented out as POST should not be available to
+     * users
      */
     // @PostMapping(value = "/addProcedure", produces = "application/json")
-    // public ResponseEntity<?> addProcedures(@RequestBody ProcedureType procedureType) {
-    //     return ResponseEntity.ok(appointmentService.createProcedureType(procedureType));
+    // public ResponseEntity<?> addProcedures(@RequestBody ProcedureType
+    // procedureType) {
+    // return
+    // ResponseEntity.ok(appointmentService.createProcedureType(procedureType));
     // }
 
     // - Upcoming appointments for patient {patientID}, dentist

@@ -1,7 +1,6 @@
 package csi2132.dentist.DentalOffice.model;
 
 import java.sql.Date;
-import java.util.Currency;
 
 public class Treatment {
     private Integer treatment_id;

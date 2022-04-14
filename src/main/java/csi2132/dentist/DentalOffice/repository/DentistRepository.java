@@ -59,6 +59,8 @@ public class DentistRepository {
     }
 
     public Integer addRecord(Record record, Integer treatment_id) {
+        String progressNotes = record.getProgressNotes();
+        Integer patient_user_id = record.getPatientUserId();
 
         String sql = "insert into record VALUES(?,?,?)";
         Object[] parameters = new Object[] {
