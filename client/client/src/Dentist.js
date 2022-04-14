@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 function Dentist(props) {
   const [appointments, setAppointments] = useState([]);
   const [patientRecord, setPatientRecord] = useState({});
+  const [creatingRecords, setCreatingRecords] = useState({});
+  const [recordForms, setRecordForms] = useState({});
 
   useEffect(() => {
     async function temp() {
@@ -59,46 +61,88 @@ function Dentist(props) {
   }
 
   function showPatientRecords(patient_id) {
-    
-
     if (patientRecord[patient_id]) {
       const allRecordDivs = [];
+      const getForm = () => recordForms[patient_id] || {};
       for (const record of patientRecord[patient_id]) {
         const result = [];
-        const keys = [
-          "appointment_type",
-          "treatment_type",
-          "medication",
-          "symptoms",
-          "tooth",
-          "comments",
-          "progress_notes",
-          "treatment_date",
-          "treatment_description",
-          "appointment_procedure_description",
-          "tooth_involved",
-          "patient_charge",
-        ];
 
-        const names = [
-          "Appointment Type",
-          "Treatment Type",
-          "Medication",
-          "Symptoms",
-          "Tooth",
-          "Comments",
-          "Progress Notes",
-          "Treatment Date",
-          "Treatment Description",
-          "Appointment Procedure Description",
-          "Tooth Involved",
-          "Patient Charge",
-        ];
+        const info = [{
+          key: "appointment_type",
+          name: "Appointment Type",
+          type: "appointment_type"
+        }, {
+          key: "treatment_type",
+          name: "Treatment Type",
+          type: "text"
+        }, {
+          key: "medication",
+          name: "Medication",
+          type: "text"
+        }, {
+          key: "symptoms",
+          name: "Symptoms",
+          type: "text"
+        }, {
+          key: "tooth",
+          name: "Tooth",
+          type: "text"
+        }, {
+          key: "comments",
+          name: "Comments",
+          type: "text"
+        }, {
+          key: "progress_notes",
+          name: "Progress Notes",
+          type: "text"
+        }, {
+          key: "treatment_date",
+          name: "Treatment Date",
+          type: "date"
+        }, {
+          key: "treatment_description",
+          name: "Treatment Description",
+          type: "text"
+        }, {
+          key: "appointment_procedure_description",
+          name: "Appointment Procedure Description",
+          type: "text"
+        }, {
+          key: "tooth_involved",
+          name: "Tooth Involved",
+          type: "text"
+        }, {
+          key: "procedure_amount",
+          name: "Procedure Amount",
+          type: "number"
+        }, {
+          key: "patient_charge",
+          name: "Patient Charge",
+          type: "number"
+        }, {
+          key: "insurance_charge",
+          name: "Insurance Charge",
+          type: "number"
+        }, {
+          key: "total_charge",
+          name: "Total Charge",
+          type: "number"
+        }];
 
-        for (let i = 0; i < keys.length; i++) {
+        for (const item of info) {
+          let selector = null;
+          if (item.type === "text") {
+            selector = <input 
+              type="text" id={`input-${item.key}`} 
+              value={getForm()[item.key]}
+              onChange={(e) => setRecordForms({...recordForms, [patient_id]: {...getForm(), [item.key]: e.value}})} />;
+          }
+          //todo: for other types...
+
           result.push(
             <div>
-              <b>{names[i]}</b>: {record[keys[i]]}
+              <label for={`input-${item.key}`}><b>{item.name}</b>:</label>
+              {selector}
             </div>
           );
         }
@@ -118,6 +162,41 @@ function Dentist(props) {
     }
   }
 
+  function showRecordCreation(patient_id) {
+    if (creatingRecords[patient_id]) {
+      const result = [];
+      const keys = [
+        "appointment_type",
+        "treatment_type",
+        "medication",
+        "symptoms",
+        "tooth",
+        "comments",
+        "progress_notes",
+        "treatment_date",
+        "treatment_description",
+        "appointment_procedure_description",
+        "tooth_involved",
+        "patient_charge",
+      ];
+
+      const names = [
+        "Appointment Type", //
+        "Treatment Type",
+        "Medication",
+        "Symptoms",
+        "Tooth",
+        "Comments",
+        "Progress Notes",
+        "Treatment Date",
+        "Treatment Description",
+        "Appointment Procedure Description",
+        "Tooth Involved",
+        "Patient Charge",
+      ];
+    }
+  }
+
   return (
     <div className="container-fluid">
       <div className="row mt-3 mh-50">
@@ -131,7 +210,18 @@ function Dentist(props) {
               >
                 {patientRecord[val.patient_user_id] ? "Hide Records" : "Show Records"}
               </button>
-              {showPatientRecords(val["patient_user_id"])}
+              {showPatientRecords(val.patient_user_id)}
+              {patientRecord[val.patient_user_id] && (
+                <>
+                  <button
+                    value={val["patient_user_id"]}
+                    onClick={() => setCreatingRecords({...creatingRecords, [val.patient_user_id]: true})}
+                  >
+                    {"Create Treatment Record"}
+                  </button>
+                  {showRecordCreation(val.patient_user_id)}
+                </>
+              )}
             </div>
           );
         })}
