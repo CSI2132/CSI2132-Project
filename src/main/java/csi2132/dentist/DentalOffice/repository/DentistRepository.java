@@ -58,14 +58,13 @@ public class DentistRepository {
         return rs.getInt("treatment_id");
     }
 
-    public Integer addRecord(Record record) {
+    public Integer addRecord(Record record, Integer treatment_id) {
 
         String sql = "insert into record VALUES(?,?,?)";
         Object[] parameters = new Object[] {
                 record.getProgressNotes(),
                 record.getPatientUserId(),
-                record.getTreatmentId()
-
+                treatment_id
         };
         return jdbcTemplate.update(sql, parameters);
 
