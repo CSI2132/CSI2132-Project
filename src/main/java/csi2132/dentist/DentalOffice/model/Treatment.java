@@ -15,15 +15,15 @@ public class Treatment {
     private Date treatment_date;
     private String treatment_description;
     private String tooth_involved;
-    private Currency procedure_amount;
-    private Currency patient_charge; 
-    private Currency insurance_charge; 
-    private Currency total_charge; 
+    private Double procedure_amount;
+    private Double patient_charge; 
+    private Double insurance_charge; 
+    private Double total_charge; 
 
     public Treatment(Integer treatment_id, String appointment_type, String treatment_type, 
             String medication, String symptoms, String tooth, String comments, Integer appointment_id, 
-            Date treatment_date, String treatment_description, String tooth_involved, Currency procedure_amount, 
-            Currency patient_charge, Currency insurance_charge, Currency total_charge) {
+            Date treatment_date, String treatment_description, String tooth_involved, Double procedure_amount, 
+            Double patient_charge, Double insurance_charge, Double total_charge) {
         this.treatment_id = treatment_id;
         this.appointment_type = appointment_type;
         this.treatment_type = treatment_type;
@@ -85,19 +85,19 @@ public class Treatment {
         return tooth_involved;
     }
 
-    public Currency getProcedureAmount() {
+    public Double getProcedureAmount() {
         return procedure_amount;
     }
 
-    public Currency getPatientCharge() {
+    public Double getPatientCharge() {
         return patient_charge;
     }
 
-    public Currency getInsuranceCharge() {
+    public Double getInsuranceCharge() {
         return insurance_charge;
     }
 
-    public Currency getTotalCharge() {
+    public Double getTotalCharge() {
         return total_charge;
     }
 }

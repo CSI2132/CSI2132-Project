@@ -21,14 +21,25 @@ public class DentistService {
         return dentistRepository.getAllDentists();
     }
 
-    /*public List<Map<String, Object>> getDentistsById(int branch_id) {
-        return dentistRepository.getDentistsById(branch_id);
-    }*/
+    /*
+     * public List<Map<String, Object>> getDentistsById(int branch_id) {
+     * return dentistRepository.getDentistsById(branch_id);
+     * }
+     */
 
-    public int addTreatmentRecord(TreatmentRecord tr){
-        int val = dentistRepository.addTreatment(tr.treatment);
-        int val2 = dentistRepository.addRecord(tr.record);
+    public int addTreatmentRecord(TreatmentRecord tr) {
+        int val = 0;
+        // if(tr.treatment.getAppointmentType() != null &&
+        // tr.treatment.getTreatmentType() != null && tr.treatment.getMedication() !=
+        // null && tr.treatment.getSymptoms() != null
+        // && tr.treatment.getTooth() != null && tr.treatment.getTreatmentDate() != null
+        // && tr.treatment.getToothInvolved() != null
+        // ){
+        val = dentistRepository.addTreatment(tr.treatment);
 
-        return ( val+val2>0 ? 1 : 0);
+        // }
+        // int val2 = dentistRepository.addRecord(tr.record);
+
+        return val;
     }
 }

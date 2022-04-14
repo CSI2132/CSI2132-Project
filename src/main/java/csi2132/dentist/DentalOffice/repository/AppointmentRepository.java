@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import csi2132.dentist.DentalOffice.model.Appointment;
+import csi2132.dentist.DentalOffice.model.AppointmentProcedure;
 import csi2132.dentist.DentalOffice.model.ProcedureType;
 
 @Repository
@@ -63,4 +64,11 @@ public class AppointmentRepository {
         String sql = "SELECT * FROM record JOIN treatment ON record.treatment_id = treatment.treatment_id WHERE patient_user_id = ?";
         return jdbcTemplate.queryForList(sql, patient_user_id);
     }
+
+    //TODO: Technically need to have this
+    public Integer addAppointmentProcedure(AppointmentProcedure appProc){
+        String sql = "SELECT * from ";
+        return null;
+    }
+
 }

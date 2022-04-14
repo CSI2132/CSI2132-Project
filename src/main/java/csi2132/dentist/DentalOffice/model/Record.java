@@ -17,5 +17,12 @@ public class Record {
         return treatment_id;
     }
 
+    public void setPatientUserId(int user_id){
+        patient_user_id = user_id;
+    }
+
+    public void setTreatmentId(int treatment_id){
+        this.treatment_id = treatment_id;
+    }
     
 }

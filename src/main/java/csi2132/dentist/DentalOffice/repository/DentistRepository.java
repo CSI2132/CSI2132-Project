@@ -27,43 +27,52 @@ public class DentistRepository {
         return jdbcTemplate.queryForList(sql);
     }
 
-    public int addTreatment(Treatment treatment){
+    public Integer addTreatment(Treatment treatment) {
 
-        String sql = "insert into treatment(appointment_type,treatment_type,medication,symptoms,tooth,comments,appointment_id, treatment_date,treatment_description,tooth_involved,procedure_amount,patient_charge,insurance_charge,total_charge ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into treatment(appointment_type,treatment_type,medication,symptoms,tooth,comments,appointment_id, treatment_date,treatment_description,tooth_involved,procedure_amount,patient_charge,insurance_charge,total_charge ) values (?::procedure_type_name_enum,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         Object[] parameters = new Object[] {
-            treatment.getAppointmentType(),
-            treatment.getTreatmentType(),
-            treatment.getMedication(),
-            treatment.getSymptoms(),
-            treatment.getTooth(),
-            treatment.getComments(),
-            treatment.getAppointmentId(),
-            treatment.getTreatmentDate(),
-            treatment.getTreatmentDescription(),
-            treatment.getToothInvolved(),
-            treatment.getProcedureAmount(),
-            treatment.getPatientCharge(),
-            treatment.getInsuranceCharge(),
-            treatment.getTotalCharge()
+                treatment.getAppointmentType(),
+                treatment.getTreatmentType(),
+                treatment.getMedication(),
+                treatment.getSymptoms(),
+                treatment.getTooth(),
+                treatment.getComments(),
+                treatment.getAppointmentId(),
+                treatment.getTreatmentDate(),
+                treatment.getTreatmentDescription(),
+                treatment.getToothInvolved(),
+                treatment.getProcedureAmount(),
+                treatment.getPatientCharge(),
+                treatment.getInsuranceCharge(),
+                treatment.getTotalCharge()
         };
 
-        return jdbcTemplate.update(sql, parameters);
+        jdbcTemplate.update(sql, parameters);
 
+        String returnSql = "SELECT treatment_id FROM treatment WHERE treatment_id=(SELECT max(treatment_id) FROM treatment)";
+
+        // return the id of the newly added treatment
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(returnSql);
+        rs.next();
+        return rs.getInt("treatment_id");
+    }
+
+    public Integer addRecord(Record record) {
+
+        String sql = "insert into record VALUES(?,?,?)";
+        Object[] parameters = new Object[] {
+                record.getProgressNotes(),
+                record.getPatientUserId(),
+                record.getTreatmentId()
+
+        };
+        return jdbcTemplate.update(sql, parameters);
 
     }
 
-    public Integer addRecord(Record record){
-    
-        String sql = "insert into record VALUES(?,?,?)";
-        Object[] parameters = new Object[]{
-            record.getProgressNotes(),
-            record.getPatientUserId(),
-            record.getTreatmentId()
-
-        };
-        return jdbcTemplate.update(sql, parameters);
-
+    public Map<String, Object> getTreatmentByAppointmentId(int appointment_id) {
+        return null;
     }
 
 }

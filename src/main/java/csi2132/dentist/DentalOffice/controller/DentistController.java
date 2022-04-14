@@ -28,14 +28,16 @@ public class DentistController {
         return dentistService.getAllDentists();
     }
 
-    /*@RequestMapping(value = "/{branch_id}", method = RequestMethod.GET)
-    public List<Map<String, Object>> getDentistsById(@PathVariable int branch_id) {
-        return dentistService.getDentistsById(branch_id);
-    }*/
+    /*
+     * @RequestMapping(value = "/{branch_id}", method = RequestMethod.GET)
+     * public List<Map<String, Object>> getDentistsById(@PathVariable int branch_id)
+     * {
+     * return dentistService.getDentistsById(branch_id);
+     * }
+     */
     @PostMapping(value = "/addTreatmentInfo", consumes = "application/json")
-    public ResponseEntity<?> createTreatment(@RequestBody TreatmentRecord treatmentRec){
-      return ResponseEntity.ok(dentistService.addTreatmentRecord(treatmentRec)) ;
-
+    public Integer createTreatment(@RequestBody TreatmentRecord treatmentRec) {
+        return dentistService.addTreatmentRecord(treatmentRec);
     }
-    
+
 }
