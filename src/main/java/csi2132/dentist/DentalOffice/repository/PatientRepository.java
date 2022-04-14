@@ -125,33 +125,54 @@ public class PatientRepository {
         return jdbcTemplate.queryForList(query);
     }
 
-    public Boolean[] getPatientByUsernameEmailSSN(Patient patientInfo) { //String patientUsername, String patientEmail, String patientSSN) {
-        // return jdbcTemplate.queryForObject(sql, param, new PatientRowMapper());
-        Boolean[] returnObject = new Boolean[3];
 
-        if (patientInfo.getUsername() != null && !patientInfo.getUsername().isEmpty()) {
-            String sql01 = "SELECT * FROM Patient WHERE username = ?";
-            Object[] param01 = new Object[] { patientInfo.getUsername() };
-            Patient test01 = jdbcTemplate.queryForObject(sql01, param01, new PatientRowMapper());
-            // return "User id is already taken";
+    //Note: Split up into 3 different input check methods because of cant send patientPayload into body of API
+    public Boolean getPatientByUsername(String patientUsername) {
+
+        Boolean doesObjectExist = false;
+
+        String sql = "SELECT * FROM Patient WHERE username = ?";
+        Object[] parameters = new Object[] { patientUsername };
+        try{
+            Object objFetch = jdbcTemplate.queryForObject(sql, parameters, new PatientRowMapper());
+            doesObjectExist = true;  //Only enters here if works
         }
-        
-
-        if (patientInfo.getEmail_address() != null && !patientInfo.getEmail_address().isEmpty()) {        
-            String sql02 = "SELECT * FROM Patient WHERE email_address = ?";
-            Object[] param02 = new Object[] { patientInfo.getEmail_address() };
-            Patient test02 = jdbcTemplate.queryForObject(sql02, param02, new PatientRowMapper());
-            // return "Email address is already taken";
+        catch(Exception ex){
         }
 
-        if (patientInfo.getSSN() != null && !patientInfo.getSSN().isEmpty()) {
-            String sql03 = "SELECT * FROM Patient WHERE SSN = ?";
-            Object[] param03 = new Object[] { patientInfo.getSSN() };
-            Patient test03 = jdbcTemplate.queryForObject(sql03, param03, new PatientRowMapper());
-            // return "SSN is already taken";
+        return doesObjectExist;
+    }
+
+    public Boolean getPatientByEmail(String patientEmail) { 
+
+        Boolean doesObjectExist = false;
+
+        String sql = "SELECT * FROM Patient WHERE email_address = ?";
+        Object[] parameters = new Object[] { patientEmail };
+        try{
+            Object objFetch = jdbcTemplate.queryForObject(sql, parameters, new PatientRowMapper());
+            doesObjectExist = true;  //Only enters here if works
+        }
+        catch(Exception ex){
         }
 
-        return returnObject;
+        return doesObjectExist;
+    }
+
+    public Boolean getPatientBySSN(String patientSSN) { 
+
+        Boolean doesObjectExist = false;
+
+        String sql = "SELECT * FROM Patient WHERE SSN = ?";
+        Object[] parameters = new Object[] { patientSSN };
+        try{
+            Object objFetch = jdbcTemplate.queryForObject(sql, parameters, new PatientRowMapper());
+            doesObjectExist = true;  //Only enters here if works
+        }
+        catch(Exception ex){
+        }
+
+        return doesObjectExist;
     }
 
 }

@@ -23,5 +23,7 @@ public class PatientService {
         return patientRepository.getAllPatient();
     }
 
-    public Boolean[] patientByUsernameEmailSSN(Patient patientInfo){return patientRepository.getPatientByUsernameEmailSSN(patientInfo);}
+    public Boolean patientByUsername(String patientUsername){return patientRepository.getPatientByUsername(patientUsername);}
+    public Boolean getPatientByEmail(String patientEmail){return patientRepository.getPatientByEmail(patientEmail);}
+    public Boolean getPatientBySSN(String patientSSN){return patientRepository.getPatientBySSN(patientSSN);}
 }

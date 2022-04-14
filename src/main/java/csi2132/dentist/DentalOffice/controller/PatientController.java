@@ -52,10 +52,22 @@ public class PatientController extends EmployeeController {
     }
 
     //-- Input Validation --
-    @GetMapping(value = "/getPatient", produces = "application/json")
-    public Boolean[] getPatientByUsernameEmailSSN(@RequestBody Patient patientFormPayload){
-        Boolean[] patientCheck = patientService.patientByUsernameEmailSSN(patientFormPayload);
-        return patientCheck;
+    @GetMapping(value = "/getByUsername/{patientUsername}", produces = "application/json")
+    public Boolean getPatientByUsername(@PathVariable("patientUsername") String patientUsername){
+        Boolean patientCheckUsername = patientService.patientByUsername(patientUsername);
+        return patientCheckUsername;
+    }
+
+    @GetMapping(value = "/getByEmail/{patientEmail}", produces = "application/json")
+    public Boolean getPatientByEmail(@PathVariable("patientEmail") String patientEmail){
+        Boolean patientCheckEmail = patientService.getPatientByEmail(patientEmail);
+        return patientCheckEmail;
+    }
+
+    @GetMapping(value = "/getBySSN/{patientSSN}", produces = "application/json")
+    public Boolean getPatientBySSN(@PathVariable("patientSSN") String patientSSN){
+        Boolean patientCheckSSN = patientService.getPatientBySSN(patientSSN);
+        return patientCheckSSN;
     }
 
 } 
