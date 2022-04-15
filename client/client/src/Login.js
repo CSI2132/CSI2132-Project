@@ -45,6 +45,8 @@ async function handleLogin(event, navigate, username, password, userType) {
       //   case "employee":
       // }
       // window.location.href("/home");
+    } else {
+      alert("Username, password or role is incorrect");
     }
   }
   //todo: show when login fails
