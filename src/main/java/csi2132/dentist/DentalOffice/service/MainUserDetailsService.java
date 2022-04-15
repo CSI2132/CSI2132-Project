@@ -13,14 +13,6 @@ public class MainUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // User user = userRepository.findByUsername(username);
-        // if (user == null) {
-        //     throw new UsernameNotFoundException(username);
-        // }
-        // return new UserPrincipal(user);
-
-        // new UserDe
         throw new UnsupportedOperationException();
-        //todo: load the user from the database and return it as a UserDetails object (parent class)
     }
 }

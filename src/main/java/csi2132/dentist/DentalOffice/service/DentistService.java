@@ -27,15 +27,8 @@ public class DentistService {
      * }
      */
     public int addTreatmentRecord(TreatmentRecord tr) {
-        // if(tr.treatment.getAppointmentType() != null &&
-        // tr.treatment.getTreatmentType() != null && tr.treatment.getMedication() !=
-        // null && tr.treatment.getSymptoms() != null
-        // && tr.treatment.getTooth() != null && tr.treatment.getTreatmentDate() != null
-        // && tr.treatment.getToothInvolved() != null
-        // ){
         Integer treatment_id = dentistRepository.addTreatment(tr.treatment);
 
-        // }
         Integer val2 = dentistRepository.addRecord(tr.record, treatment_id);
 
         return treatment_id;

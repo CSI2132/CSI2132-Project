@@ -1,8 +1,6 @@
 package csi2132.dentist.DentalOffice.controller;
 
 import csi2132.dentist.DentalOffice.dto.TreatmentRecord;
-import csi2132.dentist.DentalOffice.model.Dentist;
-import csi2132.dentist.DentalOffice.model.Treatment;
 import csi2132.dentist.DentalOffice.service.DentistService;
 
 import java.util.List;

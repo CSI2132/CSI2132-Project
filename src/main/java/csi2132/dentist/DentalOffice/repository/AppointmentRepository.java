@@ -6,13 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-// import record
-import csi2132.dentist.DentalOffice.model.Record;
 
 import csi2132.dentist.DentalOffice.model.Appointment;
-import csi2132.dentist.DentalOffice.model.AppointmentProcedure;
 import csi2132.dentist.DentalOffice.model.ProcedureType;
-import csi2132.dentist.DentalOffice.model.Treatment;
 
 @Repository
 public class AppointmentRepository {
@@ -72,11 +68,4 @@ public class AppointmentRepository {
         String sql = "SELECT * FROM record JOIN treatment ON record.treatment_id = treatment.treatment_id WHERE patient_user_id = ?";
         return jdbcTemplate.queryForList(sql, patient_user_id);
     }
-
-    // TODO: Technically need to have this
-    // public Integer addAppointmentProcedure(AppointmentProcedure
-    // appointmentProcedure) {
-    // String sql = "INSERT INTO appointment_procedure (appointment_id,
-    // procedure_id) VALUES (?, ?)";
-    // }
 }

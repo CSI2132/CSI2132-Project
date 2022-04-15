@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import csi2132.dentist.DentalOffice.model.Appointment;
-import csi2132.dentist.DentalOffice.model.ProcedureType;
-import csi2132.dentist.DentalOffice.model.Record;
-import csi2132.dentist.DentalOffice.model.Treatment;
 import csi2132.dentist.DentalOffice.service.AppointmentService;
 
 @RestController
@@ -41,18 +38,6 @@ public class AppointmentController {
         return procedureList;
     }
 
-    /*
-     * - [POST] Add a new procedure type
-     * - This endpoint has been commented out as POST should not be available to
-     * users
-     */
-    // @PostMapping(value = "/addProcedure", produces = "application/json")
-    // public ResponseEntity<?> addProcedures(@RequestBody ProcedureType
-    // procedureType) {
-    // return
-    // ResponseEntity.ok(appointmentService.createProcedureType(procedureType));
-    // }
-
     // - Upcoming appointments for patient {patientID}, dentist
     @GetMapping(value = "/getAppointmentByPatientId/{user_id}", produces = "application/json")
     public List<Map<String, Object>> getAppointmentByPatientId(@PathVariable Integer user_id) {
@@ -75,28 +60,4 @@ public class AppointmentController {
     public List<Map<String, Object>> getPatientRecord(@PathVariable Integer patient_user_id) {
         return appointmentService.getPatientRecord(patient_user_id);
     }
-
-    // // - Create treatment
-    // @PostMapping(value = "/addTreatment", produces = "application/json")
-    // public ResponseEntity<?> addTreatment(@RequestBody Treatment treatment) {
-    //     return ResponseEntity.ok(appointmentService.createTreatment(treatment));
-    // }
-
-    // // - Create patient record
-    // @PostMapping(value = "/addPatientRecord", produces = "application/json")
-    // public ResponseEntity<?> addPatientRecord(@RequestBody Record record) {
-    //     return ResponseEntity.ok(appointmentService.createPatientRecord(record));
-    // }
-
-    // // Get treatment_id from treatment_type
-    // @GetMapping(value = "/getTreatmentId/{treatment_type}", produces = "application/json")
-    // public Integer getTreatmentId(@PathVariable String treatment_type) {
-    //     return appointmentService.getTreatmentId(treatment_type);
-    // }
-
-    // // Get treatment_id from appointment_id
-    // @GetMapping(value = "/getTreatmentIdByAppointmentId/{appointment_id}", produces = "application/json")
-    // public Integer getTreatmentIdByAppointmentId(@PathVariable Integer appointment_id) {
-    //     return appointmentService.getTreatmentIdByAppointmentId(appointment_id);
-    // }
 }

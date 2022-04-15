@@ -2,14 +2,18 @@
 SELECT dentist.first_name, dentist.last_name, dentist.speciality, branch.branch_id, branch.city, branch.branch_address
 FROM Dentist
 LEFT JOIN Branch 
-    ON Dentist.branch_id = Branch.branch_id;
+    ON Dentist.branch_id = Branch.branch_id
+    -- WHERE Branch.branch_id = 1;
+    ORDER BY branch_id;
 
 -- Check upcoming appointment with the dentist
-SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name
+SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, 
+	dentist.first_name AS dentist_first_name, dentist.last_name AS dentist_last_name, 
+	hygienist.first_name AS hygienist_first_name, hygienist.last_name AS hygienist_last_name
 FROM Appointment AS aa
     LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id
     LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id
-WHERE appointment_status = 'ACTIVE' AND aa.start_time > CURRENT_TIME;
+WHERE appointment_status = 'ACTIVE' AND aa.appointment_date > CURRENT_DATE
 -- AND aa.dentist_user_id = 1;
 
 -- Set a new appointment
@@ -64,7 +68,7 @@ INSERT INTO Dentist(user_id, username, dentist_password, first_name, last_name, 
     987654331,
     120000,
     1,
-    'PERIODONTIST'
+    'PERIODONTIC'
 );
 
 -- Inserting a Receptionist
