@@ -26,7 +26,7 @@ async function handleLogin(event, navigate, username, password, userType) {
       // localStorage.getItem("userId")
       console.log("made to here navi")
 
-      if(userType == "dentist"){
+      if(userType === "dentist" || userType === "hygienist"){
         console.log("made to dentist navi")
         navigate("/dentist", { userId: data.userId });
       }
@@ -34,6 +34,11 @@ async function handleLogin(event, navigate, username, password, userType) {
       if (userType === "patient") {
         console.log("made to patient navi")
         navigate("/patient", { userId: data.userId });
+      }
+
+      if (userType === "receptionist") {
+        console.log("made to receptionist navi")
+        navigate("/receptionist", { userId: data.userId });
       }
       // const role = document.getElementById("roleSelector").value;
       // switch (role.value) {

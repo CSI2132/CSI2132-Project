@@ -6,9 +6,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+// import record
+import csi2132.dentist.DentalOffice.model.Record;
 
 import csi2132.dentist.DentalOffice.model.Appointment;
+import csi2132.dentist.DentalOffice.model.AppointmentProcedure;
 import csi2132.dentist.DentalOffice.model.ProcedureType;
+import csi2132.dentist.DentalOffice.model.Treatment;
 
 @Repository
 public class AppointmentRepository {
@@ -38,7 +42,7 @@ public class AppointmentRepository {
     }
 
     public List<Map<String, Object>> getAppointmentByPatientId(Integer user_id) {
-        String sql = "SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name , aa.patient_user_id"
+        String sql = "SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, dentist.first_name as dentist_first_name, dentist.last_name as dentist_last_name, hygienist.first_name as hygienst_first_name, hygienist.last_name as hygienist_last_name, aa.patient_user_id "
                 +
                 "FROM Appointment AS aa " +
                 "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
@@ -48,9 +52,10 @@ public class AppointmentRepository {
     }
 
     public List<Map<String, Object>> getAppointmentByDentistId(Integer user_id) {
-        String sql = "SELECT aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, patient.first_name, patient.last_name, dentist.first_name, dentist.last_name, hygienist.first_name, hygienist.last_name, aa.patient_user_id "
+        String sql = "SELECT aa.appointment_id, aa.appointment_date, aa.start_time, aa.end_time, aa.assigned_room, aa.appointment_type, patient.first_name as patient_first_name, patient.last_name as patient_last_name, dentist.first_name as dentist_first_name, dentist.last_name as dentist_last_name, hygienist.first_name as hygienist_first_name, hygienist.last_name as hygienst_last_name, aa.patient_user_id "
                 +
                 "FROM Appointment AS aa " +
+                "LEFT JOIN Patient ON aa.patient_user_id = Patient.user_id " +
                 "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
                 "LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id " +
                 "WHERE aa.appointment_status = 'ACTIVE' AND aa.dentist_user_id = ?";
@@ -59,7 +64,14 @@ public class AppointmentRepository {
 
     // Medical history of patient records through patient_id
     public List<Map<String, Object>> getPatientRecord(Integer patient_user_id) {
-        String sql = "SELECT * FROM record WHERE patient_user_id = ?";
+        String sql = "SELECT * FROM record JOIN treatment ON record.treatment_id = treatment.treatment_id WHERE patient_user_id = ?";
         return jdbcTemplate.queryForList(sql, patient_user_id);
     }
+
+    //TODO: Technically need to have this
+    public Integer addAppointmentProcedure(AppointmentProcedure appProc){
+        String sql = "SELECT * from ";
+        return null;
+    }
+
 }
