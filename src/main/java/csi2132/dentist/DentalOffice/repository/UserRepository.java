@@ -36,7 +36,7 @@ public class UserRepository {
     }
 
     public List<Map<String, Object>> getAllPatientId(){
-        String sql = "SELECT Users.user_id FROM Users JOIN Patient ON Users.user_id = Patient.user_id ORDER BY Users.user_id ASC";
+        String sql = "SELECT * FROM Users JOIN Patient ON Users.user_id = Patient.user_id ORDER BY Users.user_id ASC";
         return jdbcTemplate.queryForList(sql);
 
     }

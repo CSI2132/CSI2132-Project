@@ -2,19 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Receptionist() {
-
-    //TODO: (Reference data in db -- "Procedure Types") FRONTEND needs changed
-    //TODO: EDIT being hit SUCCESSFUL ALERT when it shouldnt be (Password is being changed even though confirm password != password)
-    //TODO: SET being hit SUCCESSFUL ALERT when it shouldnt be (ALWAYS success?)
-
-    // [OPTIONAL]
-    //TODO if we like wasting time: Start time cant be same as end time
-    //TODO if we like wasting time: DAtes cant be > currnet
-    //TODO: CLEAR FORM INPUT FIELDS (so fresh resubmitted)??? LEave for now until above done
-    //TODO: Sometimes form RELOADS page? (Javascript cachce error?)
-
-
-
     //-- [Extra Features] --
     const [showPassword, setShowPassword] = useState(false); //Show password function
 
@@ -23,7 +10,7 @@ function Receptionist() {
     const [errorMsg, setErrorMsg] = useState(false); //Boolean to see if error input (For fields that dont HAVE to be unique)
     const [confirmPassword, setConfirmPassword] = useState({  //-- PASSWORD INPUT VALIDATION --
         confirm_password: ""
-    }); 
+    });
     function handlePswdValidation(event) {  
         setConfirmPassword({
             ...confirmPassword, //(Recognize input in field)
@@ -35,8 +22,7 @@ function Receptionist() {
     const [doesSSNExist, setDoesSSNExist] = useState(false);
 
 
-    
-    //-- Form data payload for [EDIT/ADD] patient info --
+    //-- Form data payload for [ADD/EDIT] patient info --
     const [formDataAddEdit, setFormDataAddEdit] = useState({ //-- Set Form FIELDS --
         user_id: "",
         username: "",
@@ -56,7 +42,6 @@ function Receptionist() {
             [event.target.name]: event.target.value
         })
     }
-  
 
 
     //-- Form data payload for [SET] patient appt --
@@ -79,13 +64,57 @@ function Receptionist() {
         })
     }
 
+    //-- Dynamic Dropdown menus (AUTO populate BASED on database data) --
+    //Backend endpoint to get ALL (Appointment Procedure) records
+    const appointmentFetcher = async() => {
+        const response = await fetch("appointment/getProcedure/");
+        const data = response.json();
+        return data;
+    }
+    const [procedureOptions, setProcedureOptions] = useState([]);
+    const getAppointmentTypeOption = () => {
+        const result = [];
+        if (procedureOptions.length > 0) {
+            procedureOptions.forEach(option => {
+                result.push(
+                    <option value={option.procedure_type_name}> {option.procedure_type_name} </option>
+                );
+            });
+        } else {
+            appointmentFetcher().then((data) => setProcedureOptions(data));
+        }
+        return result;
+    }
+
+    //Backend endpoint to get ALL (Patient) records: userIds
+    const patientFetcher = async() => {  
+        const response = await fetch("user/allPatientId/");
+        const data = response.json();
+        return data;
+    }
+    const [patientList, setPatientList] = useState([]);
+    const getPatientUsers = () => {
+        const result = [];
+        if (patientList.length > 0) {
+            patientList.forEach(option => {
+                result.push(
+                    <option value={option.user_id}> {`${option.first_name} ${option.last_name}`} </option>
+                );
+            });
+        } else {
+            patientFetcher().then((data) => {
+                setPatientList(data);
+                setFormDataAddEdit({ ...formDataAddEdit, user_id: data[0].user_id });
+            });
+        }
+        return result;
+    }
+
 
     //-- [DETERMINE PAGE MODE]: ADD when no patientId exists,   EDIT selected patient id,   SET patient appt --
     const [receptionistOption, setReceptionistOption] = useState("addPatient");
-    //Helper vars 
     const isEditPatient = receptionistOption === "editPatient";
     const isSetPatientAppt = receptionistOption === "setPatientAppointment";
-
 
 
     //-- [ON SUBMIT] --
@@ -95,6 +124,7 @@ function Receptionist() {
         console.log(formDataSet); //DEBUGING PURPOSES
         console.log(receptionistOption); //DEBUGING PURPOSES
 
+        //Input validation Initalization
         var usernameExists = false;
         var emailExists = false;
         var ssnExists = false;
@@ -163,7 +193,6 @@ function Receptionist() {
                 case "editPatient":
                     //-- INPUT VALIDATION -- 
                     //username, email, ssn has to be UNIQUE (Doesnt exist in db)
-
                     if (formDataAddEdit.username.length !== 0) {
                         let patientUsernameInUriEdit = formDataAddEdit.username;
                         let patientUsrnmeEdit = await fetch(`/patient/getByUsername/${patientUsernameInUriEdit}`, {
@@ -228,6 +257,7 @@ function Receptionist() {
                     }
                     break;
 
+
                 case "setPatientAppointment":
                     //-- INPUT VALIDATION --
                     //Appointment Date, and time need values
@@ -238,7 +268,6 @@ function Receptionist() {
                         setErrorMsg(true); //Keep Error message on screen until resubmit
                         alert("ERROR!\n INVALID Input Validation");
                     }      
-
 
                     //-- HIT backend endpoint ONLY if ensure ALL VALIDATION Pass --                            
                     else { 
@@ -255,6 +284,7 @@ function Receptionist() {
                     }
                     break;
 
+
                 default:
                     console.log("Nothing Happened.")
                     break;
@@ -264,8 +294,6 @@ function Receptionist() {
             console.log(err);
         }
     };
-
-
 
 
     //-- FRONTEND UI --
@@ -303,8 +331,10 @@ function Receptionist() {
                             <div className="form-group col">
                                 {isEditPatient &&
                                     <div>
-                                        <label>UserId: &nbsp; </label>
-                                        <input name="user_id" type="text" onChange={handleFormChangeAddEdit} />
+                                        <label>User: &nbsp; </label>
+                                        <select name="user_id" onChange={handleFormChangeAddEdit}>
+                                            {getPatientUsers()}  
+                                        </select> 
                                     </div>
                                 }
                             </div>
@@ -470,20 +500,8 @@ function Receptionist() {
                             <div className="form-group col">
                                 <label>Type: &nbsp; </label>
                                 <div> 
-                                    <select name="appointment_type" onChange={handleFormChangeSet}>
-
-                                        {/* TODO: call API to auto populate based on db */}
-                                        <option value="SCALING"> Scaling </option>
-                                        <option value="FLUORIDE"> Fluoride </option>
-                                        <option value="REMOVAL">Removal</option>
-                                        <option value="FILLINGS">Fillings</option>
-                                        <option value="ROOT_CANAL">Root Canal</option>
-                                        <option value="WHITENING">Whitening</option>
-                                        <option value="ENDODONTIC">Endodontic</option>
-                                        <option value="ORTHODONTIC">Orthodontic</option>
-                                        <option value="PERIODONTIC">Periodontic</option>
-                                        <option value="ENDODONTIC_AND_PERIODONTIC">Endodontic And Periodontic</option>
-                                        <option value="Other">Other</option>
+                                    <select id="procedureTypes" onChange={handleFormChangeSet} > 
+                                        {getAppointmentTypeOption()}           
                                     </select>
                                 </div>
                             </div>
