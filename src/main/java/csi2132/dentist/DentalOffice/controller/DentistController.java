@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,9 +17,6 @@ public class DentistController {
 
     @Autowired
     private DentistService dentistService;
-
-    @Autowired
-    private JdbcTemplate JdbcTemplate;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Map<String, Object>> getAllDentists() {

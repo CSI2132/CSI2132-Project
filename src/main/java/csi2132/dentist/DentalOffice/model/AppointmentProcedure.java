@@ -14,6 +14,21 @@ public class AppointmentProcedure {
     private Double insurance_charge;
     private Double total_charge;
 
+    // Constructor
+    public AppointmentProcedure(Integer appointment_id, Integer procedure_id, Date appointment_procedure_date,
+            String appointment_procedure_description, String tooth_involved, Double procedure_amount,
+            Double patient_charge, Double insurance_charge, Double total_charge) {
+        this.appointment_id = appointment_id;
+        this.procedure_id = procedure_id;
+        this.appointment_procedure_date = appointment_procedure_date;
+        this.appointment_procedure_description = appointment_procedure_description;
+        this.tooth_involved = tooth_involved;
+        this.procedure_amount = procedure_amount;
+        this.patient_charge = patient_charge;
+        this.insurance_charge = insurance_charge;
+        this.total_charge = total_charge;
+    }
+
     // Getters and Setters
 
     public Integer getAppointment_id() {

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 import csi2132.dentist.DentalOffice.model.Appointment;
 import csi2132.dentist.DentalOffice.model.ProcedureType;
-import csi2132.dentist.DentalOffice.model.Record;
-import csi2132.dentist.DentalOffice.model.Treatment;
 import csi2132.dentist.DentalOffice.repository.AppointmentRepository;
 
 @Component
