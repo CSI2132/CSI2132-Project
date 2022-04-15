@@ -8,11 +8,11 @@ async function handleLogin(event, navigate, username, password, userType) {
   const data = {
     username,
     password,
-    role: getRoleNumber(userType)
+    role: getRoleNumber(userType),
   };
-  console.log("made to here navi")
+  console.log("made to here navi");
 
-  const response = await fetch("http://localhost:8080/login", {
+  const response = await fetch("/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,20 +24,20 @@ async function handleLogin(event, navigate, username, password, userType) {
     if (data && data.userId) {
       localStorage.setItem("userId", data.userId);
       // localStorage.getItem("userId")
-      console.log("made to here navi")
+      console.log("made to here navi");
 
-      if(userType === "dentist" || userType === "hygienist"){
-        console.log("made to dentist navi")
+      if (userType === "dentist" || userType === "hygienist") {
+        console.log("made to dentist navi");
         navigate("/dentist", { userId: data.userId });
       }
 
       if (userType === "patient") {
-        console.log("made to patient navi")
+        console.log("made to patient navi");
         navigate("/patient", { userId: data.userId });
       }
 
       if (userType === "receptionist") {
-        console.log("made to receptionist navi")
+        console.log("made to receptionist navi");
         navigate("/receptionist", { userId: data.userId });
       }
       // const role = document.getElementById("roleSelector").value;
@@ -58,7 +58,7 @@ function Login(props) {
 
   const loginForm = (
     <div className="container-fluid">
-      <h2 className="text-center">Modal Login Form (Login.js)</h2>
+      <h2 className="text-center">Dentist Office Login</h2>
       <div className="row mt-5">
         <Form
           className="col-8 m-auto "
@@ -75,7 +75,6 @@ function Login(props) {
               placeholder="Enter username"
               onChange={(event) => setUser(event.target.value)}
             />
-
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
@@ -87,26 +86,22 @@ function Login(props) {
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-
-          <div className="mb-auto"> 
-            <select id="roleSelector" aria-labelledby="dropdownMenuButton" onChange={e => setUserType(e.target.value)}>
+          <div className="mb-auto">
+            <select
+              id="roleSelector"
+              aria-labelledby="dropdownMenuButton"
+              onChange={(e) => setUserType(e.target.value)}
+            >
               <option value="patient">Patient</option>
               <option value="receptionist">Receptionist</option>
               <option value="dentist">Dentist</option>
-              <option value={"hygienist"}>
-                Hygienist
-              </option>
-              <option value={"manager"}>
-                Branch Manager
-              </option>
+              <option value={"hygienist"}>Hygienist</option>
             </select>
           </div>
-          
           &nbsp;
-          
           <div>
             <button type="submit" className="btn btn-primary" value={"Submit"}>
-                Submit
+              Submit
             </button>
           </div>
         </Form>

@@ -32,5 +32,8 @@ public class UserService {
 
     public List<Map<String, Object>> getAllPatientId() { return userRepository.getAllPatientId();}
 
+    public List<Map<String, Object>> getAllDentistId() { return userRepository.getAllDentistId();}
+
+    public List<Map<String, Object>> getAllHygienistId() { return userRepository.getAllHygienistId();}
 
 }

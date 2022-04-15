@@ -60,9 +60,14 @@ public class AppointmentController {
     }
 
     // - Upcoming appointments for dentist {dentistID}
-    @GetMapping(value = "/getAppointmentByDentistId/{user_id}", produces = "application/json")
-    public List<Map<String, Object>> getAppointmentByDentistId(@PathVariable Integer user_id) {
-        return appointmentService.getAppointmentByDentistId(user_id);
+    @GetMapping(value = "/getAppointmentByDentistOrHygienistId/{user_id}", produces = "application/json")
+    public List<Map<String, Object>> getAppointmentByDentistOrHygienistId(@PathVariable Integer user_id) {
+        List<Map<String, Object>> result = appointmentService.getAppointmentByDentistId(user_id);
+        if (result.size() > 0) {
+            return result;
+        } else {
+            return appointmentService.getAppointmentByHygienistId(user_id);
+        }
     }
 
     // - Medical history of patient records through patient_id

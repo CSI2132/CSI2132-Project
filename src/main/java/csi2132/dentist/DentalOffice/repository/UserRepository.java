@@ -38,7 +38,16 @@ public class UserRepository {
     public List<Map<String, Object>> getAllPatientId(){
         String sql = "SELECT * FROM Users JOIN Patient ON Users.user_id = Patient.user_id ORDER BY Users.user_id ASC";
         return jdbcTemplate.queryForList(sql);
+    }
 
+    public List<Map<String, Object>> getAllDentistId(){
+        String sql = "SELECT * FROM Users JOIN Dentist ON Users.user_id = Dentist.user_id ORDER BY Users.user_id ASC";
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    public List<Map<String, Object>> getAllHygienistId(){
+        String sql = "SELECT * FROM Users JOIN Hygienist ON Users.user_id = Hygienist.user_id ORDER BY Users.user_id ASC";
+        return jdbcTemplate.queryForList(sql);
     }
 
     public int addUserAndReturnUserId(Patient patient) {

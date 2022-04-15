@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 function Patient(props) {
   const [medicalHistory, setMedicalHistory] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  
+
   useEffect(() => {
     const userId = localStorage.getItem("userId");
 
-    fetch(`http://localhost:8080/appointment/getPatientRecord/${userId}`).then(async (result) => {
-      if (result.ok) {
-        setMedicalHistory(await result.json());
+    fetch(`/appointment/getPatientRecord/${userId}`).then(
+      async (result) => {
+        if (result.ok) {
+          setMedicalHistory(await result.json());
+        }
       }
-    });
+    );
 
-    fetch(`http://localhost:8080/appointment/getAppointmentByPatientId/${userId}`).then(async (result) => {
+    fetch(
+      `/appointment/getAppointmentByPatientId/${userId}`
+    ).then(async (result) => {
       if (result.ok) {
         setUpcomingAppointments(await result.json());
       }
@@ -22,27 +27,26 @@ function Patient(props) {
 
   return (
     <div>
+      <Link to="/" className="btn btn-secondary">
+        {" "}
+        Logout{" "}
+      </Link>
       <div>
-        <h2>
-          Upcoming Appointments
-        </h2>
+        <h2>Upcoming Appointments</h2>
 
         {getUpcomingAppointments(upcomingAppointments)}
       </div>
 
       <div>
-        <h2>
-          Medical History
-        </h2>
+        <h2>Medical History</h2>
 
         {getMedicalHistory(medicalHistory)}
       </div>
     </div>
-  )
+  );
 }
 
 function getMedicalHistory(records) {
-
   const keys = [
     "appointment_type",
     "treatment_type",
@@ -55,7 +59,7 @@ function getMedicalHistory(records) {
     "treatment_description",
     "appointment_procedure_description",
     "tooth_involved",
-    "patient_charge"
+    "patient_charge",
   ];
 
   const names = [
@@ -70,7 +74,7 @@ function getMedicalHistory(records) {
     "Treatment Description",
     "Appointment Procedure Description",
     "Tooth Involved",
-    "Patient Charge"
+    "Patient Charge",
   ];
 
   // use <summary>
@@ -80,10 +84,7 @@ function getMedicalHistory(records) {
   for (const record of records) {
     result.push(
       <details className="border">
-        <summary>
-        
-          {`Treatment at ${record.treatment_date}`}
-        </summary>
+        <summary>{`Treatment at ${record.treatment_date}`}</summary>
         <div className="border">
           {(() => {
             const result = [];
@@ -92,7 +93,7 @@ function getMedicalHistory(records) {
                 <div>
                   <b>{names[i]}</b>: {record[keys[i]]}
                 </div>
-              )
+              );
             }
             return result;
           })()}
@@ -124,7 +125,7 @@ function getUpcomingAppointments(appointments) {
   ];
 
   // use <summary>
-  
+
   const result = [];
   for (const appointment of appointments) {
     result.push(
@@ -140,7 +141,7 @@ function getUpcomingAppointments(appointments) {
                 <div>
                   <b>{names[i]}</b>: {appointment[keys[i]]}
                 </div>
-              )
+              );
             }
             return result1;
           })()}

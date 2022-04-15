@@ -19,7 +19,16 @@ public class UserController {
 
     @GetMapping(value = "/allPatientId", produces = "application/json")
     public List<Map<String, Object>> getAllPatientId() {
-        List<Map<String,Object>> users = userService.getAllPatientId();
         return userService.getAllPatientId();
+    }
+
+    @GetMapping(value = "/allDentistId", produces = "application/json")
+    public List<Map<String, Object>> getAllDentistId() {
+        return userService.getAllDentistId();
+    }
+
+    @GetMapping(value = "/allHygienistId", produces = "application/json")
+    public List<Map<String, Object>> getAllHygienistId() {
+        return userService.getAllHygienistId();
     }
 }

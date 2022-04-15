@@ -4,19 +4,19 @@ CREATE TYPE procedure_type_name_enum AS ENUM ('SCALING', 'FLUORIDE', 'REMOVAL', 
 CREATE TYPE employee_role_enum AS ENUM ('DENTIST', 'HYGIENIST', 'RECEPTIONIST', 'BRANCHMANAGER');
 
 -- Tables --
-CREATE TABLE Users ( /*Table needs to be renamed*/
+CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
 );
 
 CREATE TABLE Employee (
-    user_id SERIAL PRIMARY KEY REFERENCES "User"(user_id), /*Serial needs to be removed from this*/
+    user_id INTEGER PRIMARY KEY REFERENCES Users(user_id),
     employee_role employee_role_enum NOT NULL 
 );
 
 CREATE TABLE Patient (
-    user_id INTEGER PRIMARY KEY REFERENCES "User"(user_id),
+    user_id INTEGER PRIMARY KEY REFERENCES Users(user_id),
     username TEXT NOT NULL,
     patient_password TEXT NOT NULL,
     patient_address TEXT NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE Invoice (
     insurance_charge NUMERIC(16, 2) NOT NULL CONSTRAINT valid_insurance_charge CHECK (insurance_charge >= 0),
     total_fee_charge NUMERIC(16, 2) NOT NULL CONSTRAINT valid_total_fee_charge CHECK (total_fee_charge >= 0),
     discount REAL NOT NULL CONSTRAINT valid_discount CHECK (discount BETWEEN 0.0 AND 1.0),
-    penalty_absent BOOLEAN NOT NULL, -- [TODO: Frontend logic to add $14 to patient's account. Fee code: 94303]
+    penalty_absent BOOLEAN NOT NULL,
     patient_amount NUMERIC(16, 2) NOT NULL CONSTRAINT valid_patient_amount CHECK (patient_amount >= 0),
     insurance_amount NUMERIC(16, 2) NOT NULL CONSTRAINT valid_insurance_amount CHECK (insurance_amount >= 0),
     total_amount NUMERIC(16, 2) NOT NULL CONSTRAINT valid_total_amount CHECK (total_amount >= 0),
@@ -138,7 +138,6 @@ CREATE TABLE Treatment (
     total_charge NUMERIC(16, 2) NOT NULL CONSTRAINT valid_total_charge CHECK (total_charge >= 0.0)
 );
 
--- TODO: double check foreign keys and primary keys
 CREATE TABLE Record (
     progress_notes TEXT,
     patient_user_id SERIAL NOT NULL REFERENCES Patient(user_id),

@@ -4,7 +4,6 @@ public class Receptionist extends User {
     private String first_name;
     private String last_name;
     private String receptionist_address;
-    private String receptionist_role;
     private String SSN;
     private Integer salary;
     private Integer branch_id;
@@ -32,14 +31,6 @@ public class Receptionist extends User {
 
     public void setReceptionist_address(String receptionist_address) {
         this.receptionist_address = receptionist_address;
-    }
-
-    public String getReceptionist_role() {
-        return receptionist_role;
-    }
-
-    public void setReceptionist_role(String receptionist_role) {
-        this.receptionist_role = receptionist_role;
     }
 
     public String getSSN() {

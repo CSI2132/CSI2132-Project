@@ -58,7 +58,12 @@ public class AppointmentRepository {
                 "LEFT JOIN Patient ON aa.patient_user_id = Patient.user_id " +
                 "LEFT JOIN Dentist ON aa.dentist_user_id = Dentist.user_id " +
                 "LEFT JOIN Hygienist ON aa.hygienist_user_id = Hygienist.user_id " +
-                "WHERE aa.appointment_status = 'ACTIVE' AND aa.dentist_user_id = ?";
+                "WHERE aa.appointment_status = 'ACTIVE' AND aa.appointment_date > CURRENT_DATE AND aa.dentist_user_id = ?";
+        return jdbcTemplate.queryForList(sql, user_id);
+    }
+
+    public List<Map<String, Object>> getAppointmentByHygienistId(Integer user_id) {
+        String sql = "SELECT * FROM appointment WHERE hygienist_user_id = ?";
         return jdbcTemplate.queryForList(sql, user_id);
     }
 
