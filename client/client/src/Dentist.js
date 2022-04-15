@@ -263,13 +263,14 @@ function Dentist(props) {
         result.push(
           <div>
             <label for={`input-${item.key}`}><b>{item.name}</b>:</label>
+            <br/>
             {selector}
           </div>
         );
       }
 
       return (
-        <div className="card" style={{width: "50%"}}>
+        <div className="card">
           <div className="card-body">
             <h5 className="card-title">New Treatment Record</h5>
 
