@@ -4,7 +4,7 @@ CREATE TYPE procedure_type_name_enum AS ENUM ('SCALING', 'FLUORIDE', 'REMOVAL', 
 CREATE TYPE employee_role_enum AS ENUM ('DENTIST', 'HYGIENIST', 'RECEPTIONIST', 'BRANCHMANAGER');
 
 -- Tables --
-CREATE TABLE "User" ( /*Table needs to be renamed*/
+CREATE TABLE Users ( /*Table needs to be renamed*/
     user_id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
